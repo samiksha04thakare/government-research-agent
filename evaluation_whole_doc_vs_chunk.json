@@ -1,0 +1,308 @@
+{
+  "summary": "Evaluation of Removing Chunking vs Chunk-Based RAG",
+  "embedding_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "embedding_max_tokens": 256,
+  "ingestion_statistics": [
+    {
+      "file_name": "1ed42b58950974e5.pdf",
+      "title": "Pradhan Mantri Kisan Samman Nidhi Operational Guidelines",
+      "department": "Ministry of Agriculture & Farmers Welfare (DAC&FW)",
+      "total_chars": 28249,
+      "total_words": 4389,
+      "total_tokens": 5872,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 95.64
+    },
+    {
+      "file_name": "89a210b145755fa9.pdf",
+      "title": "kisan post scheme",
+      "department": "ministry of agriculture",
+      "total_chars": 28249,
+      "total_words": 4389,
+      "total_tokens": 5872,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 95.64
+    },
+    {
+      "file_name": "agriculture_government_schemes.txt",
+      "title": "Central Agricultural Schemes Compendium (PM-KISAN, PMFBY, PM-KUSUM, SMAM)",
+      "department": "Ministry of Agriculture and Farmers Welfare & MNRE",
+      "total_chars": 4141,
+      "total_words": 609,
+      "total_tokens": 982,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 73.93
+    },
+    {
+      "file_name": "crop_production_and_disorders.txt",
+      "title": "Crop Production Practices, Stress Management & Physiological Disorders Advisory",
+      "department": "Indian Council of Agricultural Research (ICAR)",
+      "total_chars": 3273,
+      "total_words": 494,
+      "total_tokens": 866,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 70.44
+    },
+    {
+      "file_name": "farmer_welfare_and_credit.txt",
+      "title": "Farmer Welfare, Land Records & Agricultural Credit Guidelines",
+      "department": "Ministry of Agriculture and Farmers Welfare, Govt of India",
+      "total_chars": 3738,
+      "total_words": 557,
+      "total_tokens": 858,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 70.16
+    },
+    {
+      "file_name": "integrated_pest_management_cibrc.txt",
+      "title": "Integrated Pest Management (IPM) & CIBRC Approved Control Measures",
+      "department": "Central Insecticides Board & Registration Committee (CIBRC)",
+      "total_chars": 3630,
+      "total_words": 561,
+      "total_tokens": 991,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 74.17
+    },
+    {
+      "file_name": "maharashtra_agriculture_active_schemes_2026_2027.txt",
+      "title": "Maharashtra Active Agricultural Schemes & Budget Outlay Compendium (2026-2027)",
+      "department": "Department of Agriculture, Government of Maharashtra",
+      "total_chars": 54916,
+      "total_words": 9481,
+      "total_tokens": 21350,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 98.8
+    },
+    {
+      "file_name": "maharashtra_scholarships.txt",
+      "title": "Maharashtra State Post-Matric Scholarship Scheme Guidelines",
+      "department": "Higher and Technical Education Department, Govt of Maharashtra",
+      "total_chars": 2603,
+      "total_words": 370,
+      "total_tokens": 594,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 56.9
+    },
+    {
+      "file_name": "myscheme_guidelines.txt",
+      "title": "myScheme Guidelines",
+      "department": "Ministry of Electronics and IT (MeitY)",
+      "total_chars": 1803,
+      "total_words": 248,
+      "total_tokens": 386,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 33.68
+    },
+    {
+      "file_name": "soil_health_and_fertilizer_management.txt",
+      "title": "Soil Health Card Parameters, Fertilizer Dosage & Subsidy Norms",
+      "department": "Department of Fertilizers & Ministry of Agriculture and Farmers Welfare",
+      "total_chars": 3773,
+      "total_words": 579,
+      "total_tokens": 1121,
+      "embedding_limit": 256,
+      "is_truncated": true,
+      "loss_pct": 77.16
+    }
+  ],
+  "query_comparisons": [
+    {
+      "query_id": "Q1_KCC_CREDIT",
+      "question": "What is the procedure for obtaining a Kisan Credit Card (KCC) and what is the concessional interest rate?",
+      "category": "farmer_questions",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.5339,
+        "avg_similarity_score": 0.3174,
+        "retrieved_count": 5,
+        "total_words": 637,
+        "approx_tokens": 828,
+        "latency_ms": 291.53,
+        "facts_found_ratio": "2/3",
+        "top_source": "Farmer Welfare, Land Records & Agricultural Credit Guidelines"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.2174,
+        "avg_similarity_score": 0.1068,
+        "retrieved_count": 5,
+        "total_tokens": 9427,
+        "exceeds_context_limit": false,
+        "latency_ms": 99.82,
+        "facts_found_ratio": "3/3",
+        "top_source": "Central Agricultural Schemes Compendium (PM-KISAN, PMFBY, PM-KUSUM, SMAM)",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 73.93
+      }
+    },
+    {
+      "query_id": "Q2_CROP_YELLOWING",
+      "question": "How to distinguish between Nitrogen deficiency, waterlogging, and Iron chlorosis when crop leaves turn yellow?",
+      "category": "crop_problems",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.6936,
+        "avg_similarity_score": 0.2935,
+        "retrieved_count": 5,
+        "total_words": 609,
+        "approx_tokens": 791,
+        "latency_ms": 43.5,
+        "facts_found_ratio": "3/3",
+        "top_source": "Crop Production Practices, Stress Management & Physiological Disorders Advisory"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.5792,
+        "avg_similarity_score": 0.1206,
+        "retrieved_count": 5,
+        "total_tokens": 9708,
+        "exceeds_context_limit": false,
+        "latency_ms": 85.96,
+        "facts_found_ratio": "3/3",
+        "top_source": "Crop Production Practices, Stress Management & Physiological Disorders Advisory",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 70.44
+      }
+    },
+    {
+      "query_id": "Q3_FAW_IPM",
+      "question": "What is the Integrated Pest Management (IPM) schedule and ETL for Fall Armyworm (FAW) in maize?",
+      "category": "pest_management",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.6021,
+        "avg_similarity_score": 0.3452,
+        "retrieved_count": 5,
+        "total_words": 473,
+        "approx_tokens": 614,
+        "latency_ms": 45.39,
+        "facts_found_ratio": "3/3",
+        "top_source": "Integrated Pest Management (IPM) & CIBRC Approved Control Measures"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.6487,
+        "avg_similarity_score": 0.1488,
+        "retrieved_count": 5,
+        "total_tokens": 9569,
+        "exceeds_context_limit": false,
+        "latency_ms": 75.68,
+        "facts_found_ratio": "3/3",
+        "top_source": "Integrated Pest Management (IPM) & CIBRC Approved Control Measures",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 74.17
+      }
+    },
+    {
+      "query_id": "Q4_SOIL_HEALTH",
+      "question": "How to interpret Soil Health Card parameters (pH, EC, Organic Carbon, and NPK benchmarks)?",
+      "category": "fertilizers",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.6031,
+        "avg_similarity_score": 0.2679,
+        "retrieved_count": 5,
+        "total_words": 624,
+        "approx_tokens": 811,
+        "latency_ms": 45.97,
+        "facts_found_ratio": "3/3",
+        "top_source": "Soil Health Card Parameters, Fertilizer Dosage & Subsidy Norms"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.5292,
+        "avg_similarity_score": 0.1058,
+        "retrieved_count": 5,
+        "total_tokens": 9708,
+        "exceeds_context_limit": false,
+        "latency_ms": 81.56,
+        "facts_found_ratio": "3/3",
+        "top_source": "Soil Health Card Parameters, Fertilizer Dosage & Subsidy Norms",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 77.16
+      }
+    },
+    {
+      "query_id": "Q5_PM_KISAN",
+      "question": "What are the mandatory e-KYC and land-seeding rules to receive Rs 6,000 yearly under PM-KISAN?",
+      "category": "government_schemes",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.6591,
+        "avg_similarity_score": 0.5089,
+        "retrieved_count": 5,
+        "total_words": 653,
+        "approx_tokens": 848,
+        "latency_ms": 45.58,
+        "facts_found_ratio": "3/3",
+        "top_source": "Central Agricultural Schemes Compendium (PM-KISAN, PMFBY, PM-KUSUM, SMAM)"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.5972,
+        "avg_similarity_score": 0.3628,
+        "retrieved_count": 5,
+        "total_tokens": 29656,
+        "exceeds_context_limit": true,
+        "latency_ms": 87.89,
+        "facts_found_ratio": "3/3",
+        "top_source": "Central Agricultural Schemes Compendium (PM-KISAN, PMFBY, PM-KUSUM, SMAM)",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 73.93
+      }
+    },
+    {
+      "query_id": "Q6_MAHA_NAMO_SHETAKARI",
+      "question": "What is the 2026-27 proposed budget outlay and allocation for Namo Shetakari Mahasanmaan Nidhi Yojana?",
+      "category": "government_schemes",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.5935,
+        "avg_similarity_score": 0.52,
+        "retrieved_count": 5,
+        "total_words": 620,
+        "approx_tokens": 806,
+        "latency_ms": 47.81,
+        "facts_found_ratio": "3/3",
+        "top_source": "Maharashtra Active Agricultural Schemes & Budget Outlay Compendium (2026-2027)"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.471,
+        "avg_similarity_score": 0.2922,
+        "retrieved_count": 5,
+        "total_tokens": 29184,
+        "exceeds_context_limit": true,
+        "latency_ms": 87.66,
+        "facts_found_ratio": "3/3",
+        "top_source": "Maharashtra Active Agricultural Schemes & Budget Outlay Compendium (2026-2027)",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 98.8
+      }
+    },
+    {
+      "query_id": "Q7_MAHA_KRUSHI_SAMRUDHI",
+      "question": "What are the details and fund utilization of the new Krushi Samrudhi Yojana in Maharashtra?",
+      "category": "government_schemes",
+      "chunk_pipeline": {
+        "top_similarity_score": 0.4868,
+        "avg_similarity_score": 0.4609,
+        "retrieved_count": 5,
+        "total_words": 633,
+        "approx_tokens": 822,
+        "latency_ms": 42.2,
+        "facts_found_ratio": "2/2",
+        "top_source": "Maharashtra Active Agricultural Schemes & Budget Outlay Compendium (2026-2027)"
+      },
+      "whole_doc_pipeline": {
+        "top_similarity_score": 0.4417,
+        "avg_similarity_score": 0.3481,
+        "retrieved_count": 5,
+        "total_tokens": 29184,
+        "exceeds_context_limit": true,
+        "latency_ms": 82.58,
+        "facts_found_ratio": "2/2",
+        "top_source": "Maharashtra Active Agricultural Schemes & Budget Outlay Compendium (2026-2027)",
+        "top_doc_truncated": true,
+        "top_doc_token_loss_pct": 98.8
+      }
+    }
+  ]
+}

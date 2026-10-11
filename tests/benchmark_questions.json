@@ -1,0 +1,1030 @@
+[
+  {
+    "id": 1,
+    "question": "What is the procedure for obtaining a Kisan Credit Card (KCC) and what is the concessional interest rate?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "7%",
+      "4%",
+      "1,60,000",
+      "7/12",
+      "Aadhaar",
+      "1800-180-1551"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify KCC concessional interest rate (4% with prompt repayment), collateral-free limit (₹1,60,000), 7/12 extract, and Kisan Call Centre helpline in English."
+  },
+  {
+    "id": 2,
+    "question": "किसान क्रेडिट कार्ड (KCC) प्राप्त करने की प्रक्रिया क्या है और रियायती ब्याज दर कितनी है?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "4%",
+      "7%",
+      "1,60,000",
+      "आधार",
+      "7/12",
+      "1800-180-1551"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Hindi translation fidelity, official 4% interest rate, and required land/identity documents for KCC."
+  },
+  {
+    "id": 3,
+    "question": "किसान क्रेडिट कार्ड (KCC) मिळविण्याची पद्धत काय आहे आणि सवलतीचा व्याजदर किती आहे?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "4%",
+      "7%",
+      "1,60,000",
+      "आधार",
+      "7/12",
+      "1800-180-1551"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Marathi localized terminology (सवलतीचा व्याजदर, 7/12 उतारा, आधार) and KCC eligibility."
+  },
+  {
+    "id": 4,
+    "question": "Kisan Credit Card KCC साठी documents कोणते लागतात and interest rate किती आहे?",
+    "language": "auto",
+    "lang_param": "auto",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "complex",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "4%",
+      "7%",
+      "7/12",
+      "आधार",
+      "1800-180-1551"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify code-mixed Marathi-English (Marathlish) auto-detection and grounded KCC response."
+  },
+  {
+    "id": 5,
+    "question": "What are the farmer premium rates and coverage stages under Pradhan Mantri Fasal Bima Yojana (PMFBY)?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "2%",
+      "1.5%",
+      "5%"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify PMFBY seasonal premium rates for Kharif (2%), Rabi (1.5%), and commercial crops (5%)."
+  },
+  {
+    "id": 6,
+    "question": "प्रधानमंत्री फसल बीमा योजना (PMFBY) में किसानों के लिए प्रीमियम दरें क्या हैं?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "2%",
+      "1.5%",
+      "5%"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Hindi response for PMFBY seasonal premium rates and insurance coverage."
+  },
+  {
+    "id": 7,
+    "question": "प्रधानमंत्री पीक विमा योजनेमध्ये (PMFBY) शेतकऱ्यांसाठी विमा हप्ता (प्रीमियम) दर किती आहेत?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "2%",
+      "1.5%",
+      "5%"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Marathi response for PMFBY seasonal premium rates and insurance coverage."
+  },
+  {
+    "id": 8,
+    "question": "What is the subsidy structure under PM-KUSUM Component B for standalone solar agriculture pumps?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "30%",
+      "40%",
+      "7.5 HP"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify PM-KUSUM Component B standalone solar agriculture pump capital subsidy rates (30% CFA, state share, 7.5 HP max)."
+  },
+  {
+    "id": 9,
+    "question": "What is the financial assistance provided to women and small farmers under Sub-Mission on Agricultural Mechanization (SMAM)?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "40%",
+      "50%"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Sub-Mission on Agricultural Mechanization (SMAM) financial assistance rates for women and small farmers (50% vs 40%)."
+  },
+  {
+    "id": 10,
+    "question": "What is the budget outlay for the Maharashtra Agriculture Artificial Intelligence Policy 2025-2029?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "complex",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "10,000",
+      "1101100034"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Maharashtra Agriculture Artificial Intelligence Policy 2025-2029 budget outlay (₹10,000 Lakh) and scheme code 1101100034."
+  },
+  {
+    "id": 11,
+    "question": "What documents are required for tenant farmer verification when land ownership titles are not available?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "farmer_questions",
+    "category_name": "Farmer Welfare, Credit & Land Records",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "Self-declaration",
+      "Aadhaar",
+      "Passbook"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify tenant farmer documentation protocol (Self-declaration, Aadhaar, Bank Passbook) when land ownership title is unavailable."
+  },
+  {
+    "id": 12,
+    "question": "जमीन का मालिकाना हक न होने पर बटाईदार किसानों के लिए कौन से दस्तावेज आवश्यक हैं?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "farmer_questions",
+    "category_name": "Farmer Welfare, Credit & Land Records",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "स्व-घोषणा",
+      "आधार"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify Hindi guidance for tenant and sharecropper agricultural credit documentation."
+  },
+  {
+    "id": 13,
+    "question": "डिजिटल स्वाक्षरी असलेला 7/12 उतारा आणि भूलेख पडताळणी शेती कर्जासाठी कशी करावी?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "farmer_questions",
+    "category_name": "Farmer Welfare, Credit & Land Records",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "7/12",
+      "भूलेख"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify digitally signed 7/12 RoR extract and Mahabhulekh verification procedure in Marathi."
+  },
+  {
+    "id": 14,
+    "question": "कृषि ऋण और योजनाओं से संबंधित शिकायतों के लिए किसान कॉल सेंटर हेल्पलाइन नंबर क्या है?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "farmer_questions",
+    "category_name": "Farmer Welfare, Credit & Land Records",
+    "level": "easy",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "1800-180-1551",
+      "22"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify national Kisan Call Centre toll-free number (1800-180-1551) and 22 languages support."
+  },
+  {
+    "id": 15,
+    "question": "KCC loan साठी 7/12 उतारा आणि Aadhaar verification कसे करावे?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "farmer_questions",
+    "category_name": "Farmer Welfare, Credit & Land Records",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "7/12",
+      "आधार"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Verify code-mixed Marathi KCC 7/12 extract and Aadhaar seeding requirements."
+  },
+  {
+    "id": 16,
+    "question": "How to distinguish between Nitrogen deficiency, waterlogging, and Iron chlorosis when crop leaves turn yellow?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "crop_problems",
+    "category_name": "Crop Production & Physiological Disorders",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "Nitrogen",
+      "Iron",
+      "yellow"
+    ],
+    "expected_official_domains": [
+      "icar.org.in"
+    ],
+    "evaluation_focus": "Verify differential diagnosis of leaf yellowing: Nitrogen deficiency (older leaves), Iron chlorosis (young leaves), and waterlogging."
+  },
+  {
+    "id": 17,
+    "question": "फसल की पत्तियों में पीलापन आने पर नाइट्रोजन की कमी और आयरन क्लोरोसिस की पहचान कैसे करें?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "crop_problems",
+    "category_name": "Crop Production & Physiological Disorders",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "नाइट्रोजन",
+      "पीला"
+    ],
+    "expected_official_domains": [
+      "icar.org.in"
+    ],
+    "evaluation_focus": "Verify Hindi diagnosis and mitigation for nitrogen deficiency and iron chlorosis."
+  },
+  {
+    "id": 18,
+    "question": "गव्हाच्या पिकात पाने पिवळी पडल्यास नत्र कमतरता आणि पाण्याचा निचरा कसा ओळखावा?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "crop_problems",
+    "category_name": "Crop Production & Physiological Disorders",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "नत्र",
+      "पिवळ"
+    ],
+    "expected_official_domains": [
+      "icar.org.in"
+    ],
+    "evaluation_focus": "Verify Marathi advisory for wheat yellowing, nitrogen deficiency, and drainage management."
+  },
+  {
+    "id": 19,
+    "question": "Cotton crop मध्ये leaf yellowing आणि chlorosis ची लक्षणे काय आहेत?",
+    "language": "auto",
+    "lang_param": "auto",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "crop_problems",
+    "category_name": "Crop Production & Physiological Disorders",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "yellow"
+    ],
+    "expected_official_domains": [
+      "icar.org.in"
+    ],
+    "evaluation_focus": "Verify code-mixed Marathi-English advisory for cotton leaf chlorosis."
+  },
+  {
+    "id": 20,
+    "question": "What are the recommended agronomic measures for managing terminal heat stress in wheat?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "crop_problems",
+    "category_name": "Crop Production & Physiological Disorders",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "heat",
+      "wheat"
+    ],
+    "expected_official_domains": [
+      "icar.org.in"
+    ],
+    "evaluation_focus": "Verify ICAR agronomic recommendations for terminal heat stress mitigation in wheat (heat-tolerant varieties, potassium nitrate foliar spray)."
+  },
+  {
+    "id": 21,
+    "question": "What is the Economic Threshold Level (ETL) and IPM control for pink bollworm in cotton?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "pest_management",
+    "category_name": "Integrated Pest Management (IPM)",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "8",
+      "bollworm",
+      "trap"
+    ],
+    "expected_official_domains": [
+      "cibrc.gov.in"
+    ],
+    "evaluation_focus": "Verify Economic Threshold Level (8 moths/trap/night or 10% damaged bolls) and IPM biocontrol for pink bollworm in cotton."
+  },
+  {
+    "id": 22,
+    "question": "कपास में गुलाबी बोंडअल्ली (पिंक बॉलवर्म) का ईटीएल (ETL) स्तर और जैविक नियंत्रण क्या है?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "pest_management",
+    "category_name": "Integrated Pest Management (IPM)",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "8",
+      "ट्रैप"
+    ],
+    "expected_official_domains": [
+      "cibrc.gov.in"
+    ],
+    "evaluation_focus": "Verify Hindi advisory for pink bollworm ETL and pheromone trap usage in cotton."
+  },
+  {
+    "id": 23,
+    "question": "कपाशीवरील गुलाबी बोंडअळीच्या नियंत्रणासाठी आर्थिक नुकसान पातळी (ETL) आणि उपाय काय आहेत?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "pest_management",
+    "category_name": "Integrated Pest Management (IPM)",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "8",
+      "सापळे"
+    ],
+    "expected_official_domains": [
+      "cibrc.gov.in"
+    ],
+    "evaluation_focus": "Verify Marathi advisory for pink bollworm ETL threshold and integrated management."
+  },
+  {
+    "id": 24,
+    "question": "What is the Integrated Pest Management schedule and ETL for Fall Armyworm in maize?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "pest_management",
+    "category_name": "Integrated Pest Management (IPM)",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "Armyworm",
+      "trap"
+    ],
+    "expected_official_domains": [
+      "cibrc.gov.in"
+    ],
+    "evaluation_focus": "Verify CIBRC recommendations and ETL for Fall Armyworm (FAW) in maize."
+  },
+  {
+    "id": 25,
+    "question": "Cotton पिकात pink bollworm साठी neem spray आणि pheromone trap कसे वापरावे?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "pest_management",
+    "category_name": "Integrated Pest Management (IPM)",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "सापळे",
+      "निंबोळी"
+    ],
+    "expected_official_domains": [
+      "cibrc.gov.in"
+    ],
+    "evaluation_focus": "Verify Marathi code-mixed IPM advisory for neem oil spray and pheromone traps in cotton."
+  },
+  {
+    "id": 26,
+    "question": "What are the 12 parameters tested under the Soil Health Card scheme and how does Neem Coated Urea improve nitrogen use efficiency?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "fertilizers",
+    "category_name": "Fertilizers & Soil Health Management",
+    "level": "complex",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "12",
+      "Neem",
+      "Urea"
+    ],
+    "expected_official_domains": [
+      "soilhealth.dac.gov.in"
+    ],
+    "evaluation_focus": "Verify 12 Soil Health Card parameters (Macro, Secondary, Micro, Physical) and NCU slow-release efficiency."
+  },
+  {
+    "id": 27,
+    "question": "मृदा स्वास्थ्य कार्ड (Soil Health Card) के 12 मानक कौन से हैं और नीम लेपित यूरिया के क्या फायदे हैं?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "fertilizers",
+    "category_name": "Fertilizers & Soil Health Management",
+    "level": "complex",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "12",
+      "यूरिया"
+    ],
+    "expected_official_domains": [
+      "soilhealth.dac.gov.in"
+    ],
+    "evaluation_focus": "Verify Hindi response for 12 Soil Health Card parameters and neem-coated urea benefits."
+  },
+  {
+    "id": 28,
+    "question": "माती आरोग्य पत्रिकेतील (Soil Health Card) १२ घटक कोणते आहेत आणि निम कोटेड युरियाचा काय फायदा होतो?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "fertilizers",
+    "category_name": "Fertilizers & Soil Health Management",
+    "level": "complex",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "१२",
+      "युरिया"
+    ],
+    "expected_official_domains": [
+      "soilhealth.dac.gov.in"
+    ],
+    "evaluation_focus": "Verify Marathi response for 12 Soil Health Card parameters and neem-coated urea benefits."
+  },
+  {
+    "id": 29,
+    "question": "Soil Health Card प्रमाणे NPK खतांचे संतुलित प्रमाण कसे ठरवावे?",
+    "language": "auto",
+    "lang_param": "auto",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "fertilizers",
+    "category_name": "Fertilizers & Soil Health Management",
+    "level": "medium",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "माती"
+    ],
+    "expected_official_domains": [
+      "soilhealth.dac.gov.in"
+    ],
+    "evaluation_focus": "Verify Marathi code-mixed advisory on balanced NPK fertilizer application based on soil test results."
+  },
+  {
+    "id": 30,
+    "question": "How to apply for an Ayushman Bharat PM-JAY golden health card at an empaneled hospital?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "health",
+    "category_name": "Health & Medical Wellness",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Ayushman Bharat health query safely rejected with 'no_documents_for_category' and 0 fake citations."
+  },
+  {
+    "id": 31,
+    "question": "आयुष्मान भारत योजना के तहत 5 लाख का स्वास्थ्य कार्ड कैसे बनवाएं?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "health",
+    "category_name": "Health & Medical Wellness",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Hindi health query safely rejected with 'no_documents_for_category' without fabricating hospital lists."
+  },
+  {
+    "id": 32,
+    "question": "What is the procedure for renewing a commercial driving licence on the Parivahan portal?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "transport",
+    "category_name": "Transport & Motor Vehicle Licensing",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Parivahan commercial driving license query safely rejected with 'no_documents_for_category'."
+  },
+  {
+    "id": 33,
+    "question": "आरटीओ कार्यालयातून ड्रायव्हिंग लायसन्स काढण्यासाठी अर्ज कसा करावा?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "transport",
+    "category_name": "Transport & Motor Vehicle Licensing",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Marathi transport query safely rejected with 'no_documents_for_category'."
+  },
+  {
+    "id": 34,
+    "question": "What are the eligibility criteria and monthly payout for the Indira Gandhi National Old Age Pension Scheme?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "pension",
+    "category_name": "Social Security & Old Age Pensions",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Indira Gandhi Old Age Pension query safely rejected with 'no_documents_for_category'."
+  },
+  {
+    "id": 35,
+    "question": "How to file GSTR-3B monthly return and claim input tax credit on the GST portal?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "tax_gst",
+    "category_name": "Taxation & GST Compliance",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: GST return filing query safely rejected with 'no_documents_for_category'."
+  },
+  {
+    "id": 36,
+    "question": "What are the educational qualifications and age limits for UPSC Civil Services Examination recruitment?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "jobs_recruitment",
+    "category_name": "Public Sector Employment & Recruitment",
+    "level": "unsupported",
+    "type": "unsupported",
+    "expected_status": "no_documents_for_category",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: UPSC Civil Services recruitment query safely rejected with 'no_documents_for_category'."
+  },
+  {
+    "id": 37,
+    "question": "what is (450 * 12) + 890 / 2?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "out_of_scope",
+    "category_name": "Out of Scope / Irrelevant Requests",
+    "level": "out_of_scope",
+    "type": "out_of_scope",
+    "expected_status": "out_of_scope",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Arithmetic calculation query strictly rejected with 'out_of_scope' without querying vectorstore."
+  },
+  {
+    "id": 38,
+    "question": "Write a Python script to implement binary search tree with insert and delete functions.",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "out_of_scope",
+    "category_name": "Out of Scope / Irrelevant Requests",
+    "level": "out_of_scope",
+    "type": "out_of_scope",
+    "expected_status": "out_of_scope",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Python programming query strictly rejected with 'out_of_scope'."
+  },
+  {
+    "id": 39,
+    "question": "Who won the ICC Cricket World Cup 2023 final and who was the player of the tournament?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "out_of_scope",
+    "category_name": "Out of Scope / Irrelevant Requests",
+    "level": "out_of_scope",
+    "type": "out_of_scope",
+    "expected_status": "out_of_scope",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Cricket World Cup sports inquiry strictly rejected with 'out_of_scope'."
+  },
+  {
+    "id": 40,
+    "question": "कल के क्रिकेट मैच में किसने शतक लगाया और सचिन तेंदुलकर के कितने रिकॉर्ड हैं?",
+    "language": "hi",
+    "lang_param": "hi",
+    "expected_language": "hi",
+    "expected_lang": "hi",
+    "category": "out_of_scope",
+    "category_name": "Out of Scope / Irrelevant Requests",
+    "level": "out_of_scope",
+    "type": "out_of_scope",
+    "expected_status": "out_of_scope",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Hindi sports trivia inquiry strictly rejected with 'out_of_scope'."
+  },
+  {
+    "id": 41,
+    "question": "पुण्यातील चित्रपटगृहामध्ये नवीन चित्रपटाचे तिकीट बुक करण्यासाठी कोणता ॲप वापरावा?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "out_of_scope",
+    "category_name": "Out of Scope / Irrelevant Requests",
+    "level": "out_of_scope",
+    "type": "out_of_scope",
+    "expected_status": "out_of_scope",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Marathi cinema ticket booking inquiry strictly rejected with 'out_of_scope'."
+  },
+  {
+    "id": 42,
+    "question": "Tell me a funny joke about office work and computers.",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "out_of_scope",
+    "category_name": "Out of Scope / Irrelevant Requests",
+    "level": "out_of_scope",
+    "type": "out_of_scope",
+    "expected_status": "out_of_scope",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [],
+    "evaluation_focus": "Rejection safety: Office humor and joke request strictly rejected with 'out_of_scope'."
+  },
+  {
+    "id": 43,
+    "question": "What is the subsidy percentage for vanilla orchid hydroponic aeroponic cultivation in Ladakh high altitude cold desert?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "insufficient_evidence",
+    "type": "missing_evidence",
+    "expected_status": "insufficient_evidence",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Missing evidence safety: Unindexed vanilla orchid hydroponics in Ladakh cold desert safely triggers 'insufficient_evidence'."
+  },
+  {
+    "id": 44,
+    "question": "द्राक्ष बागेसाठी आधुनिक सूक्ष्म ठिबक सिंचन अनुदानाची खास जिल्हा योजना काय आहे?",
+    "language": "mr",
+    "lang_param": "mr",
+    "expected_language": "mr",
+    "expected_lang": "mr",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "insufficient_evidence",
+    "type": "missing_evidence",
+    "expected_status": "insufficient_evidence",
+    "must_cite": false,
+    "must_contain_sources": false,
+    "required_claims": [],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Missing evidence safety: Marathi inquiry on unindexed specific district grape subsidy safely triggers 'insufficient_evidence'."
+  },
+  {
+    "id": 45,
+    "question": "What is the official guideline on collateral security for farmer agricultural loans above 1.6 lakh versus under 1.6 lakh under KCC?",
+    "language": "en",
+    "lang_param": "en",
+    "expected_language": "en",
+    "expected_lang": "en",
+    "category": "government_schemes",
+    "category_name": "Government Schemes & Policies",
+    "level": "complex",
+    "type": "supported",
+    "expected_status": "completed",
+    "must_cite": true,
+    "must_contain_sources": true,
+    "required_claims": [
+      "1,60,000"
+    ],
+    "expected_official_domains": [
+      "agricoop.nic.in",
+      "myscheme.gov.in",
+      "pmkisan.gov.in",
+      "krishi.maharashtra.gov.in"
+    ],
+    "evaluation_focus": "Boundary verification: Conflicting/boundary terms on KCC collateral requirements (collateral-free up to ₹1.6 Lakh vs above ₹1.6 Lakh)."
+  }
+]

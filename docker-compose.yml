@@ -1,0 +1,15 @@
+services:
+  backend:
+    build: .
+    env_file: .env
+    ports: ["8000:8000"]
+    volumes:
+      - ./vectorstore:/code/vectorstore
+      - ./data:/code/data
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes: ["./frontend:/app"]
+    command: sh -c "npm install && npm run dev -- --host"
+    ports: ["5173:5173"]
+    depends_on: [backend]
