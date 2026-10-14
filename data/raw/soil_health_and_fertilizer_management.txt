@@ -1,0 +1,44 @@
+# Official Standards: Soil Health Card Parameters, Fertilizer Dosage & Subsidy Norms
+Authority: Department of Fertilizers & Ministry of Agriculture and Farmers Welfare, Govt of India
+Source URL: https://soilhealth.dac.gov.in/guidelines
+Document Type: Technical Standard & Policy Guideline
+Publication Date: 2025-01-10
+Updated Date: 2025-07-01
+Version: 6.2
+
+## Section 1: Soil Health Card (SHC) Interpretation Standards
+1. Soil Health Card 12 Parameters:
+   - Macro-nutrients (3): Nitrogen (N), Phosphorus (P), Potassium (K).
+   - Secondary nutrient (1): Sulphur (S).
+   - Micro-nutrients (5): Zinc (Zn), Iron (Fe), Copper (Cu), Manganese (Mn), Boron (B).
+   - Physical/Chemical Parameters (3): pH (acidity/alkalinity), Electrical Conductivity (EC - salinity), Organic Carbon (OC %).
+2. Standard Rating Benchmarks:
+   - Soil pH: Optimal range is 6.5 to 7.5. Acidic soils (<6.5) require lime/dolomite application; alkaline soils (>8.0) require gypsum application.
+   - Electrical Conductivity (EC): Safe level is < 1.0 dS/m (non-saline). EC > 2.0 indicates high salt hazard.
+   - Organic Carbon (OC): Low (<0.50%), Medium (0.50% - 0.75%), High (>0.75%).
+   - Available Nitrogen (N): Low (<280 kg/ha), Medium (280 - 560 kg/ha), High (>560 kg/ha).
+   - Available Phosphorus (P2O5): Low (<10 kg/ha), Medium (10 - 25 kg/ha), High (>25 kg/ha).
+   - Available Potassium (K2O): Low (<108 kg/ha), Medium (108 - 280 kg/ha), High (>280 kg/ha).
+   - Available Zinc (DTPA-Zn): Critical limit is 0.6 ppm (mg/kg). Below 0.6 ppm indicates acute zinc deficiency.
+
+## Section 2: Balanced Fertilizer Management & Micronutrients
+1. Ideal N:P:K Ratio:
+   - The recommended national baseline ratio is 4:2:1 (N:P2O5:K2O). Over-application of Urea without balanced P and K reduces fertilizer use efficiency (FUE) and degrades soil microflora.
+2. Neem Coated Urea (NCU) Application:
+   - 100% of indigenous and imported agricultural urea is mandatory Neem Coated Urea.
+   - Slower nitrification rate: Inhibits nitrification process, reducing leaching and volatilization losses of nitrogen by 10-15%.
+   - Split application schedule for Wheat and Rice: 50% as basal dose at sowing/transplanting, 25% at tillering / crown root initiation (CRI), and 25% at panicle initiation stage.
+3. Nano Urea & Nano DAP Guidelines:
+   - Nano Urea (Liquid): 1 bottle (500 ml, 4% N) can replace 1 conventional 45 kg bag of urea.
+   - Foliar Application: 2 to 4 ml Nano Urea per liter of water sprayed at active tillering / branching stage and 2nd spray 20-25 days later (pre-flowering).
+   - Nano DAP (Liquid): 500 ml bottle (8% N, 16% P2O5) applied as seed treatment (5 ml/kg seed) and foliar spray (2-4 ml/liter) at 30-35 days after sowing.
+4. Zinc and Iron Deficiency Correction:
+   - Zinc Deficiency (Khaira disease in rice, bleached leaf tips in maize): Apply Zinc Sulphate Heptahydrate (21% Zn) @ 25 kg/ha in soil as basal or spray 0.5% Zinc Sulphate + 0.25% slaked lime at 3-4 weeks crop age.
+   - Note: Never mix Zinc Sulphate directly with DAP or SSP in the same spray tank as it forms insoluble Zinc Phosphate.
+
+## Section 3: Fertilizer Subsidies & Maximum Retail Prices (MRP)
+1. Urea Subsidy:
+   - Statutorily fixed MRP: Conventional 45 kg bag of Neem Coated Urea has a fixed maximum retail price of Rs 242.00 (plus applicable local taxes). The difference between actual cost of production/import and MRP is paid directly to fertilizer companies as government subsidy.
+2. Nutrient-Based Subsidy (NBS) for P&K Fertilizers:
+   - Annual/bi-annual per kilogram subsidy rates are fixed by the Cabinet Committee on Economic Affairs (CCEA) for Nitrogen (N), Phosphorus (P), Potassium (K), and Sulphur (S).
+   - DAP (Di-Ammonium Phosphate 18-46-0) and MOP (Muriate of Potash 0-0-60) are subsidized under NBS to ensure affordable market availability to farmers.

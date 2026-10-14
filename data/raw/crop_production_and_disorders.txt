@@ -1,0 +1,40 @@
+# Official Advisory: Crop Production Practices, Stress Management, and Physiological Disorders
+Authority: Indian Council of Agricultural Research (ICAR) & Directorate of Plant Protection
+Source URL: https://icar.org.in/crop-production-advisories
+Document Type: Technical Bulletin & Agricultural Advisory
+Publication Date: 2025-02-10
+Updated Date: 2025-05-20
+Version: 4.1
+
+## Section 1: Diagnosing Crop Yellowing (Chlorosis) in Wheat and Paddy
+1. Nitrogen Deficiency vs. Waterlogging vs. Iron Chlorosis:
+   - Nitrogen (N) Deficiency:
+     - Symptoms begin on the oldest, lower leaves first.
+     - V-shaped yellowing starting from leaf tip moving inward down the central midrib.
+     - Remedy: Top dressing of Neem Coated Urea @ 25-30 kg/acre or foliar spray of 2% Urea solution (20g urea per liter of water) for rapid recovery.
+   - Waterlogging / Root Hypoxia:
+     - Symptoms appear uniformly across field patches where drainage is poor.
+     - Roots turn blackish or brown instead of healthy white. Plants exhibit stunted growth and general pale yellowing due to lack of soil oxygen.
+     - Remedy: Immediately drain excess standing water. Once soil moisture permits aeration, apply a foliar spray of 1% potassium nitrate (13-0-45) or 2% urea to stimulate new root growth.
+   - Iron (Fe) Deficiency (Chlorosis):
+     - Symptoms appear strictly on youngest, topmost leaves first (interveinal chlorosis where veins remain green while leaf lamina turns yellow or white).
+     - Common in light textured, sandy, or calcareous soils with high pH (>7.8).
+     - Remedy: Foliar spray of 0.5% Ferrous Sulphate (FeSO4) mixed with 0.1% citric acid or 2-3 sprays of 1% Chelated Iron (Fe-EDTA @ 1g per liter of water) at 7-10 day intervals.
+
+## Section 2: Managing Unseasonal Rains and Crop Lodging
+1. Paddy Lodging:
+   - Lodging during ripening leads to grain sprouting and fungal infection.
+   - Preventive Measures: Avoid excessive nitrogen application after panicle initiation stage. Apply potassium (MOP) @ 30 kg/ha to improve stem strength and cellulose wall thickness.
+   - Post-rain recovery: Drain standing water within 24-48 hours. If mature crop is lodged, spray 5% salt (NaCl) solution on lodged panicles to prevent viviparous grain germination.
+2. Wheat Heat Stress and Terminal Heat Tolerance:
+   - High temperatures (>30°C) during grain filling (February-March) cause shrivelled grains and premature forced maturity.
+   - Recommended Heat-Tolerant Varieties: DBW-187 (Karan Vandana), DBW-303 (Karan Vaishnavi), DBW-222, and HD-3086.
+   - Mitigation Sprays: Two foliar sprays of 0.2% Potassium Nitrate (13-0-45) or 0.1% Salicylic acid at boot leaf stage and anthesis stage to mitigate terminal heat shock.
+
+## Section 3: Sowing Windows and Seed Treatment Guidelines
+1. Wheat Sowing Guidelines:
+   - Timely Sown Irrigated Wheat: Optimum sowing window is November 1 to November 15. Seed rate: 100 kg/ha (40 kg/acre).
+   - Late Sown Wheat: Sown between November 25 and December 15. Seed rate: 125 kg/ha (50 kg/acre).
+2. Certified Seed Treatment Protocol:
+   - Fungicidal Treatment: Carboxin 37.5% + Thiram 37.5% DS @ 2.5 g/kg seed or Tebuconazole 2% DS @ 1.25 g/kg seed for loose smut control.
+   - Bio-agent Treatment: Trichoderma viride or T. harzianum @ 5-10 g/kg seed followed by Azotobacter / PSB bio-fertilizers @ 10 g/kg seed.

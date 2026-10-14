@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: ai-government-research-agent
+    runtime: docker
+    plan: free
+    region: oregon
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: LLM_MODEL
+        value: claude-sonnet-4-5
+      - key: DATA_GOV_API_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:///./research.db
+      - key: CHROMA_DIR
+        value: vectorstore
+      - key: EMBEDDING_MODEL
+        value: sentence-transformers/all-MiniLM-L6-v2
+      - key: MAX_AGENT_LOOPS
+        value: "2"
+      - key: RELEVANCE_THRESHOLD
+        value: "0.25"

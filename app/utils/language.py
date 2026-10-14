@@ -71,7 +71,10 @@ def resolve_language(preferred: str | None, text: str) -> tuple[SupportedLanguag
     pref = (preferred or "").strip().lower()
     if pref in ("en", "hi", "mr"):
         return pref, detected  # type: ignore[return-value]
-    return detected, detected
+    if pref == "auto":
+        return detected, detected
+    # Default to English when no valid language preference is selected
+    return "en", detected
 
 
 # Multilingual section headings and labels for farmer-friendly outputs
@@ -88,9 +91,13 @@ UI_STRINGS = {
         "missing_evidence_notice": "Detailed official guidelines are not fully indexed for this specific query. Please consult your local Taluka Agriculture Officer.",
         "advisory_disclaimer": "Information is strictly grounded in verified government guidelines. Always verify with your local bank or agriculture department before making financial decisions.",
         "official_sources_heading": "Official Sources & Information Freshness",
+        "official_source_url": "Official Source URL",
         "page": "Page",
         "official_date": "Official Document Date",
         "check_date": "Verified Check Date",
+        "metadata_inconsistency": "Metadata Inconsistency Flag",
+        "no_sources": "No official sources were available for citation.",
+        "official_dept": "Official Department",
     },
     "hi": {
         "summary_title": "किसानों के लिए संक्षेप में जानकारी",
@@ -103,10 +110,14 @@ UI_STRINGS = {
         "missing_docs_notice": "सत्यापित सरकारी दस्तावेजों में इस योजना की विस्तृत आवेदन प्रक्रिया या दस्तावेज सूची उपलब्ध नहीं है।",
         "missing_evidence_notice": "इस प्रश्न के लिए आधिकारिक रिकॉर्ड में पर्याप्त विवरण उपलब्ध नहीं है। कृपया अपने नजदीकी कृषि विभाग या कृषि विज्ञान केंद्र (KVK) से संपर्क करें।",
         "advisory_disclaimer": "यह जानकारी पूरी तरह से आधिकारिक सरकारी दिशानिर्देशों पर आधारित है। वित्तीय या प्रशासनिक निर्णय लेने से पहले अपने नजदीकी बैंक शाखा या कृषि कार्यालय से पुष्टि अवश्य करें।",
-        "official_sources_heading": "आधिकारिक स्रोत और ताजगी की जानकारी",
+        "official_sources_heading": "आधिकारिक स्रोत और जानकारी की ताजगी",
+        "official_source_url": "आधिकारिक स्रोत URL",
         "page": "पृष्ठ",
         "official_date": "आधिकारिक दस्तावेज दिनांक",
         "check_date": "सत्यापन जांच दिनांक",
+        "metadata_inconsistency": "मेटाडेटा विसंगति चेतावनी",
+        "no_sources": "उद्धरण के लिए कोई आधिकारिक स्रोत उपलब्ध नहीं है।",
+        "official_dept": "आधिकारिक विभाग",
     },
     "mr": {
         "summary_title": "शेतकऱ्यांसाठी सोप्या भाषेत माहिती",
@@ -119,9 +130,13 @@ UI_STRINGS = {
         "missing_docs_notice": "सध्याच्या पडताळणी केलेल्या सरकारी दस्तऐवजांमध्ये विशिष्ट अर्ज प्रक्रिया किंवा कागदपत्रांची यादी उपलब्ध नाही.",
         "missing_evidence_notice": "या विशिष्ट प्रश्नासाठी अधिकृत दस्तऐवजांमध्ये संपूर्ण माहिती उपलब्ध नाही. कृपया आपल्या तालुका कृषी अधिकारी किंवा कृषी विज्ञान केंद्राशी (KVK) संपर्क साधावा.",
         "advisory_disclaimer": "ही माहिती थेट पडताळणी केलेल्या अधिकृत सरकारी नोंदींवर आधारित आहे. कोणताही आर्थिक किंवा प्रशासकीय निर्णय घेण्यापूर्वी स्थानिक बँक किंवा कृषी कार्यालयाशी संपर्क साधावा.",
-        "official_sources_heading": "अधिकृत स्रोत आणि माहितीची पडताळणी",
+        "official_sources_heading": "अधिकृत शासकीय स्रोत आणि माहितीची पडताळणी",
+        "official_source_url": "अधिकृत स्रोत URL",
         "page": "पान",
         "official_date": "अधिकृत दस्तऐवज तारीख",
         "check_date": "पडताळणी तारीख",
+        "metadata_inconsistency": "मेटाडेटा विसंगती सूचना",
+        "no_sources": "उद्धरणासाठी कोणतेही अधिकृत शासकीय स्रोत उपलब्ध नाहीत.",
+        "official_dept": "अधिकृत विभाग",
     },
 }

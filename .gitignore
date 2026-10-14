@@ -16,11 +16,15 @@ ENV/
 # Database & Vector stores
 research.db
 *.sqlite3
+*.bin
 vectorstore/
 vectorstore_*/
 
 # Data files
-data/raw/
+data/raw/*.pdf
+!data/raw/*.txt
+!data/raw/*.json
+!data/raw/*.csv
 
 # Executables & Binaries
 bin/

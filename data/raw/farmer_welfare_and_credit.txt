@@ -1,0 +1,49 @@
+# Official Guidelines: Farmer Welfare, Land Records, and Agricultural Credit
+Authority: Ministry of Agriculture and Farmers Welfare, Government of India
+Source URL: https://agricoop.nic.in/en/divisiontype/agricultural-credit
+Document Type: Official Guideline / Manual
+Publication Date: 2025-01-15
+Updated Date: 2025-06-01
+Version: 3.2
+
+## Section 1: Kisan Credit Card (KCC) Scheme
+1. Objective: Provide adequate and timely credit support from the banking system under a single window with flexible and simplified procedures for cultivation and other agricultural needs.
+2. Eligibility:
+   - All farmers - individuals/joint borrowers who are owner cultivators.
+   - Tenant farmers, oral lessees, and sharecroppers.
+   - Self Help Groups (SHGs) or Joint Liability Groups (JLGs) of farmers including tenant farmers and sharecroppers.
+   - Animal husbandry, dairy, and fisheries farmers are also eligible for working capital needs up to Rs 2 lakh.
+3. Credit Limit & Scale of Finance:
+   - Credit limit for 1st year is assessed on the basis of crop cultivated as per Scale of Finance fixed by District Level Technical Committee (DLTC) plus 10% for post-harvest/household consumption plus 20% towards maintenance expenses of farm assets.
+   - For subsequent 2nd to 5th years, 10% limit escalation is provided per year.
+   - Overall KCC limit is sanctioned for 5 years subject to annual review.
+4. Interest Subvention and Concessional Interest Rate:
+   - Base interest rate is 7% per annum for short-term crop loans up to Rs 3,00,000.
+   - Government of India provides an Interest Subvention of 1.5% to lending institutions.
+   - Prompt Repayment Incentive (PRI): An additional 3% interest subvention is given to farmers who repay crop loans on or before the due date.
+   - Effective interest rate for prompt paying farmers is therefore 4% per annum (7% - 3% = 4%).
+5. Collateral Requirement:
+   - No collateral security required for agricultural loans up to Rs 1,60,000 (raised from Rs 1,00,000).
+   - Loans above Rs 1.6 lakh require hypothecation of crops and mortgage of agricultural land.
+
+## Section 2: Land Records Verification and Digital Bhulekh
+1. Record of Rights (RoR):
+   - RoR (commonly known as 7/12 extract in Maharashtra/Gujarat, Khasra-Khatauni in UP/MP, Patta in Tamil Nadu/Andhra Pradesh) is the primary legal document required for verifying land ownership.
+   - Digital digitalized land records under the Digital India Land Records Modernization Programme (DILRMP) can be verified online through state Bhulekh portals.
+2. Documents Required for Farmer Verification:
+   - Aadhaar Card linked with active mobile number.
+   - Digital Copy of Land Record of Rights (7/12, Khatauni, or Patta).
+   - Bank Account Passbook (Aadhaar-seeded bank account for Direct Benefit Transfer - DBT).
+   - Self-declaration form for tenant farmers or sharecroppers without land titles.
+
+## Section 3: Natural Disaster Relief and Crop Loss Compensation
+1. State Disaster Response Fund (SDRF) & National Disaster Response Fund (NDRF):
+   - Assistance is provided for crop loss of 33% and above due to natural calamities such as drought, floods, hailstorms, and cyclones.
+   - Input subsidy norms:
+     - Rainfed / Unirrigated agricultural areas: Rs 8,500 per hectare.
+     - Irrigated agricultural areas: Rs 17,000 per hectare.
+     - Perennial / Horticultural crops: Rs 22,500 per hectare.
+   - Financial assistance is restricted to farmers holding up to 2 hectares per farmer.
+2. Grievance Redressal and Helpline:
+   - Kisan Call Centre (Toll-free 1800-180-1551) operates 24/7 in 22 regional languages.
+   - Farmers can register grievances regarding bank credit, seed availability, and disaster survey reports through the CPGRAMS portal or direct district agricultural officer (Taluka Agriculture Officer).

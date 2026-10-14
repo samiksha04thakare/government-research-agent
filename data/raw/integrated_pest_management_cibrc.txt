@@ -1,0 +1,56 @@
+# Official Protocol: Integrated Pest Management (IPM) & CIBRC Approved Control Measures
+Authority: Central Insecticides Board & Registration Committee (CIBRC) & ICAR-NCIPM
+Source URL: https://cibrc.gov.in/approved-crop-pest-recommendations
+Document Type: Official Regulatory Guideline & Technical Protocol
+Publication Date: 2025-01-20
+Updated Date: 2025-06-15
+Version: 5.0
+
+## Section 1: Fall Armyworm (FAW - Spodoptera frugiperda) in Maize
+1. Life Cycle & Damage:
+   - Larvae feed inside the central whorl of maize plants, producing large ragged leaf holes and characteristic sawdust-like frass.
+2. Economic Threshold Level (ETL):
+   - Seedling to early whorl stage (up to 30 days): 5% to 10% damaged plants.
+   - Mid-whorl to late whorl stage: 10% to 20% damaged whorls.
+3. Integrated Management Schedule:
+   - Cultural & Mechanical Control: Deep summer ploughing; intercropping maize with pulses (cowpea or pigeonpea); hand-picking of egg masses and early-instar caterpillars.
+   - Pheromone Trapping: Install FAW pheromone traps @ 5 per acre for monitoring and 15-20 per acre for mass trapping.
+   - Bio-control Sprays (Early Infestation):
+     - Azadirachtin (Neem 10,000 ppm) @ 1.5-2 ml per liter of water.
+     - Bacillus thuringiensis (Bt) kurstaki formulation @ 2 g/liter.
+     - Metarhizium rileyi / Beauveria bassiana @ 5 g/liter.
+   - Chemical Control (Severe Infestation above ETL):
+     - Chlorantraniliprole 18.5% SC @ 0.4 ml/liter (directed into the whorl).
+     - OR Spinetoram 11.7% SC @ 0.5 ml/liter.
+     - Avoid repeated consecutive sprays of the same insecticide mode of action.
+
+## Section 2: Pink Bollworm (Pectinophora gossypiella) in Bt Cotton
+1. Symptoms:
+   - Rosetted flowers due to webbed petals; premature boll opening with stained lint; damaged seeds inside developing bolls.
+2. ETL:
+   - 8 male moths per trap per night for 3 consecutive nights OR 10% damaged green bolls / rosetted flowers.
+3. Recommended Measures:
+   - Pheromone Monitoring: Install Gossyplure pheromone traps @ 2 per acre starting at 45 days after sowing.
+   - Bio-agent: Release egg parasitoid Trichogramma bactrae @ 60,000 per acre at weekly intervals starting at squaring stage.
+   - Chemical Sprays:
+     - Profenofos 50% EC @ 2 ml/liter OR Emamectin Benzoate 5% SG @ 0.4 g/liter when bolls are 60-90 days old and ETL is exceeded.
+
+## Section 3: Brown Plant Hopper (BPH - Nilaparvata lugens) in Rice
+1. Symptoms:
+   - Nymphs and adults suck sap from leaf sheath bases. Plants turn yellow and rapidly dry up into brown circular patches known as "Hopper Burn".
+2. ETL:
+   - 5 to 10 hoppers per hill in early crop; 15 to 20 hoppers per hill in reproductive stage.
+3. Control Protocol:
+   - Form alleyways (alternate pathways of 30 cm every 2-3 meters) during transplanting to allow sunlight and aeration.
+   - Drain water from the field for 3-4 days (intermittent drying) to suppress nymph development.
+   - Chemical Treatment (spray directed strictly to the base of the plant):
+     - Triflumezopyrim 10% SC @ 0.5 ml/liter OR Pymetrozine 50% WG @ 0.6 g/liter.
+     - Strict Warning: Never use synthetic pyrethroids (Cypermethrin, Deltamethrin) as they cause resurgence of BPH.
+
+## Section 4: Safe Withholding Periods & Approved Bio-pesticides
+1. CIBRC Safety Precaution:
+   - Adhere to the Pre-Harvest Interval (PHI) printed on pesticide labels to prevent residue contamination.
+   - Protective gear (gloves, masks, eye goggles) must be worn during preparation and spraying.
+2. Approved Bio-pesticides for Seed Treatment:
+   - Trichoderma viride 1% WP @ 5-10 g/kg seed for root rot and wilt diseases in pulses.
+   - Pseudomonas fluorescens 0.5% WP @ 10 g/kg seed for bacterial and fungal blast diseases.

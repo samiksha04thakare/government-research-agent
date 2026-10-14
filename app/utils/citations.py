@@ -473,37 +473,73 @@ def reconcile_citations_with_answer(
     return updated_answer, retained_citations
 
 
-def format_citations_markdown(citations: list[dict[str, Any]]) -> str:
-    """Format a numbered official sources list with explicit freshness date distinction."""
-    if not citations:
-        return "\n\n_No official sources were available for citation._"
+def format_citations_markdown(citations: list[dict[str, Any]], language: str = "en") -> str:
+    """Format a numbered official sources list with explicit freshness date distinction and multilingual localization."""
+    from app.utils.language import UI_STRINGS
+    lang_key = language if language in ("en", "hi", "mr") else "en"
+    labels = UI_STRINGS.get(lang_key, UI_STRINGS["en"])
 
-    lines = ["\n\n### Official Sources & Information Freshness\n"]
+    if not citations:
+        no_src = labels.get("no_sources", "No official sources were available for citation.")
+        return f"\n\n_{no_src}_"
+
+    head = labels.get("official_sources_heading", "Official Sources & Information Freshness")
+    lines = [f"\n\n### {head}\n"]
+
     for c in citations:
         cid = c["id"]
         title = c["title"]
-        auth = c.get("department") or c.get("authority") or "Official Department"
+        auth = c.get("department") or c.get("authority") or labels.get("official_dept", "Official Department")
         url = c.get("url")
-        last_updated = c.get("last_updated") or OFFICIAL_DATE_NOT_AVAILABLE
-        last_checked = c.get("last_checked") or "Check date not recorded"
-        page = c.get("page_number")
+        raw_last_updated = c.get("last_updated") or ""
 
-        page_str = f" (Page {page})" if page else ""
+        if lang_key == "mr":
+            not_avail = "अधिकृत अद्यतन तारीख उपलब्ध नाही."
+            not_rec = "पडताळणी तारीख नोंदवलेली नाही"
+            url_not_avail = "_अधिकृत पोर्टलवर URL उपलब्ध नाही_"
+        elif lang_key == "hi":
+            not_avail = "आधिकारिक अद्यतन दिनांक उपलब्ध नहीं है।"
+            not_rec = "सत्यापन दिनांक दर्ज नहीं है"
+            url_not_avail = "_आधिकारिक पोर्टल पर URL उपलब्ध नहीं है_"
+        else:
+            not_avail = OFFICIAL_DATE_NOT_AVAILABLE
+            not_rec = "Check date not recorded"
+            url_not_avail = f"_{URL_NOT_AVAILABLE}_"
+
+        if not raw_last_updated or raw_last_updated == OFFICIAL_DATE_NOT_AVAILABLE:
+            last_updated = not_avail
+        else:
+            last_updated = raw_last_updated
+
+        last_checked = c.get("last_checked")
+        if not last_checked or last_checked == "Check date not recorded":
+            last_checked = not_rec
+
+        page = c.get("page_number")
+        page_label = labels.get("page", "Page")
+        page_str = f" ({page_label} {page})" if page else ""
+
         if url:
             link_str = f"[{url}]({url})"
         else:
-            link_str = f"_{URL_NOT_AVAILABLE}_"
+            link_str = url_not_avail
+
+        url_lbl = labels.get("official_source_url", "Official Source URL")
+        doc_date_lbl = labels.get("official_date", "Official Document Date")
+        chk_date_lbl = labels.get("check_date", "Verified Check Date")
+        flag_lbl = labels.get("metadata_inconsistency", "Metadata Inconsistency Flag")
 
         entry = (
             f"[{cid}] **{title}**{page_str} — *{auth}*\n"
-            f"   - **Official Source URL:** {link_str}\n"
-            f"   - **Official Document Date:** {last_updated}\n"
-            f"   - **Verified Check Date:** {last_checked}"
+            f"   - **{url_lbl}:** {link_str}\n"
+            f"   - **{doc_date_lbl}:** {last_updated}\n"
+            f"   - **{chk_date_lbl}:** {last_checked}"
         )
         if c.get("has_inconsistencies") and c.get("inconsistencies"):
             issues = "; ".join(c["inconsistencies"])
-            entry += f"\n   - ⚠️ **Metadata Inconsistency Flag:** {issues}"
+            entry += f"\n   - ⚠️ **{flag_lbl}:** {issues}"
         lines.append(entry)
 
-    lines.append(f"\n{ADVISORY_DISCLAIMER}")
+    disclaimer = labels.get("advisory_disclaimer", ADVISORY_DISCLAIMER)
+    lines.append(f"\n_{disclaimer}_")
     return "\n".join(lines)

@@ -1,0 +1,56 @@
+# Official Scheme Compendium: Major Central Agricultural Schemes & Subsidies
+Authority: Ministry of Agriculture and Farmers Welfare & Ministry of New and Renewable Energy
+Source URL: https://myscheme.gov.in/schemes
+Document Type: Official Scheme Guidelines & Operating Procedures
+Publication Date: 2025-01-01
+Updated Date: 2025-07-15
+Version: 5.4
+
+## Section 1: Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)
+1. Scheme Objective:
+   - Direct income support of Rs 6,000 per financial year to all landholding farmer families across India.
+2. Disbursement Mechanism:
+   - Transferred directly into bank accounts (DBT) in three equal 4-monthly installments of Rs 2,000 each:
+     - Period 1: April to July
+     - Period 2: August to November
+     - Period 3: December to March
+3. Mandatory Compliance for Installment Release:
+   - Aadhaar-seeding with bank account (DBT enabled via NPCI mapper).
+   - Land seeding verification on the PM-KISAN portal by the respective State Revenue Department.
+   - Completion of e-KYC (via OTP on PM-KISAN portal, facial recognition on PM-KISAN mobile app, or biometric authentication at Common Service Centres - CSCs).
+4. Exclusion Criteria:
+   - Institutional landholders.
+   - Farmer families holding constitutional posts, former/present ministers, MPs/MLAs, mayors, and district panchayat chairpersons.
+   - Serving or retired officers and employees of central/state government and PSUs (excluding Class IV / multi-tasking staff).
+   - All persons who paid Income Tax in the last assessment year.
+   - Professionals (Doctors, Engineers, Lawyers, Chartered Accountants, Architects) registered with professional bodies.
+
+## Section 2: Pradhan Mantri Fasal Bima Yojana (PMFBY)
+1. Scheme Objective: Comprehensive crop insurance covering yield loss and localized disasters from pre-sowing to post-harvest.
+2. Premium Rates Payable by Farmers:
+   - Kharif Crops (Food grains & Oilseeds): Maximum 2.0% of Sum Insured.
+   - Rabi Crops (Food grains & Oilseeds): Maximum 1.5% of Sum Insured.
+   - Annual Commercial / Horticultural Crops: Maximum 5.0% of Sum Insured.
+   - Balance premium is shared equally (50:50) by the Central and State Governments (90:10 in North Eastern States).
+3. Coverage Stages & Risk Types:
+   - Prevented Sowing / Planting Risk: Up to 25% of sum insured if adverse weather prevents sowing.
+   - Standing Crop Yield Loss: Based on Crop Cutting Experiments (CCEs) comparing actual yield against threshold yield.
+   - Localized Calamities: Hailstorm, landslide, inundation, cloud burst, and natural fire.
+   - Post-Harvest Losses: Coverage up to 14 days after harvesting for crops kept in 'cut and spread' condition in the field against unseasonal cyclonic rains/hailstorm.
+4. Mandatory 72-Hour Claim Intimation Rule:
+   - In case of localized calamity or post-harvest loss, the farmer must report the crop loss within 72 hours via the Crop Insurance App, toll-free helpline (14447), or to the bank / agriculture officer.
+
+## Section 3: PM-KUSUM (Pradhan Mantri Kisan Urja Suraksha evam Utthaan Mahabhiyan)
+1. Component B (Stand-alone Solar Agriculture Pumps):
+   - Supports individual farmers for installation of stand-alone solar agriculture pumps up to 7.5 HP capacity.
+   - Subsidy Structure:
+     - Central Financial Assistance (CFA): 30% of benchmark cost.
+     - State Government Subsidy: Minimum 30% of benchmark cost.
+     - Farmer's Contribution: Remaining 40% (can be financed through bank loan up to 30%, meaning farmer pays only 10% upfront).
+     - In North Eastern states, hilly and island territories, CFA is 50%, state subsidy 30%, farmer pays 20%.
+
+## Section 4: Sub-Mission on Agricultural Mechanization (SMAM)
+1. Farm Machinery Subsidies:
+   - Individual Farmers: Financial assistance of 40% to 50% of the cost of tractor, power tiller, rotavator, laser land leveler, and combine harvesters.
+   - Special Beneficiary Norms: Women farmers, SC/ST, and small/marginal farmers receive higher subsidy (up to 50%), while other general farmers receive up to 40%.
+   - Custom Hiring Centres (CHC): 40% financial assistance (up to Rs 10 lakh to Rs 25 lakh) for setting up farm machinery banks/CHCs to enable affordable equipment rental for smallholder farmers.

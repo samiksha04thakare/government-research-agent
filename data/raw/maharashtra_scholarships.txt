@@ -1,0 +1,32 @@
+# Maharashtra State Post-Matric Scholarship Scheme Guidelines
+Authority: Higher and Technical Education Department & Social Justice and Special Assistance Department, Government of Maharashtra
+Source URL: https://mahadbt.maharashtra.gov.in
+Publication Date: 2025-03-01
+Document Type: Official Notification
+
+## 1. Scheme Objective
+To provide financial assistance and fee reimbursement to meritorious and underprivileged students residing in the State of Maharashtra pursuing higher education (diploma, undergraduate, postgraduate, and professional courses).
+
+## 2. Eligibility Criteria
+1. Domicile: The applicant must be a permanent resident and hold a valid Domicile Certificate of the State of Maharashtra.
+2. Category: Open to SC, ST, VJNT, OBC, SBC, and Economically Weaker Section (EWS) candidates.
+3. Income Ceilings:
+   - SC and ST categories: Annual parental/household family income must not exceed INR 2,50,000 per annum.
+   - OBC, SBC, and VJNT categories: Annual family income must not exceed INR 1,50,000 per annum for 100% scholarship, and up to INR 8,00,000 per annum for 50% tuition fee waiver (Freeship scheme).
+   - EWS / Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulkh Shishyavrutti Yojna (EBC): Annual family income must not exceed INR 8,00,000 per annum.
+4. Academic Record: Minimum 50% marks in previous qualifying board/university examination for professional courses; minimum passing marks for non-professional streams.
+
+## 3. Mandatory Documents Required for Application
+Candidates must upload clear self-attested digital copies of the following documents:
+1. Aadhaar Card (duly linked with an active bank account for DBT).
+2. Maharashtra State Domicile Certificate issued by an authorized Sub-Divisional Officer (SDO) or Tehsildar.
+3. Income Certificate for the preceding financial year issued by a competent Revenue Authority (Tehsildar / SDO). Form 16 or private salary slips are strictly NOT accepted.
+4. Caste Certificate and Caste Validity Certificate (mandatory for SC/ST/VJNT/OBC categories in professional degree courses).
+5. Previous Year Marksheet / Degree Certificate.
+6. College Admission Fee Receipt and Allotment Letter from the Centralized Admission Process (CAP).
+7. Bank Passbook copy displaying IFSC code, Account Number, and candidate's name.
+
+## 4. Benefit Structure
+- 100% Tuition Fee and Examination Fee waiver for SC and ST students.
+- 50% to 100% Tuition Fee waiver for OBC, EBC, and SEBC students depending on household income tier.
+- Maintenance allowance ranging from INR 5,000 to INR 12,000 per academic year for day scholars and hostellers respectively.

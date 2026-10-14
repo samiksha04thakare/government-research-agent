@@ -509,7 +509,12 @@ def find_matching_scheme_for_query(query: str, db=None) -> Scheme | None:
 
         # 2. Score against all schemes by title & hindi name
         q_clean = q_lower.strip()
-        stop_words = {"what", "is", "the", "are", "of", "and", "for", "to", "in", "a", "an", "scheme", "yojana", "योजना", "योजनेची", "बारे", "में", "क्या", "की", "का"}
+        stop_words = {
+            "what", "is", "the", "are", "of", "and", "for", "to", "in", "a", "an",
+            "scheme", "schemes", "schema", "yojana", "योजना", "योजनेची", "बारे", "में", "क्या", "की", "का",
+            "hi", "hiii", "hiiii", "hello", "hey", "give", "me", "some", "tell", "show", "list",
+            "related", "releated", "about", "details", "info", "information"
+        }
         terms = [t for t in q_clean.split() if t not in stop_words and len(t) > 1]
         if not terms:
             return None
@@ -521,14 +526,20 @@ def find_matching_scheme_for_query(query: str, db=None) -> Scheme | None:
             name_lower = (s.scheme_name or "").lower()
             hindi_lower = (s.hindi_name or "").lower()
             cid_lower = (s.scheme_id or "").lower()
+            cat_lower = (s.category or "").lower()
+            ben_lower = (s.beneficiary or "").lower()
 
             for t in terms:
                 if t in name_lower:
-                    score += 15
+                    score += 20
                 if t in hindi_lower:
-                    score += 15
+                    score += 20
                 if t in cid_lower:
+                    score += 20
+                if (t in cat_lower) or (t in ("farming", "farmer") and ("kisan" in name_lower or "sheti" in name_lower)):
                     score += 15
+                if t in ben_lower:
+                    score += 10
 
             if score > best_score:
                 best_score = score

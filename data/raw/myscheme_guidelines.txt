@@ -1,0 +1,29 @@
+# myScheme: National Government Platform for Citizen Benefits
+Authority: Ministry of Electronics and Information Technology (MeitY) & National e-Governance Division (NeGD)
+Source URL: https://www.myscheme.gov.in
+Publication Date: 2025-01-15
+Document Type: Official Guideline
+
+## 1. Overview
+myScheme is a flagship national digital platform developed by the Government of India under Digital India. It serves as a unified discovery and eligibility evaluation engine for citizens to access central and state government welfare schemes without having to visit multiple department portals.
+
+## 2. Key Features
+- Citizen Eligibility Assessment: Citizens input demographic data such as age, gender, state, caste, and annual household income to identify matched benefits.
+- Single Sign-On (SSO): Integrates with MeriPehchaan (National Single Sign-On) and DigiLocker for document verification.
+- Multilingual Interface: Available in Hindi, English, and major scheduled Indian languages.
+
+## 3. Scope of Services
+myScheme covers over 1,500 Central and State Government schemes across 14 diverse domains:
+- Agriculture, Rural & Environment
+- Banking, Financial Services & Insurance
+- Education & Learning (Scholarships, Fellowships)
+- Health & Wellness (Ayushman Bharat, PM-JAY)
+- Housing & Shelter (PMAY)
+- Social Welfare & Empowerment
+- Skills & Employment
+
+## 4. Application and Verification Procedure
+1. Citizen fills out the guided 6-step questionnaire on https://www.myscheme.gov.in.
+2. The platform generates an eligibility report with list of eligible welfare schemes.
+3. Citizen selects the desired scheme and submits required documents via DigiLocker.
+4. Final sanction and Direct Benefit Transfer (DBT) is disbursed directly to the Aadhaar-seeded bank account by the respective administrative ministry.

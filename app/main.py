@@ -29,6 +29,9 @@ async def lifespan(app: FastAPI):
         if db.query(Scheme).count() == 0:
             from app.schemes.pipeline import seed_official_schemes
             seed_official_schemes(db=db)
+        if db.query(Document).filter(Document.indexed.is_(True)).count() == 0:
+            from app.rag.bootstrap import bootstrap_baseline_documents
+            bootstrap_baseline_documents(db=db)
     yield
 
 
@@ -48,9 +51,21 @@ def require_admin(x_admin_token: str = Header(default="")):
         raise HTTPException(status_code=401, detail="Admin token required")
 
 
+from pydantic import BaseModel, Field, field_validator
+
 class ResearchRequest(BaseModel):
     question: str = Field(min_length=3, max_length=1000)
-    language: str = Field(default="auto", description="Response language: 'auto', 'en', 'hi', or 'mr'")
+    language: str = Field(default="en", description="Response language: 'en', 'hi', 'mr', or 'auto'")
+
+    @field_validator("language", mode="before")
+    @classmethod
+    def sanitize_language(cls, v):
+        if not v or not isinstance(v, str):
+            return "en"
+        val = v.strip().lower()
+        if val in ("en", "hi", "mr", "auto"):
+            return val
+        return "en"
 
 
 def has_llm_key():
@@ -505,7 +520,7 @@ def local_grounded_research(question: str, language: str = "auto") -> dict:
 
     # Reconcile citation markers with citation list (Requirement 2)
     reconciled_answer, reconciled_citations = reconcile_citations_with_answer(answer_body, citations)
-    final_answer = reconciled_answer + format_citations_markdown(reconciled_citations)
+    final_answer = reconciled_answer + format_citations_markdown(reconciled_citations, language=target_lang)
 
     retrieved_chunks = []
     for idx, item in enumerate(supported_results, start=1):
@@ -542,18 +557,19 @@ def local_grounded_research(question: str, language: str = "auto") -> dict:
 @app.post("/research")
 def research(req: ResearchRequest):
     q = req.question.strip()
-    lang = req.language or "auto"
+    from app.utils.language import resolve_language
+    target_lang, detected_lang = resolve_language(req.language, q)
 
     if has_llm_key():
         from app.graph.workflow import run_research
         try:
-            state = run_research(q, language=lang)
+            state = run_research(q, language=target_lang)
         except Exception as exc:
-            log.exception("LLM research failed, falling back to vector search")
-            state = local_grounded_research(q, language=lang)
+            log.exception("LLM research failed, falling back to vector search: %s", exc)
+            state = local_grounded_research(q, language=target_lang)
     else:
         # Grounded local vector search when no external API key is set
-        state = local_grounded_research(q, language=lang)
+        state = local_grounded_research(q, language=target_lang)
 
     matched_scheme = state.get("matched_scheme")
     if not matched_scheme:
@@ -577,8 +593,8 @@ def research(req: ResearchRequest):
         "status": state.get("status"),
         "category": state.get("category"),
         "scope": state.get("scope"),
-        "language": state.get("language", "en"),
-        "detected_language": state.get("detected_language", "en"),
+        "language": state.get("language", target_lang),
+        "detected_language": state.get("detected_language", detected_lang),
         "answer": state.get("final_answer"),
         "sources": state.get("citations", []),
         "matched_scheme": matched_scheme,

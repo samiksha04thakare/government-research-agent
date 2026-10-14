@@ -10,6 +10,8 @@ export default defineConfig({
       "/documents": "http://127.0.0.1:8000",
       "/history": "http://127.0.0.1:8000",
       "/sources": "http://127.0.0.1:8000",
+      "/schemes": "http://127.0.0.1:8000",
+      "/config": "http://127.0.0.1:8000",
     },
   },
 });

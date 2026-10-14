@@ -1,0 +1,245 @@
+# Maharashtra & Central Women and Child Development Welfare Schemes Compendium
+Authority: Department of Women and Child Development, Government of Maharashtra & Ministry of Women and Child Development, Government of India
+Source URL: https://womenchild.maharashtra.gov.in
+Document Type: Official Scheme Guidelines & Operating Procedures
+Publication Date: 2025-04-01
+Updated Date: 2026-01-15
+Version: 4.2
+
+## Section 1: Mukhyamantri Majhi Ladki Bahin Yojana (Code: MH-WOM-01)
+1. Scheme Name: Mukhyamantri Majhi Ladki Bahin Yojana
+   Hindi / Marathi Name: मुख्यमंत्री माझी लाडकी बहीण योजना
+   Jurisdiction: Maharashtra State Scheme (100% State Funded)
+   Category: Financial Assistance / Direct Benefit Transfer (DBT) / Social Security
+2. Beneficiary Group:
+   - Economically disadvantaged women residents of Maharashtra aged between 21 and 65 years.
+3. Eligibility Criteria:
+   - Permanent woman resident and domicile holder of Maharashtra.
+   - Age between 21 and 65 completed years.
+   - Combined annual family household income must not exceed INR 2,50,000 (Rs. 2.5 Lakh).
+   - Beneficiary must possess an active bank account linked and seeded with Aadhaar (DBT/NPCI enabled).
+   - Exclusion: Families with regular government/PSU employees, income tax payers, or families owning a four-wheeler (excluding tractors).
+4. Financial Benefit Structure:
+   - Monthly cash assistance of Rs. 1,500 transferred directly into the woman beneficiary's bank account via Direct Benefit Transfer (DBT).
+   - Total annual financial assistance of Rs. 18,000 per eligible woman.
+5. Mandatory Documents Required:
+   - Aadhaar Card of the applicant woman.
+   - Maharashtra Domicile Certificate or 15-year-old Ration Card / Voter ID / School Leaving Certificate.
+   - Yellow or Orange Ration Card, or Income Certificate issued by competent Revenue Authority (Tehsildar) verifying annual income under Rs. 2.5 Lakh.
+   - Aadhaar-linked Bank Passbook copy displaying IFSC code and Account Number.
+   - Self-declaration Undertaking (Hamipatra).
+6. Official Portal & Contact:
+   - Official Portal: https://ladakibahin.maharashtra.gov.in
+   - Mobile Application: Nari Shakti Doot App / MahaWCD Portal.
+
+
+## Section 2: Lek Ladki Yojana (Code: MH-WOM-02)
+1. Scheme Name: Lek Ladki Yojana
+   Hindi / Marathi Name: लेक लाडकी योजना
+   Jurisdiction: Maharashtra State Scheme
+   Category: Girl Child Welfare / Education & Financial Milestone Grants
+2. Beneficiary Group:
+   - Girl children born in economically weaker families holding Yellow or Orange ration cards in the State of Maharashtra on or after April 1, 2023.
+3. Eligibility Criteria:
+   - Parents must be permanent residents and domicile holders of Maharashtra.
+   - Family must hold a valid Yellow or Orange Ration Card.
+   - Applicable for girl children born on or after April 1, 2023.
+   - Benefit covers up to two daughters per family. In case of a second child, one parent must undergo family planning sterilization.
+4. Milestone-Based Financial Support (Total: Rs. 1,01,000):
+   - Stage 1 (At Birth): Rs. 5,000 cash grant upon birth of the girl child.
+   - Stage 2 (Class 1 Admission): Rs. 6,000 upon enrolling the girl in standard 1.
+   - Stage 3 (Class 6 Admission): Rs. 7,000 upon entering standard 6.
+   - Stage 4 (Class 11 Admission): Rs. 8,000 upon enrolling in standard 11 / junior college.
+   - Stage 5 (Attaining 18 Years): Final lump-sum grant of Rs. 75,000 upon completing 18 years of age, provided the girl is unmarried and continuing education.
+5. Mandatory Documents:
+   - Official Birth Certificate of the girl child.
+   - Yellow or Orange Ration Card of the household.
+   - Aadhaar Cards of parents and the girl child.
+   - Maharashtra Domicile Certificate of parent.
+   - Bank Account Passbook in the name of the girl child (joint with mother/father).
+   - School Enrollment Certificate / Bonafide Certificate for each educational milestone.
+   - Family planning certificate issued by Medical Officer (for second girl child).
+6. Official Portal:
+   - Portal: https://womenchild.maharashtra.gov.in
+
+
+## Section 3: Pradhan Mantri Matru Vandana Yojana - PMMVY (Code: MH-WOM-03)
+1. Scheme Name: Pradhan Mantri Matru Vandana Yojana (PMMVY)
+   Hindi / Marathi Name: प्रधानमंत्री मातृ वंदना योजना (पीएमएमवीवाई)
+   Jurisdiction: Centrally Sponsored Scheme (Implemented across all districts of Maharashtra)
+   Category: Maternity & Child Health / Wage Loss Compensation & Nutrition
+2. Beneficiary Group:
+   - Eligible pregnant women and lactating mothers (PW&LM) for institutional delivery and early childcare.
+3. Eligibility Criteria:
+   - Pregnant women aged 19 years and above belonging to socially/economically disadvantaged tiers (SC, ST, 40%+ Divyangjan, BPL/EWS, MGNREGA Job Card holders, Kisan Samman Nidhi beneficiaries, e-Shram card holders, Ayushman Bharat card holders, or household income under Rs. 8 Lakh).
+   - Excludes women in regular employment with Central/State Government or PSUs who receive paid maternity leave.
+4. Financial Assistance Norms:
+   - First Living Child: Total incentive of Rs. 5,000 in two installments:
+     - Installment 1: Rs. 3,000 on early registration of pregnancy (within 6 months) and minimum one Antenatal Check-up (ANC).
+     - Installment 2: Rs. 2,000 upon registration of birth and child receiving first cycle of primary immunization (BCG, OPV, DPT, Hepatitis B).
+   - Second Child (Girl Child Special Grant): Rs. 6,000 in a single installment upon birth registration and complete primary immunization, encouraging birth of the girl child.
+5. Required Documents:
+   - Mother and Father Aadhaar Card.
+   - Mother and Child Protection (MCP) Card / RCH ID.
+   - Aadhaar-seeded Bank Passbook of the mother.
+   - Child Birth Certificate and Immunization Record.
+6. Official Portal:
+   - Portal: https://pmmvy.wcd.gov.in
+
+
+## Section 4: One Stop Centre - Sakhi Centre (Code: MH-WOM-04)
+1. Scheme Name: One Stop Centre (OSC / Sakhi Centre)
+   Hindi / Marathi Name: वन स्टॉप सेंटर (सखी केंद्र)
+   Jurisdiction: Central Scheme (Mission Shakti - Sambal Sub-scheme)
+   Category: Safety / Crisis Intervention / Integrated Protection & Medical Aid
+2. Beneficiary Group:
+   - Any woman or girl affected by violence in private or public spaces, homes, community, or workplace (domestic violence, sexual assault, harassment, trafficking).
+3. Integrated Services Under One Roof:
+   - Emergency Rescue and Response: Immediate rescue coordination with police and ambulance.
+   - Medical Assistance: First-aid, medical examination, forensic evidence collection, and treatment at District/Civil Hospitals.
+   - Police Assistance: Facilitation of FIR/NCR registration without trauma.
+   - Psycho-Social Counseling: Professional emotional counseling and mental trauma support.
+   - Legal Aid: Free legal representation and counseling via District Legal Services Authority (DLSA).
+   - Temporary Shelter: Safe accommodation for up to 5 days for the woman and her dependent children.
+4. Admission & Documentation:
+   - Emergency intake without any prerequisite documentation.
+   - Identity documents requested when available.
+5. Access & Help:
+   - Operates 24/7 in every district hospital/headquarters in Maharashtra.
+   - Linked directly with Women Helpline 181 and Emergency 112.
+   - Official Portal: https://wcd.nic.in/schemes/one-stop-centre-scheme
+
+
+## Section 5: Women Helpline 181 (Code: MH-WOM-05)
+1. Scheme Name: Women Helpline (WHL - 181)
+   Hindi / Marathi Name: महिला हेल्पलाइन (१८१)
+   Jurisdiction: Central Scheme (Mission Shakti - Sambal)
+   Category: Safety / 24x7 Emergency Telephonic Response
+2. Beneficiary Group:
+   - All women and adolescent girls in distress, facing violence, or requiring guidance on welfare schemes.
+3. Service Range:
+   - 24/7 toll-free emergency call handling.
+   - Direct dispatch and integration with Emergency Response Support System (ERSS - 112).
+   - Immediate linkage to local police, One Stop Centres, ambulances, and shelter homes.
+   - Information dissemination on welfare schemes, legal rights, and protection orders.
+4. Documentation:
+   - Zero documentation required. Free dial 181 from any mobile phone or landline in Marathi, Hindi, and English.
+5. Official Portal:
+   - Portal: https://wcd.nic.in/schemes/women-helpline-scheme
+
+
+## Section 6: Nari Adalat (Code: MH-WOM-06)
+1. Scheme Name: Nari Adalat (Women's Court / Peer Dispute Resolution)
+   Hindi / Marathi Name: नारी अदालत
+   Jurisdiction: Central Scheme (Mission Shakti - Sambal)
+   Category: Alternate Dispute Resolution (ADR) / Grassroots Grievance Redressal
+2. Beneficiary Group:
+   - Women seeking informal, community-mediated resolution for domestic discord, petty family disputes, and rights enforcement.
+3. Operational Mechanism:
+   - Formed at the Gram Panchayat / Village Cluster level.
+   - Consists of 7 to 9 Nyaya Sakhis (peer mediators elected from Gram Panchayats, SHG federation leaders, and village teachers/social workers).
+   - Resolves non-cognizable petty family and social conflicts without court fees, police stations, or protracted litigation.
+   - Creates legal awareness regarding domestic violence, property rights, and girl child protection.
+4. Documentation & Procedure:
+   - Simple verbal or written grievance to the local Nyaya Sakhis.
+5. Official Portal:
+   - Portal: https://wcd.nic.in/schemes/mission-shakti
+
+
+## Section 7: Ujjawala Scheme (Code: MH-WOM-07)
+1. Scheme Name: Ujjawala Scheme (Prevention of Trafficking and Rescue)
+   Hindi / Marathi Name: उज्ज्वला योजना (महिला व बाल मानवी तस्करी प्रतिबंध व पुनर्वसन)
+   Jurisdiction: Central Scheme (Mission Shakti - Samarthya / Shakti Sadan)
+   Category: Anti-Trafficking / Protection, Rehabilitation & Reintegration
+2. Beneficiary Group:
+   - Women and adolescent girls who are vulnerable to or rescued from commercial sexual exploitation and human trafficking.
+3. Five Core Functional Pillars:
+   - Prevention: Community vigilance groups, border sensitization, and mass awareness.
+   - Rescue: Facilitation of coordinated police raids and rescue operations.
+   - Rehabilitation: Immediate safe shelter, nutritious food, clothing, medical treatment, psychiatric counseling, and vocational training.
+   - Reintegration: Restoration into family and community with livelihood kits and job placement.
+   - Repatriation: Safe cross-border and cross-state repatriation to native places.
+4. Documentation & Intake:
+   - Police rescue memo / FIR, CWC order, or Magistrate order.
+5. Official Portal:
+   - Portal: https://wcd.nic.in/schemes/ujjawala-scheme-details
+
+
+## Section 8: Shakti Sadan (Code: MH-WOM-08)
+1. Scheme Name: Shakti Sadan (Integrated Relief and Shelter Home)
+   Hindi / Marathi Name: शक्ति सदन (एकीकृत आश्रय व पुनर्वसन केंद्र)
+   Jurisdiction: Central Scheme (Mission Shakti - Convergence of Swadhar Greh & Ujjawala)
+   Category: Shelter / Institutional Relief & Long-Term Rehabilitation
+2. Beneficiary Group:
+   - Women in difficult circumstances: destitute women, widows abandoned by relatives, survivors of domestic violence, released female prisoners without family, and victims of disasters.
+3. Entitlements & Services:
+   - Free boarding, lodging, clothing, and hygienic shelter for up to 3 years (up to 5 years for women aged 55+ until elderly home transfer).
+   - Comprehensive psychiatric, clinical, and trauma recovery counseling.
+   - Primary and secondary medical care.
+   - Free legal assistance for divorce, maintenance, and custody proceedings.
+   - Accredited vocational skill training (tailoring, food processing, IT, healthcare) for economic self-sufficiency.
+   - Accommodates dependent children up to 18 years for girls and 12 years for boys.
+4. Documentation & Referral:
+   - Protection Officer report, Police intake, DLSA recommendation, or voluntary self-declaration.
+5. Official Portal:
+   - Portal: https://wcd.nic.in/schemes/swadhar-greh-scheme-details
+
+
+## Section 9: Hub for Empowerment of Women - HEW (Code: MH-WOM-09)
+1. Scheme Name: Hub for Empowerment of Women (HEW / Mahila Samarthya Kendra)
+   Hindi / Marathi Name: महिला सक्षमीकरण केंद्र (हब फॉर एम्पावरमेंट ऑफ विमेन)
+   Jurisdiction: Central Scheme (Mission Shakti - Samarthya)
+   Category: Convergence / Single-Window Information & Scheme Linkages
+2. Beneficiary Group:
+   - Rural and urban women seeking information, digital literacy, and direct linkage to central and state government entitlements.
+3. Functional Role:
+   - Established at State (State Hub), District (District Hub), and Block levels across Maharashtra.
+   - Acts as a dedicated technical and operational convergence arm to guide women to:
+     - Direct Benefit Transfers (Ladki Bahin, PMMVY, KCC).
+     - Higher education and vocational scholarships.
+     - Stand-Up India, PM Mudra Yojana, and PMEGP enterprise credit.
+     - Healthcare, Poshan tracker, and Ayushman Bharat cards.
+   - Organizes village-level gender sensitization camps and digital empowerment workshops.
+4. Official Portal:
+   - Portal: https://wcd.nic.in/schemes/mission-shakti
+
+
+## Section 10: Mahila Arthik Vikas Mahamandal - MAVIM (Code: MH-WOM-10)
+1. Scheme Name: Mahila Arthik Vikas Mahamandal (MAVIM) - Self Help Group Programmes
+   Hindi / Marathi Name: महिला आर्थिक विकास महामंडळ (माविम) - बचत गट उपक्रम
+   Jurisdiction: Maharashtra State Corporation (Government of Maharashtra)
+   Category: Livelihood / Microfinance / Self Help Groups (SHG) & Micro-Enterprises
+2. Beneficiary Group:
+   - Rural and semi-urban women organized into Self Help Groups (Bachat Gat) and Community Managed Resource Centres (CMRCs) in Maharashtra.
+3. Core Benefits & Interventions:
+   - Group Formation & Capacity Building: Formation of vibrant women Self Help Groups and federations (CMRCs).
+   - Microfinance & Bank Linkages: Facilitation of low-interest bank loans and internal credit rotation for micro-enterprises.
+   - Entrepreneurship Development: Skill development training in agro-processing, dairy, poultry, handlooms, packaging, and retail.
+   - Market Access & Brand Support: Marketing platforms, exhibitions, and e-commerce linkages for SHG products under official state brand umbrellas.
+4. Eligibility:
+   - Women residing in Maharashtra forming or joining registered MAVIM Bachat Gat (10-20 members per group).
+5. Documents Required:
+   - Aadhaar Card of member, Group resolution, Group bank passbook, Identity proof.
+6. Official Portal:
+   - Portal: https://mavimindia.org
+   - State Head Office: Mumbai, Maharashtra (operational in all 36 districts).
+
+
+## Section 11: Saksham Anganwadi and Poshan 2.0 (Code: MH-WOM-11)
+1. Scheme Name: Saksham Anganwadi and Poshan 2.0
+   Hindi / Marathi Name: सक्षम अंगणवाडी व पोषण २.०
+   Jurisdiction: Centrally Sponsored Scheme (Implemented across all Anganwadis in Maharashtra)
+   Category: Nutrition / Early Childhood Development (0-6 Years) & Maternal Wellness
+2. Beneficiary Group:
+   - Children in age group 0 to 6 years, pregnant women, lactating mothers, and adolescent girls in aspirational districts.
+3. Strategic Components & Services:
+   - Supplementary Nutrition Program (SNP): Take Home Ration (THR) for children 6 months to 3 years and pregnant/lactating mothers; nutritious hot cooked meals for children aged 3 to 6 years.
+   - Upgraded Saksham Anganwadi Infrastructure: Smart LED displays, internet connectivity, clean RO drinking water, Poshan Vatikas (nutrition kitchen gardens), and child-friendly learning environments.
+   - Poshan Tracker Digital Monitoring: Real-time Aadhaar-verified monitoring of child growth (weight, height, stunting, wasting, underweight detection).
+   - Early Childhood Care and Education (ECCE): Activity-based pre-school education for children aged 3 to 6 years.
+   - Immunization & Health Referral: Regular vaccination drives and referral to Primary Health Centres (PHCs).
+4. Documentation Required:
+   - Mother/Father Aadhaar card, Child birth certificate/Aadhaar, Poshan Tracker registration.
+5. Official Portal:
+   - Poshan Tracker Portal: https://poshantracker.in
+   - Ministry Portal: https://wcd.nic.in

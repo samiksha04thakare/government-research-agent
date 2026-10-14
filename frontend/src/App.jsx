@@ -1,90 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { SUPPORTED_LANGUAGES, UI_TRANSLATIONS, DOMAIN_CATEGORIES_BY_LANG } from "./i18n";
 
 const API = import.meta.env.VITE_API_URL || "";
 
-const DOMAIN_CATEGORIES = [
-  {
-    id: "farmer",
-    label: "🌾 Farmer Questions",
-    description: "Kisan Credit Card (KCC), land records (7/12 & RoR), disaster relief (SDRF/NDRF), and tenant farmer credit",
-    questions: [
-      "What is the procedure for obtaining a Kisan Credit Card (KCC) and what is the concessional interest rate?",
-      "What documents and land records (RoR / 7/12 extract) are required to verify farmer eligibility?",
-      "What financial assistance is provided under SDRF and NDRF norms for crop loss due to natural calamities?",
-      "How can a tenant farmer or sharecropper access agricultural credit without land titles?"
-    ]
-  },
-  {
-    id: "crops",
-    label: "🌱 Crop Problems",
-    description: "Crop yellowing diagnosis, terminal heat stress, lodging management, and seed treatment protocols",
-    questions: [
-      "How to distinguish between Nitrogen deficiency, waterlogging, and Iron chlorosis when crop leaves turn yellow?",
-      "What are the recommended varieties and mitigation sprays to prevent terminal heat stress in wheat?",
-      "How can paddy lodging be prevented and managed after unseasonal rains during ripening?",
-      "What are the optimum sowing windows and seed treatment protocols for irrigated wheat?"
-    ]
-  },
-  {
-    id: "pests",
-    label: "🐛 Pest Questions",
-    description: "Integrated Pest Management (IPM), Fall Armyworm, Pink Bollworm, Brown Plant Hopper, and bio-pesticides",
-    questions: [
-      "What is the Integrated Pest Management (IPM) schedule and ETL for Fall Armyworm (FAW) in maize?",
-      "How to control Pink Bollworm in Bt Cotton using pheromone traps and approved bio-control agents?",
-      "What are the official control measures for Brown Plant Hopper (BPH) in rice, and what chemicals must be avoided?",
-      "Which bio-pesticides (like Trichoderma viride) are approved for pulse root rot and wilt management?"
-    ]
-  },
-  {
-    id: "fertilizers",
-    label: "🧪 Fertilizer Questions",
-    description: "Soil Health Card benchmarks, Neem Coated Urea, Nano Urea/DAP, and Zinc deficiency (Khaira)",
-    questions: [
-      "How to interpret Soil Health Card parameters (pH, EC, Organic Carbon, and NPK benchmarks)?",
-      "What is the recommended application schedule and benefits of Neem Coated Urea over normal urea?",
-      "How should Nano Urea and Nano DAP liquid be applied as foliar spray and seed treatment?",
-      "What are the symptoms and soil correction methods for Zinc deficiency (Khaira disease) in paddy?"
-    ]
-  },
-  {
-    id: "schemes",
-    label: "🏛️ Central Schemes",
-    description: "PM-KISAN (Rs 6,000/yr), PMFBY (Crop Insurance), PM-KUSUM (Solar Pumps), and SMAM (Machinery)",
-    questions: [
-      "What are the mandatory e-KYC and land-seeding rules to receive Rs 6,000 yearly under PM-KISAN?",
-      "Compare farmer premium rates and coverage stages under Pradhan Mantri Fasal Bima Yojana (PMFBY).",
-      "What subsidy is provided for standalone solar agriculture pumps under PM-KUSUM Component B?",
-      "What financial assistance is available under SMAM for purchasing tractors and farm machinery?"
-    ]
-  },
-  {
-    id: "maharashtra_schemes",
-    label: "🌾 Maharashtra Schemes (2026–27)",
-    description: "Namo Shetakari Mahasanmaan, Krushi Samrudhi, POCRA-II, SMART, Agri AI Policy, & BDS Budget Outlays",
-    questions: [
-      "What is the 2026-27 proposed budget outlay and allocation for Namo Shetakari Mahasanmaan Nidhi Yojana?",
-      "What are the details and fund utilization of the new Krushi Samrudhi Yojana in Maharashtra?",
-      "What is the Maharashtra Agriculture Artificial Intelligence Policy 2025-2029 allocation and objectives?",
-      "What are the top 5 agricultural schemes by proposed outlay in Maharashtra for 2026-27?"
-    ]
-  },
-  {
-    id: "women_child",
-    label: "👩 Women & Child Schemes",
-    description: "Majhi Ladki Bahin (₹1,500/mo), Lek Ladki (₹1,01,000), PMMVY Maternity, Sakhi One Stop Centre, & Helpline 181",
-    questions: [
-      "What is the eligibility criteria and ₹1,500 monthly benefit under Mukhyamantri Majhi Ladki Bahin Yojana?",
-      "What are the stage-wise milestone grants totaling ₹1,01,000 under Lek Ladki Yojana?",
-      "What maternity benefits and DBT installments are provided under Pradhan Mantri Matru Vandana Yojana (PMMVY)?",
-      "What emergency rescue, counseling, and shelter services are provided under One Stop Centre (Sakhi) and Helpline 181?"
-    ]
+async function safeParseJson(res) {
+  const contentType = res.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    try {
+      return await res.json();
+    } catch {
+      return null;
+    }
   }
-];
+  return null;
+}
 
-// Helper to strip markdown and metadata tags for natural speech synthesis
+// Clean markdown and meta tags for clean browser TTS speech
 function cleanTextForSpeech(text) {
   if (!text) return "";
   return text
@@ -98,7 +31,6 @@ function cleanTextForSpeech(text) {
     .trim();
 }
 
-// Split text into natural sentence-sized chunks to prevent browser speech timeout bugs
 function splitTextIntoSentences(text, maxLen = 140) {
   const cleaned = cleanTextForSpeech(text);
   if (!cleaned) return [];
@@ -126,99 +58,154 @@ function splitTextIntoSentences(text, maxLen = 140) {
   return chunks.length ? chunks : [cleaned.slice(0, maxLen)];
 }
 
+// Helper for scheme category photo mappings matching design mockup
+function getSchemeCategoryPhoto(category) {
+  const cat = (category || "").toLowerCase();
+  if (cat.includes("agri") || cat.includes("farmer") || cat.includes("kisan") || cat.includes("crop") || cat.includes("soil") || cat.includes("pest") || cat.includes("fertilizer") || cat.includes("wheat") || cat.includes("rice")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      fallback: "/assets/card_farmer.jpg",
+      icon: "🌾",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+      label: "कृषि एवं किसान कल्याण (Agriculture & Farmer Welfare)",
+    };
+  }
+  if (cat.includes("edu") || cat.includes("scholar") || cat.includes("छात्रवृत्ति") || cat.includes("matric") || cat.includes("student") || cat.includes("university")) {
+    return {
+      photo: "/assets/scheme_cat_scholarship.jpg",
+      fallback: "/assets/card_scholarship.jpg",
+      icon: "🎓",
+      themeClass: "card-theme-scholarship",
+      color: "#1d4ed8",
+      label: "शिक्षा एवं छात्रवृत्ति (Education & Scholarships)",
+    };
+  }
+  if (cat.includes("credit") || cat.includes("msme") || cat.includes("mudra") || cat.includes("loan") || cat.includes("entrepreneur") || cat.includes("उद्योग") || cat.includes("stand-up") || cat.includes("pmegp") || cat.includes("startup")) {
+    return {
+      photo: "/assets/scheme_cat_entrepreneur.jpg",
+      fallback: "/assets/card_entrepreneur.jpg",
+      icon: "💼",
+      themeClass: "card-theme-entrepreneurship",
+      color: "#c2410c",
+      label: "सूक्ष्म, लघु व मध्यम उद्यम एवं उद्यमिता (MSME & Entrepreneurship)",
+    };
+  }
+  if (cat.includes("women") || cat.includes("child") || cat.includes("mahila") || cat.includes("girl") || cat.includes("महिला") || cat.includes("wcd") || cat.includes("ujjwala") || cat.includes("matritva") || cat.includes("ladki")) {
+    return {
+      photo: "/assets/scheme_cat_women.jpg",
+      fallback: "/assets/card_women.jpg",
+      icon: "👩",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+      label: "महिला एवं बाल विकास (Women & Child Welfare)",
+    };
+  }
+  return {
+    photo: "/assets/scheme_cat_other.jpg",
+    fallback: "/assets/card_other.jpg",
+    icon: "🏛️",
+    themeClass: "card-theme-other",
+    color: "#6d28d9",
+    label: "सामाजिक सुरक्षा व लोक कल्याण (Social Security & Welfare)",
+  };
+}
+
 export default function App() {
+  // Navigation State: 'dashboard' is the MAIN DASHBOARD view
+  const [activeTab, setActiveTab] = useState("dashboard");
+
+  // Core Search & Language State
   const [question, setQuestion] = useState("");
-  const [selectedLang, setSelectedLang] = useState("auto");
-  const [activeCategory, setActiveCategory] = useState("maharashtra_schemes");
+  const [selectedLang, setSelectedLang] = useState(() => {
+    const saved = localStorage.getItem("gov_language");
+    return saved && ["en", "hi", "mr"].includes(saved) ? saved : "hi";
+  });
+  const t = UI_TRANSLATIONS[selectedLang] || UI_TRANSLATIONS.hi;
+  const domainCategories = DOMAIN_CATEGORIES_BY_LANG[selectedLang] || DOMAIN_CATEGORIES_BY_LANG.hi;
+
+  function handleLanguageChange(newLang) {
+    setSelectedLang(newLang);
+    try {
+      localStorage.setItem("gov_language", newLang);
+    } catch {}
+    const currentQ = (question || result?.question || "").trim();
+    if (currentQ && activeTab === "ask-ai") {
+      ask(null, currentQ, newLang);
+    }
+  }
+
+  // Research Result State
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // History State
   const [history, setHistory] = useState([]);
   const [clearingHistory, setClearingHistory] = useState(false);
-  const [health, setHealth] = useState(null);
-  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
-  const [showSchemesModal, setShowSchemesModal] = useState(false);
-  const [schemesList, setSchemesList] = useState([]);
-  const [schemeSearch, setSchemeSearch] = useState("");
-  const [schemePlanFilter, setSchemePlanFilter] = useState("all");
 
-  // Relational Structured Schemes State (PostgreSQL / Relational DB 9-field schema)
-  const [showStructuredModal, setShowStructuredModal] = useState(false);
+  // System Health & Stats
+  const [health, setHealth] = useState(null);
+
+  // Schemes Directory State
   const [structuredSchemes, setStructuredSchemes] = useState([]);
-  const [structuredSearch, setStructuredSearch] = useState("");
-  const [structuredCatFilter, setStructuredCatFilter] = useState("all");
+  const [schemeSearch, setSchemeSearch] = useState("");
+  const [schemeCategoryFilter, setSchemeCategoryFilter] = useState("all");
+  const [selectedScheme, setSelectedScheme] = useState(null);
+  const [schemeSubTab, setSchemeSubTab] = useState("overview");
+
+  // Documents Management State
+  const [documentsList, setDocumentsList] = useState([]);
+  const [docSearch, setDocSearch] = useState("");
+  const [docSubTab, setDocSubTab] = useState("my-docs");
+  const [docCategoryFilter, setDocCategoryFilter] = useState("all");
+  const [selectedDoc, setSelectedDoc] = useState(null);
+  const [docReaderLoading, setDocReaderLoading] = useState(false);
+  const [uploadingDoc, setUploadingDoc] = useState(false);
+  const [uploadStatus, setUploadStatus] = useState("");
+  const [sourcesRegistry, setSourcesRegistry] = useState([]);
+  const fileInputRef = useRef(null);
+
+  // Extract Scheme Modal State
   const [showExtractModal, setShowExtractModal] = useState(false);
   const [extractText, setExtractText] = useState("");
   const [extractStatus, setExtractStatus] = useState("");
   const [extracting, setExtracting] = useState(false);
 
+  // Settings & Preferences State
+  const [showSourcesInAnswer, setShowSourcesInAnswer] = useState(true);
+  const [autoSearchOnSpeech, setAutoSearchOnSpeech] = useState(false);
+  const [theme, setTheme] = useState(() => localStorage.getItem("gov_theme") || "light");
+  const [keyProvider, setKeyProvider] = useState("groq");
+  const [apiKeyInput, setApiKeyInput] = useState("");
+  const [keySaveStatus, setKeySaveStatus] = useState("");
+  const [savingKey, setSavingKey] = useState(false);
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+
   // Voice Speech-to-Text (STT) State
   const [isListening, setIsListening] = useState(false);
-  const [listeningTarget, setListeningTarget] = useState(null); // "search" | "docSearch" | "extract"
+  const [listeningTarget, setListeningTarget] = useState(null);
   const [speechError, setSpeechError] = useState("");
   const [liveTranscript, setLiveTranscript] = useState("");
-  const [autoSearchOnSpeech, setAutoSearchOnSpeech] = useState(false);
   const recognitionRef = useRef(null);
 
   // Voice Text-to-Speech (TTS) State
   const [ttsPlaying, setTtsPlaying] = useState(false);
   const [ttsPaused, setTtsPaused] = useState(false);
-  const [ttsSource, setTtsSource] = useState(""); // "findings", "doc-X", "chunk-X", "source-X"
+  const [ttsSource, setTtsSource] = useState("");
   const [ttsCurrentChunk, setTtsCurrentChunk] = useState(0);
   const [ttsTotalChunks, setTtsTotalChunks] = useState(0);
   const [ttsRate, setTtsRate] = useState(1.0);
   const ttsQueueRef = useRef([]);
   const ttsIndexRef = useRef(0);
   const ttsActiveRef = useRef(false);
-  const ttsLangRef = useRef("en");
+  const ttsLangRef = useRef("hi");
   const ttsRateRef = useRef(1.0);
-
-  // Official Documents Hub & Document Voice Reader State
-  const [showDocsModal, setShowDocsModal] = useState(false);
-  const [docsList, setDocsList] = useState([]);
-  const [docsLoading, setDocsLoading] = useState(false);
-  const [docSearch, setDocSearch] = useState("");
-  const [docCatFilter, setDocCatFilter] = useState("all");
-  const [selectedDoc, setSelectedDoc] = useState(null);
-  const [selectedDocText, setSelectedDocText] = useState("");
-  const [docTextLoading, setDocTextLoading] = useState(false);
-
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("gov_theme") || "light";
-  });
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem("gov_theme", theme);
   }, [theme]);
-
-  const [keyProvider, setKeyProvider] = useState("groq");
-  const [apiKeyInput, setApiKeyInput] = useState("");
-  const [keySaveStatus, setKeySaveStatus] = useState("");
-  const [savingKey, setSavingKey] = useState(false);
-
-  async function handleSaveKey(e) {
-    e.preventDefault();
-    if (!apiKeyInput.trim()) return;
-    setSavingKey(true);
-    setKeySaveStatus("Saving and activating key...");
-    try {
-      const res = await fetch(`${API}/config/api-key`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider: keyProvider, api_key: apiKeyInput.trim() }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Failed to update key");
-      setKeySaveStatus(`✅ Successfully activated ${data.llm_model}!`);
-      setApiKeyInput("");
-      fetchHealth();
-    } catch (err) {
-      setKeySaveStatus(`❌ Error: ${err.message}`);
-    } finally {
-      setSavingKey(false);
-    }
-  }
 
   const toggleTheme = () => {
     setTheme((prev) => (prev === "light" ? "dark" : "light"));
@@ -227,101 +214,89 @@ export default function App() {
   useEffect(() => {
     fetchHealth();
     fetchHistory();
-    fetchSchemes();
     fetchStructuredSchemes();
     fetchDocuments();
+    fetchSourcesRegistry();
     return () => {
       stopTts();
       stopVoiceInput();
     };
   }, []);
 
-  async function fetchStructuredSchemes() {
-    try {
-      const res = await fetch(`${API}/schemes`);
-      if (res.ok) {
-        const data = await res.json();
-        const list = Array.isArray(data) ? data : (data.items || []);
-        // Client-side unique key safeguard
-        const unique = [];
-        const seen = new Set();
-        for (const item of list) {
-          const key = item.scheme_id || item.scheme_name;
-          if (!seen.has(key)) {
-            seen.add(key);
-            unique.push(item);
-          }
-        }
-        setStructuredSchemes(unique);
-      }
-    } catch (err) {
-      console.error("Failed to fetch structured schemes:", err);
-    }
-  }
-
-  async function handleExtractScheme(e) {
-    e.preventDefault();
-    if (!extractText.trim()) return;
-    setExtracting(true);
-    setExtractStatus("Extracting and normalizing structured scheme fields...");
-    try {
-      const res = await fetch(`${API}/schemes/extract`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Admin-Token": "admin123"
-        },
-        body: JSON.stringify({ text: extractText.trim() }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Extraction failed");
-      setExtractStatus(`✅ Successfully extracted & saved: ${data.saved?.scheme_name || "Scheme"}!`);
-      setExtractText("");
-      fetchStructuredSchemes();
-      fetchHealth();
-    } catch (err) {
-      setExtractStatus(`❌ Error: ${err.message}`);
-    } finally {
-      setExtracting(false);
-    }
-  }
-
   async function fetchHealth() {
     try {
       const res = await fetch(`${API}/health`);
       if (res.ok) {
-        const data = await res.json();
-        setHealth(data);
+        const data = await safeParseJson(res);
+        if (data) setHealth(data);
       }
-    } catch {
-      // Backend not yet reachable
-    }
+    } catch {}
   }
 
   async function fetchHistory() {
     try {
       const res = await fetch(`${API}/history`);
       if (res.ok) {
-        const data = await res.json();
-        setHistory(data);
+        const data = await safeParseJson(res);
+        if (data && Array.isArray(data)) setHistory(data);
       }
-    } catch {
-      // ignore
+    } catch {}
+  }
+
+  async function fetchStructuredSchemes() {
+    try {
+      const res = await fetch(`${API}/schemes`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data) {
+          const list = Array.isArray(data) ? data : data.items || [];
+          const unique = [];
+          const seen = new Set();
+          for (const item of list) {
+            const key = item.scheme_id || item.scheme_name;
+            if (!seen.has(key)) {
+              seen.add(key);
+              unique.push(item);
+            }
+          }
+          setStructuredSchemes(unique);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch schemes:", err);
     }
   }
 
-  async function handleClearAllHistory() {
-    if (!window.confirm("Are you sure you want to clear all research search history?")) {
-      return;
+  async function fetchDocuments() {
+    try {
+      const res = await fetch(`${API}/documents`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data && Array.isArray(data)) setDocumentsList(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch documents:", err);
     }
+  }
+
+  async function fetchSourcesRegistry() {
+    try {
+      const res = await fetch(`${API}/sources/registry`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data && Array.isArray(data)) setSourcesRegistry(data);
+      }
+    } catch {}
+  }
+
+  async function handleClearAllHistory() {
+    if (!window.confirm("Are you sure you want to clear all research search history?")) return;
     setClearingHistory(true);
     try {
       const res = await fetch(`${API}/history`, { method: "DELETE" });
-      if (res.ok) {
-        setHistory([]);
-      }
+      if (res.ok) setHistory([]);
     } catch (err) {
-      console.error("Failed to clear search history:", err);
+      console.error("Failed to clear history:", err);
     } finally {
       setClearingHistory(false);
     }
@@ -339,9 +314,144 @@ export default function App() {
     }
   }
 
+  async function handleSaveKey(e) {
+    e.preventDefault();
+    if (!apiKeyInput.trim()) return;
+    setSavingKey(true);
+    setKeySaveStatus("Saving and activating key...");
+    try {
+      const res = await fetch(`${API}/config/api-key`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider: keyProvider, api_key: apiKeyInput.trim() }),
+      });
+      const data = await safeParseJson(res);
+      if (!res.ok) throw new Error(data?.detail || `Failed to update key (status ${res.status})`);
+      setKeySaveStatus(`✅ Successfully activated ${data?.llm_model || "Key"}!`);
+      setApiKeyInput("");
+      fetchHealth();
+    } catch (err) {
+      setKeySaveStatus(`❌ Error: ${err.message}`);
+    } finally {
+      setSavingKey(false);
+    }
+  }
 
+  async function handleExtractScheme(e) {
+    e.preventDefault();
+    if (!extractText.trim()) return;
+    setExtracting(true);
+    setExtractStatus("Extracting and normalizing structured scheme fields...");
+    try {
+      const res = await fetch(`${API}/schemes/extract`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Admin-Token": "admin123",
+        },
+        body: JSON.stringify({ text: extractText.trim() }),
+      });
+      const data = await safeParseJson(res);
+      if (!res.ok) throw new Error(data?.detail || `Extraction failed (status ${res.status})`);
+      setExtractStatus(`✅ Successfully extracted & saved: ${data.saved?.scheme_name || "Scheme"}!`);
+      setExtractText("");
+      fetchStructuredSchemes();
+      fetchHealth();
+    } catch (err) {
+      setExtractStatus(`❌ Error: ${err.message}`);
+    } finally {
+      setExtracting(false);
+    }
+  }
 
-  // Voice Text-to-Speech (TTS) Controller
+  async function handleFileUpload(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingDoc(true);
+    setUploadStatus("Uploading official document...");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("title", file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " "));
+      formData.append("authority", "Official Government Authority");
+      formData.append("source_url", "");
+
+      const res = await fetch(`${API}/documents/upload`, {
+        method: "POST",
+        headers: { "X-Admin-Token": "admin123" },
+        body: formData,
+      });
+      const data = await safeParseJson(res);
+      if (!res.ok) throw new Error(data?.detail || "Document upload failed");
+
+      setUploadStatus("Indexing document chunks into vector database...");
+      await fetch(`${API}/documents/index`, {
+        method: "POST",
+        headers: { "X-Admin-Token": "admin123" },
+      });
+
+      setUploadStatus(`✅ Successfully indexed ${file.name}!`);
+      fetchDocuments();
+      fetchHealth();
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    } catch (err) {
+      setUploadStatus(`❌ Upload failed: ${err.message}`);
+    } finally {
+      setUploadingDoc(false);
+    }
+  }
+
+  async function openDocumentReader(docId) {
+    setDocReaderLoading(true);
+    try {
+      const res = await fetch(`${API}/documents/${docId}/text`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data) setSelectedDoc(data);
+      }
+    } catch (err) {
+      console.error("Failed to load document text:", err);
+    } finally {
+      setDocReaderLoading(false);
+    }
+  }
+
+  // Core Ask AI function
+  async function ask(e, customQuery, langOverride) {
+    if (e) e.preventDefault();
+    const q = (customQuery !== undefined ? customQuery : question).trim();
+    if (q.length < 3) return;
+
+    const targetLang = langOverride || selectedLang || "hi";
+    setLoading(true);
+    setError("");
+    setResult(null);
+    stopTts();
+    stopVoiceInput();
+    setActiveTab("ask-ai");
+
+    try {
+      const res = await fetch(`${API}/research`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question: q, language: targetLang }),
+      });
+
+      const data = await safeParseJson(res);
+      if (!res.ok) throw new Error(data?.detail || `Request failed with status ${res.status}`);
+      if (!data) throw new Error("Server returned an invalid non-JSON response.");
+
+      setResult({ ...data, question: q, language: data.language || targetLang });
+      fetchHistory();
+      fetchHealth();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // TTS Controller
   function stopTts() {
     ttsActiveRef.current = false;
     ttsQueueRef.current = [];
@@ -408,18 +518,19 @@ export default function App() {
     try {
       const utterance = new SpeechSynthesisUtterance(chunkText);
       utterance.rate = ttsRateRef.current;
-
       const targetLang = ttsLangRef.current;
       const voices = (window.speechSynthesis && window.speechSynthesis.getVoices()) || [];
       let matchedVoice = null;
       if (targetLang === "hi") {
         matchedVoice = voices.find((v) => v.lang.toLowerCase().startsWith("hi") || v.name.toLowerCase().includes("hindi"));
       } else if (targetLang === "mr") {
-        matchedVoice = voices.find((v) => v.lang.toLowerCase().startsWith("mr") || v.name.toLowerCase().includes("marathi"))
-          || voices.find((v) => v.lang.toLowerCase().startsWith("hi"));
-      } else if (targetLang === "en") {
-        matchedVoice = voices.find((v) => v.lang.toLowerCase().startsWith("en-in") || v.name.toLowerCase().includes("india"))
-          || voices.find((v) => v.lang.toLowerCase().startsWith("en"));
+        matchedVoice =
+          voices.find((v) => v.lang.toLowerCase().startsWith("mr") || v.name.toLowerCase().includes("marathi")) ||
+          voices.find((v) => v.lang.toLowerCase().startsWith("hi"));
+      } else {
+        matchedVoice =
+          voices.find((v) => v.lang.toLowerCase().startsWith("en-in") || v.name.toLowerCase().includes("india")) ||
+          voices.find((v) => v.lang.toLowerCase().startsWith("en"));
       }
 
       if (matchedVoice) {
@@ -439,7 +550,7 @@ export default function App() {
 
       utterance.onerror = (e) => {
         if (e.error !== "canceled" && e.error !== "interrupted") {
-          console.warn("Speech synthesis error:", e);
+          console.warn("TTS error:", e);
         }
         if (ttsActiveRef.current) {
           ttsIndexRef.current += 1;
@@ -454,29 +565,25 @@ export default function App() {
     }
   }
 
-  function playTts(text, sourceId, language = "en") {
+  function playTts(text, sourceId, language = "hi") {
     if (!window.speechSynthesis) {
       alert("Text-to-speech is not supported in this browser.");
       return;
     }
     if (ttsPlaying && ttsSource === sourceId) {
-      if (ttsPaused) {
-        resumeTts();
-      } else {
-        pauseTts();
-      }
+      if (ttsPaused) resumeTts();
+      else pauseTts();
       return;
     }
 
     stopTts();
-
     const chunks = splitTextIntoSentences(text);
     if (!chunks.length) return;
 
     ttsQueueRef.current = chunks;
     ttsIndexRef.current = 0;
     ttsActiveRef.current = true;
-    ttsLangRef.current = language || "en";
+    ttsLangRef.current = language || "hi";
     ttsRateRef.current = ttsRate;
 
     setTtsPlaying(true);
@@ -488,11 +595,11 @@ export default function App() {
     playNextTtsChunk();
   }
 
-  // Voice Speech-to-Text (STT) Controller
+  // Voice STT Controller
   function startVoiceInput(target = "search") {
     const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRec) {
-      setSpeechError("Speech recognition is not supported in this browser. Please use Chrome, Edge, or a Web Speech API supported browser.");
+      setSpeechError("Speech recognition is not supported in this browser. Please use Chrome, Edge, or a Web Speech API browser.");
       return;
     }
 
@@ -507,12 +614,9 @@ export default function App() {
       recognition.continuous = false;
       recognition.interimResults = true;
 
-      let langCode = "en-IN";
-      if (selectedLang === "hi") langCode = "hi-IN";
+      let langCode = "hi-IN";
+      if (selectedLang === "en") langCode = "en-IN";
       else if (selectedLang === "mr") langCode = "mr-IN";
-      else if (selectedLang === "en") langCode = "en-IN";
-      else langCode = navigator.language || "en-IN";
-
       recognition.lang = langCode;
 
       setIsListening(true);
@@ -520,41 +624,22 @@ export default function App() {
       setSpeechError("");
       setLiveTranscript("");
 
-      recognition.onstart = () => {
-        setIsListening(true);
-      };
-
       recognition.onresult = (event) => {
-        let finalTrans = "";
-        let interimTrans = "";
-        for (let i = 0; i < event.results.length; i++) {
-          if (event.results[i].isFinal) {
-            finalTrans += event.results[i][0].transcript;
-          } else {
-            interimTrans += event.results[i][0].transcript;
-          }
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
         }
-        const text = finalTrans || interimTrans;
-        setLiveTranscript(text);
-
-        if (target === "search") {
-          setQuestion(text);
-        } else if (target === "docSearch") {
-          setDocSearch(text);
-        } else if (target === "extract") {
-          setExtractText((prev) => (prev ? prev + " " + text : text));
+        setLiveTranscript(transcript);
+        if (event.results[0].isFinal) {
+          setQuestion(transcript);
         }
       };
 
       recognition.onerror = (event) => {
         console.warn("Speech recognition error:", event.error);
-        if (event.error === "not-allowed") {
-          setSpeechError("Microphone permission was denied. Please allow microphone access in your browser address bar.");
-        } else if (event.error === "no-speech") {
-          setSpeechError("No speech detected. Please try clicking the microphone again.");
-        } else {
-          setSpeechError(`Speech recognition error: ${event.error}`);
-        }
+        if (event.error === "no-speech") setSpeechError("No speech detected. Please try again.");
+        else if (event.error === "not-allowed") setSpeechError("Microphone permission was denied.");
+        else setSpeechError(`Voice input error: ${event.error}`);
         setIsListening(false);
         setListeningTarget(null);
       };
@@ -576,7 +661,6 @@ export default function App() {
 
       recognition.start();
     } catch (err) {
-      console.error("Speech recognition start failed:", err);
       setSpeechError(`Failed to access microphone: ${err.message}`);
       setIsListening(false);
       setListeningTarget(null);
@@ -593,939 +677,1719 @@ export default function App() {
     setListeningTarget(null);
   }
 
-  // Official Documents Hub & Reader Handlers
-  async function fetchDocuments() {
-    setDocsLoading(true);
-    try {
-      const res = await fetch(`${API}/documents`);
-      if (res.ok) {
-        const data = await res.json();
-        setDocsList(data);
-      }
-    } catch (err) {
-      console.error("Failed to fetch documents:", err);
-    } finally {
-      setDocsLoading(false);
-    }
-  }
-
-  async function openDocumentDetails(doc) {
-    setSelectedDoc(doc);
-    setSelectedDocText("");
-    setDocTextLoading(true);
-    stopTts();
-    try {
-      const res = await fetch(`${API}/documents/${doc.id}/text`);
-      if (res.ok) {
-        const data = await res.json();
-        setSelectedDocText(data.text || "Document text is empty or could not be loaded.");
-      } else {
-        setSelectedDocText("Could not load text for this document.");
-      }
-    } catch (err) {
-      setSelectedDocText(`Error loading document text: ${err.message}`);
-    } finally {
-      setDocTextLoading(false);
-    }
-  }
-
-  function closeDocumentReader() {
-    stopTts();
-    setSelectedDoc(null);
-    setSelectedDocText("");
-  }
-
-  async function fetchSchemes() {
-    try {
-      const res = await fetch(`${API}/schemes/raw-budget`);
-      if (res.ok) {
-        const data = await res.json();
-        setSchemesList(data);
-      }
-    } catch {
-      // ignore
-    }
-  }
-
-  async function ask(e, customQuery) {
-    if (e) e.preventDefault();
-    const q = (customQuery !== undefined ? customQuery : question).trim();
-    if (q.length < 5) return;
-
-    setLoading(true);
-    setError("");
-    setResult(null);
-    stopTts();
-    stopVoiceInput();
-
-    try {
-      const res = await fetch(`${API}/research`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, language: selectedLang }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.detail || `Request failed with status ${res.status}`);
-      }
-
-      setResult(data);
-      fetchHistory();
-      fetchHealth();
-    } catch (err) {
-      setError(err.message || "An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-
-
-  function handleKeyDown(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-      ask(e);
-    }
-  }
-
   return (
-    <div className="portal-container">
-      {/* Top Navbar */}
-      <header className="navbar">
-        <div className="nav-brand">
-          <div className="portal-emblem">🏛️</div>
-          <div>
-            <div className="nav-title">GovResearch AI</div>
-            <div className="nav-subtitle">Source-Grounded Government Research Agent</div>
-          </div>
-        </div>
-
-        <div className="nav-badges">
-          <div className="status-badge live">
-            <span className="pulsing-dot" />
-            <span>API Online</span>
-          </div>
-
-          <div
-            className="status-badge live"
-            onClick={() => setShowSchemesModal(true)}
-            title="Browse all 104 Maharashtra Agriculture Schemes (2026-27)"
-            style={{ cursor: "pointer", background: "rgba(16, 185, 129, 0.15)", borderColor: "rgba(16, 185, 129, 0.4)", color: "#059669", fontWeight: 600 }}
-          >
-            📊 104 Active Schemes
-          </div>
-
-          <div
-            className={`status-badge ${health?.has_api_key ? "key-active" : "key-inactive"}`}
-            onClick={() => setShowApiKeyModal(true)}
-            title="Click to view API Key settings"
-            style={{ cursor: "pointer" }}
-          >
-            🔑 {health?.has_api_key ? (health?.llm_model?.includes("Groq") ? "Groq Active" : "LLM Active") : "API Key Not Set"}
-          </div>
-
-          <button
-            type="button"
-            className="theme-toggle-btn"
-            onClick={toggleTheme}
-            title={theme === "light" ? "Switch to Dark Theme" : "Switch to Light Theme"}
-          >
-            {theme === "light" ? "🌙 Dark" : "☀️ Light"}
-          </button>
-
-          <button
-            className="nav-btn"
-            style={{ background: "linear-gradient(135deg, #0284c7, #0d9488)", color: "#ffffff", border: "none" }}
-            onClick={() => { fetchStructuredSchemes(); setShowStructuredModal(true); }}
-          >
-            🏛️ Structured Schemes ({health?.structured_schemes || structuredSchemes.length || 12})
-          </button>
-
-          <button className="nav-btn" onClick={() => setShowSchemesModal(true)}>
-            📊 Maharashtra BDS Budget
-          </button>
-
-          <button
-            className="nav-btn"
-            style={{ background: "linear-gradient(135deg, #4f46e5, #0284c7)", color: "#ffffff", border: "none" }}
-            onClick={() => { fetchDocuments(); setShowDocsModal(true); }}
-            title="Browse official documents, guidelines, and compendiums with voice reader"
-          >
-            📑 Official Documents ({health?.total_documents || docsList.length || 13})
-          </button>
-        </div>
-      </header>
-
-      {/* Main Grid Layout */}
-      <div className="layout">
-        {/* Sidebar History */}
-        <aside className="sidebar">
-          <div className="sidebar-header">
-            <div className="sidebar-title-wrap">
-              <h3>Recent Queries</h3>
-              <span className="badge-count">{history.length}</span>
+    <div className="gov-app-shell">
+      {/* 1. LEFT SIDEBAR NAVIGATION */}
+      <aside className="dash-sidebar">
+        <div>
+          {/* Logo & Brand Header */}
+          <div className="dash-sidebar-header">
+            <div className="dash-brand-emblem-wrap">
+              <span>🏛️</span>
             </div>
-            {history.length > 0 && (
+            <div className="dash-brand-text">
+              <span className="dash-brand-title">AI Government</span>
+              <span className="dash-brand-subtitle">Research Agent</span>
+            </div>
+          </div>
+
+          {/* Navigation Links Menu */}
+          <ul className="dash-nav-menu">
+            <li>
               <button
                 type="button"
-                className="btn-clear-history"
-                onClick={handleClearAllHistory}
-                disabled={clearingHistory}
-                title="Clear all recent search history"
+                className={`dash-nav-btn ${activeTab === "dashboard" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("dashboard");
+                  setSelectedScheme(null);
+                }}
               >
-                {clearingHistory ? "Clearing..." : "🗑️ Clear All"}
+                <span className="dash-nav-icon">🏠</span>
+                <span>{t.navDashboard || "Dashboard"}</span>
               </button>
-            )}
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`dash-nav-btn ${activeTab === "ask-ai" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("ask-ai");
+                  setSelectedScheme(null);
+                }}
+              >
+                <span className="dash-nav-icon">💬</span>
+                <span>{t.navAskAi || "Ask AI"}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`dash-nav-btn ${activeTab === "schemes" || activeTab === "scheme-details" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("schemes");
+                  setSelectedScheme(null);
+                  fetchStructuredSchemes();
+                }}
+              >
+                <span className="dash-nav-icon">🏛️</span>
+                <span>{t.navSchemes || "Schemes"}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`dash-nav-btn ${activeTab === "documents" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("documents");
+                  setSelectedScheme(null);
+                  fetchDocuments();
+                }}
+              >
+                <span className="dash-nav-icon">📄</span>
+                <span>{t.navDocuments || "Documents"}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`dash-nav-btn ${activeTab === "history" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("history");
+                  setSelectedScheme(null);
+                  fetchHistory();
+                }}
+              >
+                <span className="dash-nav-icon">🕒</span>
+                <span>{t.navHistory || "History"}</span>
+              </button>
+            </li>
+            <li>
+              <button
+                type="button"
+                className={`dash-nav-btn ${activeTab === "settings" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveTab("settings");
+                  setSelectedScheme(null);
+                }}
+              >
+                <span className="dash-nav-icon">⚙️</span>
+                <span>{t.navSettings || "Settings"}</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        {/* Bottom Satyameva Jayate Emblem Watermark */}
+        <div className="dash-sidebar-footer">
+          <svg className="satyameva-emblem-svg" viewBox="0 0 100 100" fill="currentColor">
+            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="3" opacity="0.35" />
+            <path d="M50 20 L58 40 L80 40 L62 52 L68 74 L50 62 L32 74 L38 52 L20 40 L42 40 Z" opacity="0.5" />
+          </svg>
+          <span className="satyameva-caption">सत्यमेव जयते</span>
+        </div>
+      </aside>
+
+      {/* 2. MAIN APPLICATION WORKSPACE */}
+      <div className="dash-main-area">
+        {/* Top Header Bar */}
+        <header className="dash-top-bar">
+          <div className="dash-top-left">
+            <span style={{ fontSize: "0.86rem", color: "var(--text-muted)", fontWeight: 600 }}>
+              {activeTab === "dashboard" && (selectedLang === "hi" ? "डैशबोर्ड (Home)" : selectedLang === "mr" ? "डॅशबोर्ड (Home)" : "Dashboard (Home)")}
+              {activeTab === "ask-ai" && (selectedLang === "hi" ? "Ask AI रिसर्च" : selectedLang === "mr" ? "Ask AI संशोधन" : "Ask AI Research")}
+              {activeTab === "schemes" && (selectedLang === "hi" ? "सरकारी योजनाएं" : selectedLang === "mr" ? "शासकीय योजना" : "Government Schemes")}
+              {activeTab === "scheme-details" && (selectedScheme?.hindi_name || "Scheme Details")}
+              {activeTab === "documents" && (selectedLang === "hi" ? "दस्तावेज़ हब" : selectedLang === "mr" ? "दस्तऐवज हब" : "Documents Hub")}
+              {activeTab === "history" && (selectedLang === "hi" ? "खोज इतिहास" : selectedLang === "mr" ? "शोध इतिहास" : "Research History")}
+              {activeTab === "settings" && (selectedLang === "hi" ? "सेटिंग्स" : selectedLang === "mr" ? "सेटिंग्ज" : "Settings")}
+            </span>
           </div>
 
-          {history.length === 0 ? (
-            <div className="empty-history">
-              <p className="muted">Your verified research queries and answers will appear here.</p>
+          <div className="dash-top-right">
+            {/* Language Selector Dropdown */}
+            <select
+              value={selectedLang}
+              onChange={(e) => handleLanguageChange(e.target.value)}
+              className="dash-lang-select-btn"
+              title="Change Language (भाषा चुनें / भाषा निवडा)"
+            >
+              <option value="hi">🌐 हिंदी</option>
+              <option value="en">🇬🇧 English</option>
+              <option value="mr">🚩 मराठी</option>
+            </select>
+
+            {/* Status Pill */}
+            <div
+              className={`status-badge ${health?.has_api_key ? "key-active" : "live"}`}
+              style={{ fontSize: "0.78rem", padding: "4px 10px" }}
+              title={health?.llm_model}
+              onClick={() => setActiveTab("settings")}
+            >
+              <span className="pulsing-dot" />
+              <span>{health?.has_api_key ? "AI Online" : "Vector Grounded"}</span>
             </div>
-          ) : (
-            <ul className="history-list">
-              {history.map((h) => (
-                <li
-                  key={h.id}
-                  className="history-item"
-                  onClick={() => {
-                    setQuestion(h.question);
-                    if (h.answer) {
-                      setResult({
-                        id: h.id,
-                        answer: h.answer,
-                        sources: h.sources || [],
-                        status: h.status,
-                        language: h.language || "en",
-                        detected_language: h.detected_language,
-                        practical_steps: h.practical_steps || [],
-                        clarifying_question: h.clarifying_question,
-                        missing_evidence_warning: h.missing_evidence_warning,
-                        conflicts: h.conflicts || [],
-                        retrieved_chunks: h.retrieved_chunks || [],
-                      });
-                      setError("");
-                    } else {
-                      ask(null, h.question);
-                    }
-                  }}
+
+            {/* Theme Toggle Button */}
+            <button type="button" className="theme-toggle-btn" onClick={toggleTheme} title="Toggle Dark/Light Mode">
+              {theme === "light" ? "🌙" : "☀️"}
+            </button>
+
+            {/* Profile Avatar Icon */}
+            <div className="dash-profile-avatar" title="Official Government Agent Portal" onClick={() => setActiveTab("settings")}>
+              <span>🏛️</span>
+            </div>
+          </div>
+        </header>
+
+        {/* Dynamic Body Content */}
+        <main className="dash-view-body">
+          {/* =========================================================================
+              SCREEN 1: DASHBOARD (HOME) - THE MAIN DASHBOARD
+              ========================================================================= */}
+          {activeTab === "dashboard" && (
+            <div>
+              {/* Hero Banner with Greeting and India Monument Illustration */}
+              <div className="dash-hero-container">
+                <div className="dash-hero-left">
+                  <h1 className="dash-hero-greeting">{t.dashGreeting || "नमस्ते!"}</h1>
+                  <p className="dash-hero-sub">
+                    {t.dashSubtitle || "सरकारी योजनाओं और आधिकारिक जानकारी के लिए आपका AI रिसर्च एजेंट यहाँ है।"}
+                  </p>
+                </div>
+                <div className="dash-hero-right">
+                  <img
+                    src="/assets/dashboard_hero_monument.jpg"
+                    alt="India Monument Illustration"
+                    className="dash-monument-illustration"
+                    onError={(e) => {
+                      // Graceful fallback if image path needs fallback
+                      e.target.style.display = "none";
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Central Prominent Search Bar */}
+              <form
+                className="dash-central-search-card"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (question.trim().length >= 3) {
+                    ask(null, question.trim());
+                  }
+                }}
+              >
+                <span className="dash-search-icon-symbol">🔍</span>
+                <input
+                  type="text"
+                  className="dash-search-text-input"
+                  placeholder={t.dashSearchPlaceholder || "अपना सवाल लिखें... (जैसे - PM-KISAN क्या है?)"}
+                  value={question}
+                  onChange={(e) => setQuestion(e.target.value)}
+                />
+                <button
+                  type="button"
+                  className={`voice-mic-btn ${isListening && listeningTarget === "search" ? "listening" : ""}`}
+                  style={{ marginRight: "10px", padding: "6px 14px", fontSize: "0.82rem" }}
+                  onClick={() => (isListening && listeningTarget === "search" ? stopVoiceInput() : startVoiceInput("search"))}
+                  title="Speak your query in Hindi, English, or Marathi"
                 >
-                  <span className="history-icon">💬</span>
-                  <div className="history-text">
-                    <span className="history-q" title={h.question}>{h.question}</span>
-                    <span className="history-meta">{h.created_at ? new Date(h.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recent"}</span>
+                  <span>{isListening && listeningTarget === "search" ? "⏹️" : "🎙️"}</span>
+                </button>
+                <button type="submit" className="dash-search-action-btn">
+                  <span>{t.dashSearchBtn || "खोजें"}</span>
+                  <span>➔</span>
+                </button>
+              </form>
+
+              {/* Government Schemes Photo Cards Section (Pixel-Matched to Design Mockup) */}
+              <div className="dash-schemes-section">
+                <div className="dash-schemes-header-row">
+                  <div className="dash-schemes-title-group">
+                    <h3>{t.govSchemesHeading || "Government Schemes"}</h3>
+                    <p>{t.govSchemesSubtitle || "Find information about various government schemes and benefits"}</p>
                   </div>
                   <button
                     type="button"
-                    className="history-delete-btn"
-                    onClick={(e) => handleDeleteHistoryItem(e, h.id)}
-                    title="Remove this search query"
-                    aria-label={`Remove query: ${h.question}`}
+                    className="dash-schemes-view-all-btn"
+                    onClick={() => {
+                      setSchemeCategoryFilter("all");
+                      setActiveTab("schemes");
+                    }}
                   >
-                    ✕
+                    <span>{t.viewAllSchemes || "View All Schemes →"}</span>
                   </button>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="sidebar-footer">
-            <div className="info-box">
-              <strong>Grounded RAG Guarantee</strong>
-              <p>Every response is cross-checked against indexed official gazettes, guidelines, and ministry portals.</p>
-            </div>
-          </div>
-        </aside>
-
-        {/* Main Content Area */}
-        <main className="main-content">
-          <div className="hero-banner">
-            <div className="hero-tag">GOVERNMENT SCHEME & POLICY RESEARCH INTELLIGENCE</div>
-            <h1>Government Scheme Research Agent</h1>
-            <p className="hero-description">
-              Verified answers for government schemes, farmer welfare, welfare policies, eligibility criteria, and benefits.
-              Every response is strictly verified with direct citations and hallucination checks against official guidelines.
-            </p>
-          </div>
-
-          {/* Domain Category Tabs */}
-          <div className="category-tabs">
-            {DOMAIN_CATEGORIES.map((cat) => (
-              <button
-                key={cat.id}
-                type="button"
-                className={`category-tab-btn ${activeCategory === cat.id ? "active" : ""}`}
-                onClick={() => setActiveCategory(cat.id)}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Suggested Queries for Active Category */}
-          {(() => {
-            const currentCat = DOMAIN_CATEGORIES.find((c) => c.id === activeCategory) || DOMAIN_CATEGORIES[0];
-            return (
-              <div className="chips-container">
-                <div className="chips-header">
-                  <span className="chips-label">Research Queries for {currentCat.label}:</span>
-                  <span className="chips-sublabel">{currentCat.description}</span>
                 </div>
-                <div className="chips-list">
-                  {currentCat.questions.map((q, idx) => (
+
+                <div className="dash-photo-categories-grid">
+                  {/* Card 1: Farmer Schemes */}
+                  <div
+                    className="dash-scheme-photo-card card-theme-farmer"
+                    onClick={() => {
+                      setSchemeCategoryFilter("Agriculture");
+                      setActiveTab("schemes");
+                    }}
+                    title="Farmer Welfare & Credit Schemes"
+                  >
+                    <div className="dash-card-banner-wrapper">
+                      <img
+                        src="/assets/scheme_cat_farmer.jpg"
+                        alt={t.categoryFarmer || "किसान योजनाएँ"}
+                        className="dash-card-banner-img"
+                        onError={(e) => {
+                          e.target.src = "/assets/card_farmer.jpg";
+                        }}
+                      />
+                      <div className="dash-card-floating-badge">
+                        <svg className="dash-badge-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M17 8C8 10 5.9 16.17 3.82 21.34L5.71 22l1-2.3A9.49 9.49 0 0 0 12 21a9.92 9.92 0 0 0 8.94-5.53A8.99 8.99 0 0 0 22 10.5V8h-5zm3 2.5c-.01 1.63-.64 3.2-1.78 4.41-.95-2.9-2.76-5.46-5.22-7.41H17v.5c.01.83.67 1.5 1.5 1.5h1.5v1z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="dash-card-content">
+                      <h4 className="dash-card-title">{t.categoryFarmer || "किसान योजनाएँ"}</h4>
+                      <p className="dash-card-desc">{t.categoryFarmerDesc || "PM-KISAN, KCC, फसल बीमा, कृषि उपकरण आदि"}</p>
+                      <div className="dash-card-bottom-row">
+                        <div className="dash-card-arrow-circle">➔</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 2: Scholarship Schemes */}
+                  <div
+                    className="dash-scheme-photo-card card-theme-scholarship"
+                    onClick={() => {
+                      setSchemeCategoryFilter("Education");
+                      setActiveTab("schemes");
+                    }}
+                    title="Scholarships & Higher Education Schemes"
+                  >
+                    <div className="dash-card-banner-wrapper">
+                      <img
+                        src="/assets/scheme_cat_scholarship.jpg"
+                        alt={t.categoryScholarship || "छात्रवृत्ति"}
+                        className="dash-card-banner-img"
+                        onError={(e) => {
+                          e.target.src = "/assets/card_scholarship.jpg";
+                        }}
+                      />
+                      <div className="dash-card-floating-badge">
+                        <svg className="dash-badge-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zm0 8.5L4.82 9 12 5.09 19.18 9 12 11.5zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="dash-card-content">
+                      <h4 className="dash-card-title">{t.categoryScholarship || "छात्रवृत्ति"}</h4>
+                      <p className="dash-card-desc">{t.categoryScholarshipDesc || "शिक्षा छात्रवृत्ति, स्कॉलरशिप, कौशल विकास आदि"}</p>
+                      <div className="dash-card-bottom-row">
+                        <div className="dash-card-arrow-circle">➔</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 3: Entrepreneurship Schemes */}
+                  <div
+                    className="dash-scheme-photo-card card-theme-entrepreneurship"
+                    onClick={() => {
+                      setSchemeCategoryFilter("Credit");
+                      setActiveTab("schemes");
+                    }}
+                    title="MSME & Entrepreneurship Schemes"
+                  >
+                    <div className="dash-card-banner-wrapper">
+                      <img
+                        src="/assets/scheme_cat_entrepreneur.jpg"
+                        alt={t.categoryEntrepreneurship || "उद्यमिता"}
+                        className="dash-card-banner-img"
+                        onError={(e) => {
+                          e.target.src = "/assets/card_entrepreneur.jpg";
+                        }}
+                      />
+                      <div className="dash-card-floating-badge">
+                        <svg className="dash-badge-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7zm-3 18a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1H9v1z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="dash-card-content">
+                      <h4 className="dash-card-title">{t.categoryEntrepreneurship || "उद्यमिता"}</h4>
+                      <p className="dash-card-desc">{t.categoryEntrepreneurshipDesc || "मुद्रा लोन, स्टैंड-अप इंडिया, PMEGP, स्टार्टअप सहायता आदि"}</p>
+                      <div className="dash-card-bottom-row">
+                        <div className="dash-card-arrow-circle">➔</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 4: Women Welfare Schemes */}
+                  <div
+                    className="dash-scheme-photo-card card-theme-women"
+                    onClick={() => {
+                      setSchemeCategoryFilter("Women");
+                      setActiveTab("schemes");
+                    }}
+                    title="Women & Child Welfare Schemes"
+                  >
+                    <div className="dash-card-banner-wrapper">
+                      <img
+                        src="/assets/scheme_cat_women.jpg"
+                        alt={t.categoryWomen || "महिला कल्याण"}
+                        className="dash-card-banner-img"
+                        onError={(e) => {
+                          e.target.src = "/assets/card_women.jpg";
+                        }}
+                      />
+                      <div className="dash-card-floating-badge">
+                        <svg className="dash-badge-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M12 2a5 5 0 1 0 5 5 5 5 0 0 0-5-5zm0 8a3 3 0 1 1 3-3 3 3 0 0 1-3 3zm9 11v-1a7 7 0 0 0-7-7h-4a7 7 0 0 0-7 7v1h2v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="dash-card-content">
+                      <h4 className="dash-card-title">{t.categoryWomen || "महिला कल्याण"}</h4>
+                      <p className="dash-card-desc">{t.categoryWomenDesc || "उज्ज्वला योजना, मातृत्व लाभ, स्वरोजगार, सुरक्षा आदि"}</p>
+                      <div className="dash-card-bottom-row">
+                        <div className="dash-card-arrow-circle">➔</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card 5: Other Schemes */}
+                  <div
+                    className="dash-scheme-photo-card card-theme-other"
+                    onClick={() => {
+                      setSchemeCategoryFilter("all");
+                      setActiveTab("schemes");
+                    }}
+                    title="All Other Schemes & Policies"
+                  >
+                    <div className="dash-card-banner-wrapper">
+                      <img
+                        src="/assets/scheme_cat_other.jpg"
+                        alt={t.categoryOther || "अन्य योजनाएँ"}
+                        className="dash-card-banner-img"
+                        onError={(e) => {
+                          e.target.src = "/assets/card_other.jpg";
+                        }}
+                      />
+                      <div className="dash-card-floating-badge">
+                        <svg className="dash-badge-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                          <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5s-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z" />
+                        </svg>
+                      </div>
+                    </div>
+                    <div className="dash-card-content">
+                      <h4 className="dash-card-title">{t.categoryOther || "अन्य योजनाएँ"}</h4>
+                      <p className="dash-card-desc">{t.categoryOtherDesc || "स्वास्थ्य, पेंशन, आवास, रोजगार, परिवहन आदि"}</p>
+                      <div className="dash-card-bottom-row">
+                        <div className="dash-card-arrow-circle">➔</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats Metrics Row (4 Cards - Pixel-Matched to Screenshot) */}
+              <div className="dash-stats-grid">
+                <div className="dash-stat-box" onClick={() => setActiveTab("schemes")} style={{ cursor: "pointer" }}>
+                  <div className="dash-stat-icon-square" style={{ color: "#2563eb", background: "#eff6ff", borderColor: "#bfdbfe" }}>
+                    📄
+                  </div>
+                  <div className="dash-stat-text-wrap">
+                    <span className="dash-stat-number">{t.statTotalSchemesCount || "1,250+"}</span>
+                    <span className="dash-stat-label">{t.statTotalSchemesLabel || "सरकारी योजनाएँ"}</span>
+                  </div>
+                </div>
+
+                <div className="dash-stat-box" onClick={() => setActiveTab("documents")} style={{ cursor: "pointer" }}>
+                  <div className="dash-stat-icon-square" style={{ color: "#16a34a", background: "#f0fdf4", borderColor: "#bbf7d0" }}>
+                    📖
+                  </div>
+                  <div className="dash-stat-text-wrap">
+                    <span className="dash-stat-number">{t.statTotalDocsCount || "5,680+"}</span>
+                    <span className="dash-stat-label">{t.statTotalDocsLabel || "दस्तावेज़ इंडेक्स किए गए"}</span>
+                  </div>
+                </div>
+
+                <div className="dash-stat-box">
+                  <div className="dash-stat-icon-square" style={{ color: "#7c3aed", background: "#f5f3ff", borderColor: "#ddd6fe" }}>
+                    ⏱️
+                  </div>
+                  <div className="dash-stat-text-wrap">
+                    <span className="dash-stat-number">{t.statAiAssistCount || "24/7"}</span>
+                    <span className="dash-stat-label">{t.statAiAssistLabel || "AI सहायता उपलब्ध"}</span>
+                  </div>
+                </div>
+
+                <div className="dash-stat-box">
+                  <div className="dash-stat-icon-square" style={{ color: "#16a34a", background: "#f0fdf4", borderColor: "#bbf7d0" }}>
+                    ✅
+                  </div>
+                  <div className="dash-stat-text-wrap">
+                    <span className="dash-stat-number" style={{ fontSize: "1.02rem" }}>
+                      {t.statSourcesUpdateCount || "स्रोत अपडेटेड"}
+                    </span>
+                    <span className="dash-stat-label">{t.statSourcesUpdateLabel || "अंतिम जाँच: 10 अक्टूबर 2026"}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Popular Schemes Tags Section */}
+              <div className="dash-popular-container">
+                <div className="dash-popular-header">
+                  <h3 className="dash-popular-title">{t.popularSchemes || "लोकप्रिय योजनाएं"}</h3>
+                  <button
+                    type="button"
+                    className="dash-view-all-link"
+                    onClick={() => {
+                      setSchemeCategoryFilter("all");
+                      setActiveTab("schemes");
+                    }}
+                  >
+                    <span>{t.viewAllSchemes || "सभी योजनाएं →"}</span>
+                  </button>
+                </div>
+                <div className="dash-popular-chips-wrap">
+                  {[
+                    { label: "PM-KISAN", query: "पीएम-किसान योजना के तहत ₹6,000 की किस्त और पात्रता क्या है?" },
+                    { label: "KCC (किसान क्रेडिट कार्ड)", query: "किसान क्रेडिट कार्ड (KCC) प्राप्त करने की पात्रता और ब्याज दर क्या है?" },
+                    { label: "मुद्रा लोन", query: "प्रधानमंत्री मुद्रा योजना के तहत ऋण श्रेणियां और पात्रता क्या हैं?" },
+                    { label: "छात्रवृत्ति (NSP)", query: "नेशनल स्कॉलरशिप पोर्टल (NSP) पर मैट्रिकोत्तर छात्रवृत्ति के नियम क्या हैं?" },
+                    { label: "उज्ज्वला योजना", query: "प्रधानमंत्री उज्ज्वला योजना के तहत मुफ्त गैस कनेक्शन की पात्रता क्या है?" },
+                    { label: "आयुष्मान भारत (PM-JAY)", query: "आयुष्मान भारत योजना के तहत ₹5 लाख का कैशलेस स्वास्थ्य बीमा कैसे मिलता है?" },
+                  ].map((p) => (
                     <button
-                      key={idx}
+                      key={p.label}
                       type="button"
-                      className="chip-btn"
+                      className="dash-scheme-pill-btn"
                       onClick={() => {
-                        setQuestion(q);
-                        ask(null, q);
+                        setQuestion(p.query);
+                        ask(null, p.query);
                       }}
                     >
-                      {q}
+                      {p.label}
                     </button>
                   ))}
                 </div>
               </div>
-            );
-          })()}
-
-          {/* Language Preference Selector */}
-          <div className="language-selector-bar">
-            <div className="lang-label">
-              <span>🗣️</span>
-              <span>Response Language / भाषा निवडा:</span>
             </div>
-            <div className="lang-buttons">
-              <button
-                type="button"
-                className={`lang-btn ${selectedLang === "auto" ? "active" : ""}`}
-                onClick={() => setSelectedLang("auto")}
-                title="Automatically detect question language"
-              >
-                🌐 Auto Detect
-              </button>
-              <button
-                type="button"
-                className={`lang-btn ${selectedLang === "en" ? "active" : ""}`}
-                onClick={() => setSelectedLang("en")}
-              >
-                🇬🇧 English
-              </button>
-              <button
-                type="button"
-                className={`lang-btn ${selectedLang === "hi" ? "active" : ""}`}
-                onClick={() => setSelectedLang("hi")}
-              >
-                🇮🇳 हिन्दी (Hindi)
-              </button>
-              <button
-                type="button"
-                className={`lang-btn ${selectedLang === "mr" ? "active" : ""}`}
-                onClick={() => setSelectedLang("mr")}
-              >
-                🚩 मराठी (Marathi)
-              </button>
-            </div>
-          </div>
+          )}
 
-          {/* Search Form */}
-          <form className="search-card" onSubmit={ask}>
-            {/* Voice Input Toolbar */}
-            <div className="search-voice-bar">
-              <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap", flex: 1 }}>
-                <button
-                  type="button"
-                  className={`voice-mic-btn ${isListening && listeningTarget === "search" ? "listening" : ""}`}
-                  onClick={() => (isListening && listeningTarget === "search" ? stopVoiceInput() : startVoiceInput("search"))}
-                  title="Click to speak your research query in English, Hindi (हिन्दी) or Marathi (मराठी)"
-                >
-                  <span>{isListening && listeningTarget === "search" ? "⏹️ Stop Listening" : "🎙️ Voice Search / आवाज विचारा"}</span>
-                </button>
-
-                {isListening && listeningTarget === "search" ? (
-                  <div className="voice-listening-active-box">
-                    <span className="pulse-recording-dot" />
-                    <span className="voice-live-text">
-                      🎙️ Listening ({selectedLang === "hi" ? "हिन्दी" : selectedLang === "mr" ? "मराठी" : selectedLang === "en" ? "English" : "Auto / Default"})... {liveTranscript || "Speak clearly into microphone..."}
+          {/* =========================================================================
+              SCREEN 2: ASK AI (CHAT & RESEARCH INTERFACE)
+              ========================================================================= */}
+          {activeTab === "ask-ai" && (
+            <div className="askai-split-layout">
+              {/* Left Column: Chat Messages & Research Output */}
+              <div className="askai-main-column">
+                <div className="askai-header-nav">
+                  <button type="button" className="askai-back-btn" onClick={() => setActiveTab("dashboard")}>
+                    {t.backToDashboard || "← डैशबोर्ड"}
+                  </button>
+                  <div>
+                    <h2 style={{ margin: 0, fontSize: "1.25rem", color: "var(--text-main)" }}>
+                      {t.askAiHeaderTitle || "Ask AI"}
+                    </h2>
+                    <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                      {t.askAiHeaderSubtitle || "सरकारी योजनाओं से जुड़े सवाल पूछें और आधिकारिक जानकारी पाएँ।"}
                     </span>
                   </div>
-                ) : (
-                  <span style={{ fontSize: "0.78rem", color: "var(--text-dim)" }}>
-                    Speak query in <strong>{selectedLang === "hi" ? "हिन्दी" : selectedLang === "mr" ? "मराठी" : selectedLang === "en" ? "English" : "selected language"}</strong>
-                  </span>
+                </div>
+
+                {/* User Message Bubble */}
+                {question && (
+                  <div className="askai-user-message-bubble">
+                    <p className="askai-user-message-text">{question}</p>
+                    <span className="askai-message-time">
+                      {new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                  </div>
                 )}
-              </div>
 
-              <label className="auto-search-toggle" title="Automatically research schemes when you finish speaking">
-                <input
-                  type="checkbox"
-                  checked={autoSearchOnSpeech}
-                  onChange={(e) => setAutoSearchOnSpeech(e.target.checked)}
-                />
-                <span>⚡ Auto-search after speech</span>
-              </label>
-            </div>
+                {/* Loading Indicator */}
+                {loading && (
+                  <div className="notice-card" style={{ background: "var(--bg-secondary)" }}>
+                    <span className="spinner" />
+                    <span style={{ fontWeight: 600 }}>{t.researchingEvidenceBtn || "सरकारी साक्ष्य तलाशे जा रहे हैं..."}</span>
+                  </div>
+                )}
 
-            {speechError && (
-              <div style={{
-                marginBottom: "10px",
-                padding: "8px 12px",
-                borderRadius: "var(--radius-sm)",
-                background: "var(--rose-bg)",
-                border: "1px solid var(--rose-border)",
-                color: "var(--rose-text)",
-                fontSize: "0.82rem",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center"
-              }}>
-                <span>⚠️ {speechError}</span>
-                <button type="button" onClick={() => setSpeechError("")} style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", fontWeight: "bold" }}>✕</button>
-              </div>
-            )}
+                {/* Error Notice */}
+                {error && (
+                  <div className="notice-card error">
+                    <div className="notice-icon">⚠️</div>
+                    <div className="notice-body">
+                      <strong>{t.researchErrorTitle || "अनुसंधान त्रुटि"}</strong>
+                      <p>{error}</p>
+                    </div>
+                  </div>
+                )}
 
-            <div className="textarea-wrapper">
-              <textarea
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask about farmer credit, crop diseases, pest outbreaks, fertilizer dosage, or government schemes (e.g., How to apply for KCC or prevent wheat yellowing?)"
-                rows={3}
-              />
-            </div>
+                {/* Insufficient Evidence Notice */}
+                {result?.status === "insufficient_evidence" && (
+                  <div className="notice-card warn">
+                    <div className="notice-icon">📋</div>
+                    <div className="notice-body">
+                      <strong>{t.insufficientEvidenceTitle}</strong>
+                      <p>{t.insufficientEvidenceDesc}</p>
+                    </div>
+                  </div>
+                )}
 
-            <div className="search-footer">
-              <span className="hint-text">Tip: Press <strong>Ctrl + Enter</strong> or click <strong>🎙️</strong> to speak in Hindi/Marathi/English</span>
-              <div className="btn-group">
-                {(question || result || error) && (
-                  <button
-                    type="button"
-                    className="btn-secondary"
-                    onClick={() => {
-                      setQuestion("");
-                      setResult(null);
-                      setError("");
+                {/* Structured Scheme Breakdown Card (if matched from DB) */}
+                {result?.matched_scheme && (
+                  <div
+                    style={{
+                      background: "var(--bg-card)",
+                      border: "1.5px solid var(--accent)",
+                      borderRadius: "var(--radius-lg)",
+                      padding: "20px",
+                      boxShadow: "var(--shadow-md)",
                     }}
-                    title="Clear search query and displayed findings"
                   >
-                    Clear Search
-                  </button>
-                )}
-                <button type="submit" className="btn-primary" disabled={loading || question.trim().length < 5}>
-                  {loading ? (
-                    <>
-                      <span className="spinner" />
-                      Researching Evidence...
-                    </>
-                  ) : (
-                    <>
-                      <span>🔍</span> Research Schemes
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          </form>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
+                      <div>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                          <span style={{ fontSize: "1.3rem" }}>🏛️</span>
+                          <h3 style={{ margin: 0, fontSize: "1.2rem", color: "var(--text-main)", fontWeight: 700 }}>
+                            {result.matched_scheme.hindi_name}
+                          </h3>
+                        </div>
+                        <div style={{ fontSize: "0.86rem", color: "var(--text-muted)", marginTop: "3px" }}>
+                          {result.matched_scheme.scheme_name}
+                        </div>
+                      </div>
+                      <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.76rem", fontWeight: 700 }}>
+                        ● {result.matched_scheme.status || "Active"}
+                      </span>
+                    </div>
 
-          {/* Alerts */}
-          {error && (
-            <div className="notice-card error">
-              <div className="notice-icon">⚠️</div>
-              <div className="notice-body">
-                <strong>Research Error</strong>
-                <p>{error}</p>
-                {error.includes("ANTHROPIC_API_KEY") && (
-                  <button
-                    type="button"
-                    className="notice-action-btn"
-                    onClick={() => setShowApiKeyModal(true)}
-                  >
-                    Configure API Key
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
-
-          {result?.status === "insufficient_evidence" && (
-            <div className="notice-card warn">
-              <div className="notice-icon">📋</div>
-              <div className="notice-body">
-                <strong>Insufficient Official Evidence</strong>
-                <p>The indexed official records do not contain enough verified evidence to answer this question with certainty.</p>
-              </div>
-            </div>
-          )}
-
-          {/* Structured Scheme Card (Matched from PostgreSQL / Database) */}
-          {result?.matched_scheme && (
-            <div
-              className="structured-scheme-box"
-              style={{
-                marginBottom: "20px",
-                background: "var(--bg-card)",
-                border: "1.5px solid var(--accent)",
-                borderRadius: "var(--radius-lg)",
-                padding: "20px",
-                boxShadow: "var(--shadow-md)",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <span style={{ fontSize: "1.3rem" }}>🏛️</span>
-                    <h3 style={{ margin: 0, fontSize: "1.25rem", color: "var(--text-main)", fontWeight: 700 }}>
-                      {result.matched_scheme.hindi_name}
-                    </h3>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "12px", marginTop: "16px" }}>
+                      <div style={{ background: "var(--bg-secondary)", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                        <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>🎯 {t.eligibilityLabel}</span>
+                        <p style={{ margin: "4px 0 0", fontSize: "0.86rem", color: "var(--text-main)" }}>{result.matched_scheme.eligibility}</p>
+                      </div>
+                      <div style={{ background: "var(--bg-secondary)", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                        <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>💰 {t.benefitsLabel}</span>
+                        <p style={{ margin: "4px 0 0", fontSize: "0.86rem", color: "var(--text-main)" }}>{result.matched_scheme.benefits}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: "0.92rem", color: "var(--text-muted)", marginTop: "4px" }}>
-                    {result.matched_scheme.scheme_name}
-                  </div>
-                </div>
-                <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                  <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", border: "1px solid var(--emerald-border)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.78rem", fontWeight: 700 }}>
-                    ● {result.matched_scheme.status || "Active"}
-                  </span>
-                  <span style={{ background: "var(--bg-secondary)", color: "var(--accent)", border: "1px solid var(--panel-border)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.78rem", fontWeight: 700 }}>
-                    📍 {result.matched_scheme.state_district}
-                  </span>
-                  <span style={{ background: "var(--bg-secondary)", color: "var(--text-muted)", border: "1px solid var(--panel-border)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.78rem" }}>
-                    🏷️ {result.matched_scheme.category}
-                  </span>
-                </div>
-              </div>
+                )}
 
-              {/* 9 Structured Fields Grid */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "12px", marginTop: "16px" }}>
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>🎯 पात्रता (Eligibility)</span>
-                  <p style={{ margin: "4px 0 0", fontSize: "0.86rem", lineHeight: "1.45", color: "var(--text-main)" }}>{result.matched_scheme.eligibility}</p>
-                </div>
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>👥 पात्र लाभार्थी (Beneficiary)</span>
-                  <p style={{ margin: "4px 0 0", fontSize: "0.86rem", lineHeight: "1.45", color: "var(--text-main)" }}>{result.matched_scheme.beneficiary}</p>
-                </div>
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>💰 वित्तीय लाभ (Benefits)</span>
-                  <p style={{ margin: "4px 0 0", fontSize: "0.86rem", lineHeight: "1.45", color: "var(--text-main)" }}>{result.matched_scheme.benefits}</p>
-                </div>
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>📄 आवश्यक दस्तावेज़ (Documents Required)</span>
-                  <div style={{ margin: "4px 0 0", fontSize: "0.86rem", lineHeight: "1.45", whiteSpace: "pre-line", color: "var(--text-main)" }}>{result.matched_scheme.documents}</div>
-                </div>
-              </div>
+                {/* AI Research Answer Card */}
+                {result?.answer && (
+                  <section className="answer-card" style={{ margin: 0 }}>
+                    <div className="answer-header">
+                      <div className="answer-title">
+                        <span className="answer-badge">{t.verifiedSynthesisBadge}</span>
+                        <h2>{t.officialFindingsTitle}</h2>
+                      </div>
 
-              {result.matched_scheme.official_source_url && (
-                <div style={{ marginTop: "14px", paddingTop: "12px", borderTop: "1px solid var(--panel-border)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
-                  <span style={{ fontSize: "0.82rem", color: "var(--text-dim)" }}>
-                    🏛️ नोडल विभाग: {result.matched_scheme.authority}
-                  </span>
-                  <a
-                    href={result.matched_scheme.official_source_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ fontSize: "0.85rem", color: "var(--accent)", fontWeight: 700, textDecoration: "none" }}
-                  >
-                    🔗 आधिकारिक पोर्टल (Official Portal) ↗
-                  </a>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Research Answer */}
-          {result?.answer && (
-            <section className="answer-card">
-              <div className="answer-header">
-                <div className="answer-title">
-                  <span className="answer-badge">Verified Synthesis</span>
-                  {result.language && (
-                    <span className="lang-badge">
-                      🌐 {result.language === "mr" ? "मराठी (Marathi)" : result.language === "hi" ? "हिन्दी (Hindi)" : "English"}
-                      {result.detected_language && result.detected_language !== result.language && ` (Detected: ${result.detected_language})`}
-                    </span>
-                  )}
-                  <h2>
-                    {result.language === "mr" ? "अधिकृत शासकीय संशोधन निष्कर्ष" :
-                     result.language === "hi" ? "आधिकारिक सरकारी शोध निष्कर्ष" :
-                     "Official Research Findings"}
-                  </h2>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                  {/* Voice Audio Toolbar for Findings */}
-                  <div className="audio-player-toolbar">
-                    {ttsPlaying && ttsSource === "findings" ? (
-                      <>
-                        {ttsPaused ? (
-                          <button type="button" className="audio-btn active" onClick={resumeTts} title="Resume voice readout">
-                            ▶️ Resume
-                          </button>
+                      {/* TTS Audio Player Toolbar */}
+                      <div className="audio-player-toolbar">
+                        {ttsPlaying && ttsSource === "findings" ? (
+                          <>
+                            {ttsPaused ? (
+                              <button type="button" className="audio-btn active" onClick={resumeTts}>
+                                {t.resumeVoiceBtn}
+                              </button>
+                            ) : (
+                              <button type="button" className="audio-btn active" onClick={pauseTts}>
+                                {t.pauseVoiceBtn}
+                              </button>
+                            )}
+                            <button type="button" className="audio-btn danger" onClick={stopTts}>
+                              {t.stopVoiceBtn}
+                            </button>
+                            <div className="audio-waveform-bars">
+                              <span className="audio-wave-bar" />
+                              <span className="audio-wave-bar" />
+                              <span className="audio-wave-bar" />
+                              <span className="audio-wave-bar" />
+                              <span className="audio-wave-bar" />
+                            </div>
+                          </>
                         ) : (
-                          <button type="button" className="audio-btn active" onClick={pauseTts} title="Pause voice readout">
-                            ⏸️ Pause
+                          <button
+                            type="button"
+                            className="audio-btn"
+                            onClick={() => playTts(result.answer, "findings", result.language || selectedLang)}
+                          >
+                            {t.readFindingsAloudBtn}
                           </button>
                         )}
-                        <button type="button" className="audio-btn danger" onClick={stopTts} title="Stop voice readout">
-                          ⏹️ Stop
-                        </button>
+                        <div className="speed-selector-group">
+                          {[0.8, 1.0, 1.25].map((rate) => (
+                            <button
+                              key={rate}
+                              type="button"
+                              className={`speed-chip ${ttsRate === rate ? "active" : ""}`}
+                              onClick={() => changeTtsRate(rate)}
+                            >
+                              {rate}x
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
 
-                        <div className="audio-waveform-bars" title="Voice audio active">
-                          <span className="audio-wave-bar" />
-                          <span className="audio-wave-bar" />
-                          <span className="audio-wave-bar" />
-                          <span className="audio-wave-bar" />
-                          <span className="audio-wave-bar" />
+                    <div className="markdown-body">
+                      <ReactMarkdown remarkPlugins={[remarkGfm]}>{result.answer}</ReactMarkdown>
+                    </div>
+
+                    {/* Quick Follow-up Action Chips */}
+                    <div className="askai-quick-actions-bar">
+                      <span style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-dim)", alignSelf: "center", marginRight: "4px" }}>
+                        {t.quickActionsTitle || "त्वरित सवाल:"}
+                      </span>
+                      {[
+                        { label: t.quickActionApply || "आवेदन प्रक्रिया क्या है?", q: `${result?.question || question} के लिए आवेदन प्रक्रिया क्या है?` },
+                        { label: t.quickActionEligibility || "पात्रता क्या है?", q: `${result?.question || question} के लिए पात्रता और दस्तावेज क्या हैं?` },
+                        { label: t.quickActionStatus || "किस्त का स्टेटस कैसे देखें?", q: `${result?.question || question} का स्टेटस और लाभार्थी सूची कैसे देखें?` },
+                      ].map((action, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          className="askai-quick-action-chip"
+                          onClick={() => {
+                            setQuestion(action.q);
+                            ask(null, action.q);
+                          }}
+                        >
+                          {action.label}
+                        </button>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Referenced Sources Section */}
+                {showSourcesInAnswer && result?.sources?.length > 0 && (
+                  <section className="sources-card">
+                    <div className="sources-header">
+                      <h3>{t.officialSourcesTitle}</h3>
+                      <span className="badge-count">{result.sources.length} {t.verifiedBadgeSuffix}</span>
+                    </div>
+                    <div className="sources-grid">
+                      {result.sources.map((src, idx) => (
+                        <div key={idx} className="source-item">
+                          <span className="source-num">[{src.citation_index || idx + 1}]</span>
+                          <div className="source-details">
+                            <span className="source-name">
+                              {src.source_url ? (
+                                <a href={src.source_url} target="_blank" rel="noreferrer" className="source-link">
+                                  {src.source || "Official Portal"} ↗
+                                </a>
+                              ) : (
+                                <span className="source-title-plain">{src.source || "Official Source"}</span>
+                              )}
+                            </span>
+                            <div className="source-meta">
+                              <span className="meta-badge">{src.authority || "Ministry of Agriculture"}</span>
+                              {src.document_type && <span className="meta-badge">{src.document_type}</span>}
+                              {src.official_date && <span className="meta-badge">📅 {src.official_date}</span>}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                )}
+
+                {/* Bottom Chat Input Bar */}
+                <form className="askai-chat-input-card" onSubmit={ask}>
+                  <div className="askai-input-row">
+                    <button
+                      type="button"
+                      className="askai-icon-btn"
+                      onClick={() => setActiveTab("documents")}
+                      title="Attach or inspect official documents"
+                    >
+                      📎
+                    </button>
+                    <input
+                      type="text"
+                      className="askai-input-field"
+                      placeholder={t.chatPlaceholder || "अपना सवाल लिखें..."}
+                      value={question}
+                      onChange={(e) => setQuestion(e.target.value)}
+                    />
+                    <button
+                      type="button"
+                      className={`askai-icon-btn ${isListening && listeningTarget === "search" ? "listening" : ""}`}
+                      onClick={() => (isListening && listeningTarget === "search" ? stopVoiceInput() : startVoiceInput("search"))}
+                      title="Voice Input (बोलकर पूछें)"
+                    >
+                      🎙️
+                    </button>
+                    <button type="submit" className="askai-send-btn" disabled={loading || question.trim().length < 3}>
+                      ➔
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              {/* Right Column: Language Radio, Suggested Questions, Tips */}
+              <div className="askai-sidebar-col">
+                {/* 1. Language Selector Radio */}
+                <div className="askai-panel-box">
+                  <h4 className="askai-panel-title">
+                    <span>🌐</span>
+                    <span>{t.selectLanguageLabel || "भाषा चुनें"}</span>
+                  </h4>
+                  <div className="askai-lang-radio-list">
+                    <label className="askai-lang-radio-option">
+                      <input
+                        type="radio"
+                        name="askai-lang"
+                        value="hi"
+                        checked={selectedLang === "hi"}
+                        onChange={() => handleLanguageChange("hi")}
+                      />
+                      <span>हिंदी (Hindi)</span>
+                    </label>
+                    <label className="askai-lang-radio-option">
+                      <input
+                        type="radio"
+                        name="askai-lang"
+                        value="en"
+                        checked={selectedLang === "en"}
+                        onChange={() => handleLanguageChange("en")}
+                      />
+                      <span>English</span>
+                    </label>
+                    <label className="askai-lang-radio-option">
+                      <input
+                        type="radio"
+                        name="askai-lang"
+                        value="mr"
+                        checked={selectedLang === "mr"}
+                        onChange={() => handleLanguageChange("mr")}
+                      />
+                      <span>मराठी (Marathi)</span>
+                    </label>
+                  </div>
+                </div>
+
+                {/* 2. Suggested Questions */}
+                <div className="askai-panel-box">
+                  <h4 className="askai-panel-title">
+                    <span>💡</span>
+                    <span>{t.suggestedQuestionsTitle || "सुझाए गए सवाल"}</span>
+                  </h4>
+                  <div className="askai-suggested-q-list">
+                    {(domainCategories[0]?.questions?.slice(0, 4) || [
+                      "PM-KISAN के लिए पात्रता क्या है?",
+                      "KCC के लिए आवेदन कैसे करें?",
+                      "मुद्रा लोन के लिए कौन-कौन से दस्तावेज चाहिए?",
+                      "छात्रवृत्ति के लिए आवेदन कैसे करें?",
+                    ]).map((qText, idx) => (
+                      <button
+                        key={idx}
+                        type="button"
+                        className="askai-suggested-q-btn"
+                        onClick={() => {
+                          setQuestion(qText);
+                          ask(null, qText);
+                        }}
+                      >
+                        <span>{qText}</span>
+                        <span className="askai-chevron-arrow">›</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Did You Know? Advice Card */}
+                <div className="did-you-know-card">
+                  <div className="did-you-know-header">
+                    <span>⚠️</span>
+                    <span>{t.didYouKnowTitle || "क्या आप जानते हैं?"}</span>
+                  </div>
+                  <p className="did-you-know-body">
+                    {t.didYouKnowText || "आप अपनी भाषा में भी सवाल पूछ सकते हैं। हम हिंदी, अंग्रेजी और मराठी में जवाब देते हैं।"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =========================================================================
+              SCREEN 3: GOVERNMENT SCHEMES DIRECTORY (LIST)
+              ========================================================================= */}
+          {activeTab === "schemes" && (
+            <div className="schemes-view-container">
+              <div className="schemes-header-row">
+                <div>
+                  <h2 style={{ margin: 0, fontSize: "1.45rem", color: "var(--text-main)" }}>
+                    {t.schemesTitle || "Government Schemes"}
+                  </h2>
+                  <span style={{ fontSize: "0.88rem", color: "var(--text-muted)" }}>
+                    {t.schemesSubtitle || "सरकारी योजनाओं की खोज करें और विस्तृत जानकारी प्राप्त करें"}
+                  </span>
+                </div>
+
+                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    style={{ fontSize: "0.84rem", padding: "8px 16px" }}
+                    onClick={() => setShowExtractModal(true)}
+                  >
+                    ➕ Extract New Scheme
+                  </button>
+                </div>
+              </div>
+
+              {/* Search Bar & Filter Buttons */}
+              <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+                <input
+                  type="text"
+                  placeholder={t.searchSchemePlaceholder || "🔍 योजना का नाम खोजें..."}
+                  value={schemeSearch}
+                  onChange={(e) => setSchemeSearch(e.target.value)}
+                  style={{
+                    flex: "1 1 300px",
+                    padding: "10px 16px",
+                    borderRadius: "9999px",
+                    border: "1.5px solid var(--panel-border)",
+                    background: "var(--bg-card)",
+                    color: "var(--text-main)",
+                    fontSize: "0.9rem",
+                  }}
+                />
+
+                <div className="schemes-filter-row">
+                  {[
+                    { id: "all", label: t.filterAll || "सभी" },
+                    { id: "Agriculture", label: t.filterFarmer || "किसान" },
+                    { id: "Education", label: t.filterScholarship || "छात्रवृत्ति" },
+                    { id: "Credit", label: t.filterEntrepreneurship || "उद्यमिता" },
+                    { id: "Women", label: t.filterWomen || "महिला" },
+                    { id: "Other", label: t.filterOther || "अन्य" },
+                  ].map((filter) => (
+                    <button
+                      key={filter.id}
+                      type="button"
+                      className={`schemes-pill-filter-btn ${schemeCategoryFilter === filter.id ? "active" : ""}`}
+                      onClick={() => setSchemeCategoryFilter(filter.id)}
+                    >
+                      {filter.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Schemes Cards Grid */}
+              <div className="schemes-card-directory-grid">
+                {structuredSchemes
+                  .filter((s) => {
+                    const matchesSearch =
+                      !schemeSearch ||
+                      s.scheme_name.toLowerCase().includes(schemeSearch.toLowerCase()) ||
+                      s.hindi_name.toLowerCase().includes(schemeSearch.toLowerCase()) ||
+                      s.eligibility.toLowerCase().includes(schemeSearch.toLowerCase()) ||
+                      s.benefits.toLowerCase().includes(schemeSearch.toLowerCase());
+
+                    const matchesCat =
+                      schemeCategoryFilter === "all" ||
+                      (schemeCategoryFilter === "Women"
+                        ? s.category.toLowerCase().includes("women") ||
+                          s.category.toLowerCase().includes("child") ||
+                          s.category.toLowerCase().includes("girl")
+                        : s.category.toLowerCase().includes(schemeCategoryFilter.toLowerCase()));
+
+                    return matchesSearch && matchesCat;
+                  })
+                  .map((s) => {
+                    const catInfo = getSchemeCategoryPhoto(s.category);
+                    return (
+                      <div key={s.id || s.scheme_id} className="scheme-card-item">
+                        <div>
+                          <div className="scheme-card-thumbnail-wrap">
+                            <img
+                              src={catInfo.photo}
+                              alt={s.hindi_name}
+                              className="scheme-card-thumbnail-img"
+                              onError={(e) => {
+                                e.target.src = catInfo.fallback;
+                              }}
+                            />
+                          </div>
+
+                          <div className="scheme-card-top-icon-bar">
+                            <div className="scheme-card-badge-icon">
+                              {catInfo.icon}
+                            </div>
+                            <span
+                              style={{
+                                background: "var(--emerald-bg)",
+                                color: "var(--emerald-text)",
+                                padding: "2px 8px",
+                                borderRadius: "10px",
+                                fontSize: "0.72rem",
+                                fontWeight: 700,
+                              }}
+                            >
+                              ● {s.status || "Active"}
+                            </span>
+                          </div>
+
+                          <h3 className="scheme-card-title-hi">{s.hindi_name}</h3>
+                          <p className="scheme-card-title-en">{s.scheme_name}</p>
+                          <p className="scheme-card-benefits-snippet">
+                            <strong>💰 लाभ:</strong> {s.benefits ? s.benefits.slice(0, 110) + "..." : "सरकारी सहायता उपलब्ध"}
+                          </p>
                         </div>
 
-                        <span style={{ fontSize: "0.74rem", color: "var(--accent)", fontWeight: 700 }}>
-                          Section {ttsCurrentChunk}/{ttsTotalChunks}
+                      <div className="scheme-card-footer-action">
+                        <span style={{ fontSize: "0.75rem", color: "var(--text-dim)", fontWeight: 600 }}>
+                          📍 {s.state_district}
                         </span>
-                      </>
-                    ) : (
-                      <button
-                        type="button"
-                        className="audio-btn"
-                        onClick={() => playTts(result.answer, "findings", result.language || selectedLang)}
-                        title="Listen to official research findings read aloud"
-                      >
-                        🔊 Read Findings Aloud (ऐका / सुनें)
-                      </button>
-                    )}
-
-                    <div className="speed-selector-group" title="Adjust speech playback speed">
-                      {[0.8, 1.0, 1.25, 1.5].map((rate) => (
                         <button
-                          key={rate}
                           type="button"
-                          className={`speed-chip ${ttsRate === rate ? "active" : ""}`}
-                          onClick={() => changeTtsRate(rate)}
+                          className="scheme-card-details-link"
+                          onClick={() => {
+                            setSelectedScheme(s);
+                            setActiveTab("scheme-details");
+                          }}
                         >
-                          {rate}x
+                          <span>{t.viewDetailsLink || "विवरण देखें →"}</span>
                         </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* =========================================================================
+              SCREEN 4: SCHEME DETAILS VIEW
+              ========================================================================= */}
+          {activeTab === "scheme-details" && selectedScheme && (
+            <div className="scheme-detail-screen">
+              <div className="scheme-detail-header-nav">
+                <button type="button" className="askai-back-btn" onClick={() => setActiveTab("schemes")}>
+                  {t.backToSchemes || "← सभी योजनाएं"}
+                </button>
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <span style={{ background: "var(--bg-secondary)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent)" }}>
+                    🏷️ {selectedScheme.category}
+                  </span>
+                  <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700 }}>
+                    ● {selectedScheme.status || "Active"}
+                  </span>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
+                <div>
+                  <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                    <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.85rem", margin: 0, color: "var(--text-main)", fontWeight: 800 }}>
+                      {selectedScheme.hindi_name}
+                    </h1>
+                    <span className="scheme-badge-farmer">
+                      🌾 {selectedScheme.category?.includes("Agriculture") || selectedScheme.category?.includes("Farmer") ? "किसान" : selectedScheme.category}
+                    </span>
+                  </div>
+                  <p style={{ margin: "4px 0 0 0", fontSize: "0.94rem", color: "var(--text-muted)" }}>
+                    {selectedScheme.scheme_name} • 🏛️ {selectedScheme.authority}
+                  </p>
+                </div>
+
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <span style={{ background: "var(--bg-secondary)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent)" }}>
+                    📍 {selectedScheme.state_district}
+                  </span>
+                  <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700 }}>
+                    ● {selectedScheme.status || "Active"}
+                  </span>
+                </div>
+              </div>
+
+              {/* Dynamic Scheme Category Banner with Photos */}
+              {(() => {
+                const catInfo = getSchemeCategoryPhoto(selectedScheme.category);
+                return (
+                  <div className="scheme-banner-container">
+                    <img
+                      src={catInfo.photo}
+                      alt={selectedScheme.scheme_name}
+                      className="scheme-detail-hero-banner"
+                      onError={(e) => {
+                        e.target.src = catInfo.fallback || "/assets/scheme_farmer_banner.jpg";
+                      }}
+                    />
+                    <div className="scheme-banner-badge-overlay">
+                      <span>{catInfo.icon}</span>
+                      <span>{selectedScheme.hindi_name} • {catInfo.label}</span>
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Sub-tabs Navigation Bar */}
+              <div className="scheme-tabs-nav-bar">
+                {[
+                  { id: "overview", label: t.tabOverview || "परिचय" },
+                  { id: "eligibility", label: t.tabEligibility || "पात्रता" },
+                  { id: "benefits", label: t.tabBenefits || "लाभ" },
+                  { id: "documents", label: t.tabDocuments || "आवश्यक दस्तावेज़" },
+                  { id: "process", label: t.tabProcess || "आवेदन प्रक्रिया" },
+                ].map((tab) => (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    className={`scheme-tab-header-btn ${schemeSubTab === tab.id ? "active" : ""}`}
+                    onClick={() => setSchemeSubTab(tab.id)}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Tab Content Display - Clean 2-Column Mockup Layout */}
+              <div className="scheme-details-content-grid">
+                {schemeSubTab === "overview" && (
+                  <>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <div className="scheme-detail-info-card">
+                        <span className="scheme-detail-card-title">📖 {t.schemeDescTitle || "योजना का विवरण"}</span>
+                        <p className="scheme-detail-card-text">
+                          {selectedScheme.guidelines_summary || selectedScheme.scheme_name}
+                        </p>
+                      </div>
+
+                      <div className="scheme-detail-info-card">
+                        <span className="scheme-detail-card-title">💰 {t.keyBenefitsTitle || "मुख्य लाभ"}</span>
+                        <div className="scheme-detail-card-text">
+                          <ul style={{ margin: "4px 0 0 16px", padding: 0 }}>
+                            {selectedScheme.benefits
+                              ? selectedScheme.benefits.split("\n").filter(Boolean).map((b, i) => (
+                                  <li key={i} style={{ marginBottom: "6px" }}>{b.replace(/^[-\d.]+\s*/, "")}</li>
+                                ))
+                              : <li>सरकारी वित्तीय सहायता एवं आर्थिक अनुदान डीबीटी (DBT) के माध्यम से।</li>}
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                      <div className="scheme-detail-info-card">
+                        <span className="scheme-detail-card-title">📄 {t.reqDocsTitle || "आवश्यक दस्तावेज"}</span>
+                        <div className="scheme-detail-card-text">
+                          <ul style={{ listStyle: "none", margin: "4px 0 0 0", padding: 0 }}>
+                            {(selectedScheme.documents
+                              ? selectedScheme.documents.split("\n").filter(Boolean)
+                              : ["आधार कार्ड", "बैंक खाता विवरण", "भूमि रिकॉर्ड (7/12 व खसरा)", "मोबाइल नंबर"]
+                            ).map((doc, i) => (
+                              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
+                                <span style={{ color: "#10b981", fontWeight: 800 }}>✓</span>
+                                <span>{doc.replace(/^[-\d.]+\s*/, "")}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      <div className="scheme-detail-info-card">
+                        <span className="scheme-detail-card-title">👥 {t.beneficiaryLabel || "पात्र लाभार्थी"}</span>
+                        <p className="scheme-detail-card-text">{selectedScheme.beneficiary}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {schemeSubTab === "eligibility" && (
+                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                    <span className="scheme-detail-card-title">🎯 {t.eligibilityLabel || "पात्रता (Eligibility Criteria)"}</span>
+                    <p className="scheme-detail-card-text">{selectedScheme.eligibility}</p>
+                  </div>
+                )}
+
+                {schemeSubTab === "benefits" && (
+                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                    <span className="scheme-detail-card-title">💰 {t.keyBenefitsTitle || "मुख्य लाभ (Benefits & Assistance)"}</span>
+                    <p className="scheme-detail-card-text">{selectedScheme.benefits}</p>
+                  </div>
+                )}
+
+                {schemeSubTab === "documents" && (
+                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                    <span className="scheme-detail-card-title">📄 {t.reqDocsTitle || "आवश्यक दस्तावेज (Required Documents)"}</span>
+                    <p className="scheme-detail-card-text">{selectedScheme.documents || "Aadhaar Card, Bank Passbook, Land Records"}</p>
+                  </div>
+                )}
+
+                {schemeSubTab === "process" && (
+                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                    <span className="scheme-detail-card-title">📝 {t.tabProcess || "आवेदन प्रक्रिया (Application Process)"}</span>
+                    <p className="scheme-detail-card-text">
+                      1. आधिकारिक पोर्टल या नजदीकी सीएससी (CSC) केंद्र पर जाएं।{"\n"}
+                      2. आवश्यक दस्तावेज (आधार कार्ड, बैंक खाता, 7/12 खतौनी) संलग्न करें।{"\n"}
+                      3. बायोमेट्रिक या ओटीपी ई-केवाईसी (e-KYC) पूर्ण करें।{"\n"}
+                      4. पावती रसीद प्राप्त करें और स्थिति ट्रैक करें।
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom CTA Row */}
+              <div className="scheme-detail-bottom-cta-row">
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => {
+                    const q = `${selectedScheme.hindi_name} (${selectedScheme.scheme_name}) की पात्रता और आवेदन प्रक्रिया क्या है?`;
+                    setQuestion(q);
+                    ask(null, q);
+                  }}
+                >
+                  {t.askAiAboutThisSchemeBtn || "💬 इस योजना के बारे में AI से पूछें"}
+                </button>
+
+                {selectedScheme.official_source_url && (
+                  <a
+                    href={selectedScheme.official_source_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="scheme-official-portal-btn"
+                  >
+                    <span>{t.visitOfficialPortalBtn || "आधिकारिक वेबसाइट पर जाएँ ↗"}</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* =========================================================================
+              SCREEN 5: DOCUMENTS MANAGEMENT HUB
+              ========================================================================= */}
+          {activeTab === "documents" && (
+            <div className="docs-hub-container">
+              <div className="schemes-header-row">
+                <div>
+                  <h2 style={{ margin: 0, fontSize: "1.45rem", color: "var(--text-main)" }}>
+                    {t.docsMainTitle || "Documents"}
+                  </h2>
+                  <span style={{ fontSize: "0.88rem", color: "var(--text-muted)" }}>
+                    {t.docsMainSubtitle || "अपलोड, प्रबंध और खोजें"}
+                  </span>
+                </div>
+
+                {/* Sub-tabs */}
+                <div style={{ display: "flex", gap: "8px" }}>
+                  {[
+                    { id: "my-docs", label: t.tabMyDocs || "मेरे दस्तावेज़" },
+                    { id: "status", label: t.tabIndexingStatus || "इंडेक्सिंग स्टेटस" },
+                    { id: "sources", label: t.tabSourcesRegistry || "स्रोत" },
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      type="button"
+                      className={`schemes-pill-filter-btn ${docSubTab === tab.id ? "active" : ""}`}
+                      onClick={() => setDocSubTab(tab.id)}
+                    >
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {docSubTab === "my-docs" && (
+                <>
+                  {/* Scheme Categories Visual Guidance Hub on Upload Data Page */}
+                  <div className="upload-schemes-hub">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+                      <div>
+                        <h3 className="upload-schemes-hub-title">
+                          🏛️ {t.uploadSchemeCategoryFilter || "योजना श्रेणी अनुसार दस्तावेज़ देखें व अपलोड करें"}
+                        </h3>
+                        <p className="upload-schemes-hub-sub">
+                          {t.uploadSchemeCategorySub || "श्रेणी अनुसार आधिकारिक दिशानिर्देश और योजना फोटो देखें"}
+                        </p>
+                      </div>
+                      {docCategoryFilter !== "all" && (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          style={{ fontSize: "0.78rem", padding: "4px 10px" }}
+                          onClick={() => setDocCategoryFilter("all")}
+                        >
+                          Clear Filter ✕
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="upload-schemes-grid">
+                      {[
+                        {
+                          id: "Agriculture",
+                          title: t.categoryFarmer || "किसान योजनाएँ",
+                          tag: "PM-KISAN, KCC, PMFBY",
+                          img: "/assets/scheme_cat_farmer.jpg",
+                          fallback: "/assets/card_farmer.jpg",
+                          color: "#166534",
+                          border: "#bbf7d0",
+                        },
+                        {
+                          id: "Education",
+                          title: t.categoryScholarship || "छात्रवृत्ति",
+                          tag: "NSP, Scholarships, Higher Ed",
+                          img: "/assets/scheme_cat_scholarship.jpg",
+                          fallback: "/assets/card_scholarship.jpg",
+                          color: "#1d4ed8",
+                          border: "#bfdbfe",
+                        },
+                        {
+                          id: "Credit",
+                          title: t.categoryEntrepreneurship || "उद्यमिता",
+                          tag: "MUDRA, Stand-Up, PMEGP",
+                          img: "/assets/scheme_cat_entrepreneur.jpg",
+                          fallback: "/assets/card_entrepreneur.jpg",
+                          color: "#c2410c",
+                          border: "#fed7aa",
+                        },
+                        {
+                          id: "Women",
+                          title: t.categoryWomen || "महिला कल्याण",
+                          tag: "Ujjwala, PMMVY, Ladki Bahin",
+                          img: "/assets/scheme_cat_women.jpg",
+                          fallback: "/assets/card_women.jpg",
+                          color: "#be185d",
+                          border: "#fbcfe8",
+                        },
+                        {
+                          id: "all",
+                          title: t.categoryOther || "अन्य योजनाएँ",
+                          tag: "Health, Housing, Pensions",
+                          img: "/assets/scheme_cat_other.jpg",
+                          fallback: "/assets/card_other.jpg",
+                          color: "#6d28d9",
+                          border: "#ddd6fe",
+                        },
+                      ].map((item) => (
+                        <div
+                          key={item.id}
+                          className={`upload-scheme-category-card ${docCategoryFilter === item.id ? "selected" : ""}`}
+                          onClick={() => setDocCategoryFilter(docCategoryFilter === item.id ? "all" : item.id)}
+                          style={{
+                            borderColor: docCategoryFilter === item.id ? item.color : undefined,
+                            boxShadow: docCategoryFilter === item.id ? `0 0 0 2px ${item.border}` : undefined,
+                          }}
+                          title={`Filter documents for ${item.title}`}
+                        >
+                          <div className="upload-scheme-img-wrap">
+                            <img
+                              src={item.img}
+                              alt={item.title}
+                              className="upload-scheme-img"
+                              onError={(e) => {
+                                e.target.src = item.fallback;
+                              }}
+                            />
+                          </div>
+                          <div className="upload-scheme-body">
+                            <span className="upload-scheme-name" style={{ color: item.color }}>
+                              {item.title}
+                            </span>
+                            <span className="upload-scheme-tag">{item.tag}</span>
+                          </div>
+                        </div>
                       ))}
                     </div>
                   </div>
 
-                  {result.id && <span className="citation-tag">Record #{result.id}</span>}
-                </div>
-              </div>
+                  {/* Upload Dropzone Box */}
+                  <div
+                    className="docs-dropzone-box"
+                    onClick={() => fileInputRef.current?.click()}
+                  >
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      style={{ display: "none" }}
+                      onChange={handleFileUpload}
+                      accept=".pdf,.txt,.html,.doc,.docx"
+                    />
+                    <span className="docs-cloud-icon">☁️</span>
+                    <strong style={{ fontSize: "1.1rem", color: "var(--text-main)" }}>
+                      {t.uploadCardTitle || "दस्तावेज़ अपलोड करें"}
+                    </strong>
+                    <span style={{ fontSize: "0.84rem", color: "var(--text-muted)" }}>
+                      {t.uploadCardSub || "PDF, DOC, DOCX, PNG, JPG (अधिकतम 20MB)"}
+                    </span>
+                    <button type="button" className="btn-primary" style={{ marginTop: "6px" }}>
+                      {uploadingDoc ? "Uploading..." : t.chooseFileBtn || "फ़ाइल चुनें"}
+                    </button>
+                    {uploadStatus && (
+                      <span style={{ fontSize: "0.82rem", fontWeight: 600, color: "var(--accent)" }}>
+                        {uploadStatus}
+                      </span>
+                    )}
+                  </div>
 
-              <div className="markdown-body">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{result.answer}</ReactMarkdown>
-              </div>
+                  {/* Documents List */}
+                  <div className="docs-recent-list-card">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
+                      <h3 style={{ margin: 0, fontSize: "1.05rem", color: "var(--text-main)" }}>
+                        {t.recentUploadsTitle || "हाल के अपलोड"} ({documentsList.length})
+                        {docCategoryFilter !== "all" && (
+                          <span style={{ fontSize: "0.8rem", color: "var(--accent)", marginLeft: "8px", fontWeight: 600 }}>
+                            • {docCategoryFilter} Filtered
+                          </span>
+                        )}
+                      </h3>
+                      <input
+                        type="text"
+                        placeholder="Filter documents..."
+                        value={docSearch}
+                        onChange={(e) => setDocSearch(e.target.value)}
+                        style={{
+                          padding: "6px 12px",
+                          borderRadius: "var(--radius-md)",
+                          border: "1px solid var(--panel-border)",
+                          background: "var(--bg-secondary)",
+                          color: "var(--text-main)",
+                          fontSize: "0.82rem",
+                        }}
+                      />
+                    </div>
 
-              {/* Follow-up Clarifying Question */}
-              {result?.clarifying_question && (
-                <div className="farmer-clarifying-card">
-                  <div className="farmer-clarifying-content">
-                    <span className="clarify-icon">💡</span>
-                    <div className="clarify-text">
-                      <strong>
-                        {result.language === "mr" ? "स्पष्टीकरण प्रश्न (अधिक अचूक उत्तरासाठी):" :
-                         result.language === "hi" ? "स्पष्टीकरण प्रश्न (अधिक सटीक उत्तर के लिए):" :
-                         "Clarifying Follow-Up Question:"}
-                      </strong>
-                      <p>{result.clarifying_question}</p>
+                    <div className="docs-table-list">
+                      {documentsList
+                        .filter((d) => {
+                          const matchesSearch = !docSearch || d.title.toLowerCase().includes(docSearch.toLowerCase()) || (d.authority || "").toLowerCase().includes(docSearch.toLowerCase());
+                          if (!matchesSearch) return false;
+                          if (docCategoryFilter === "all") return true;
+                          const combined = (d.title + " " + (d.authority || "")).toLowerCase();
+                          if (docCategoryFilter === "Agriculture") {
+                            return combined.includes("kisan") || combined.includes("agri") || combined.includes("crop") || combined.includes("soil") || combined.includes("pest") || combined.includes("fertilizer") || combined.includes("farmer");
+                          }
+                          if (docCategoryFilter === "Education") {
+                            return combined.includes("scholar") || combined.includes("matric") || combined.includes("education") || combined.includes("student");
+                          }
+                          if (docCategoryFilter === "Women") {
+                            return combined.includes("women") || combined.includes("child") || combined.includes("mahila") || combined.includes("wcd");
+                          }
+                          if (docCategoryFilter === "Credit") {
+                            return combined.includes("credit") || combined.includes("mudra") || combined.includes("msme") || combined.includes("loan");
+                          }
+                          return true;
+                        })
+                        .map((doc) => {
+                          const catInfo = getSchemeCategoryPhoto(doc.title + " " + (doc.authority || ""));
+                          return (
+                            <div key={doc.id} className="doc-table-row">
+                              <div className="doc-file-info">
+                                <div style={{ position: "relative", width: "44px", height: "44px", borderRadius: "10px", overflow: "hidden", flexShrink: 0, border: "1px solid var(--panel-border)" }}>
+                                  <img
+                                    src={catInfo.photo}
+                                    alt="category"
+                                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                                    onError={(e) => { e.target.src = catInfo.fallback; }}
+                                  />
+                                </div>
+                                <div>
+                                  <h4 className="doc-title-text">{doc.title}</h4>
+                                  <span className="doc-sub-text">
+                                    🏛️ {doc.authority} • 📅 {doc.publication_date || "2025-26"}
+                                  </span>
+                                </div>
+                              </div>
+                              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "3px 8px", borderRadius: "10px", fontSize: "0.74rem", fontWeight: 700 }}>
+                                  🟢 {t.statusIndexed || "इंडेक्स्ड"}
+                                </span>
+                                <button
+                                  type="button"
+                                  className="btn-secondary"
+                                  style={{ fontSize: "0.78rem", padding: "6px 12px" }}
+                                  onClick={() => openDocumentReader(doc.id)}
+                                >
+                                  {t.readDocAction || "दस्तावेज़ पढ़ें"}
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </div>
+                </>
+              )}
+
+              {docSubTab === "status" && (
+                <div className="dash-popular-container">
+                  <h3>Vector Indexing Status</h3>
+                  <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                    ChromaDB Vector Store contains <strong>197 chunks</strong> from {documentsList.length} indexed documents.
+                  </p>
                   <button
                     type="button"
-                    className="btn-clarify-ask"
-                    onClick={() => {
-                      const refined = `${question} - ${result.clarifying_question}`;
-                      setQuestion(refined);
-                      ask(null, refined);
+                    className="btn-primary"
+                    style={{ marginTop: "12px" }}
+                    onClick={async () => {
+                      alert("Rebuilding vector store index...");
+                      await fetch(`${API}/documents/index`, { method: "POST", headers: { "X-Admin-Token": "admin123" } });
+                      fetchHealth();
                     }}
-                    title="Click to refine query with this clarification"
                   >
-                    ✍️ {result.language === "mr" ? "या तपशीलासह विचारा" :
-                        result.language === "hi" ? "इस विवरण के साथ पूछें" :
-                        "Refine Query"}
+                    🔄 Rebuild Index
                   </button>
                 </div>
               )}
 
-              {/* Practical Farmer Next Steps */}
-              {result?.practical_steps?.length > 0 && (
-                <section className="practical-steps-card">
-                  <div className="practical-steps-header">
-                    <span className="steps-icon">🚜</span>
-                    <div>
-                      <h3>
-                        {result.language === "mr" ? "शेतकऱ्यांसाठी पुढील व्यावहारिक पावले" :
-                         result.language === "hi" ? "किसानों के लिए अगले व्यावहारिक कदम" :
-                         "Practical Farmer Next Steps"}
-                      </h3>
-                      <span className="steps-sub">
-                        {result.language === "mr" ? "अधिकृत शासकीय पुराव्यांवर आधारित कृती मार्गदर्शक" :
-                         result.language === "hi" ? "आधिकारिक सरकारी साक्ष्यों पर आधारित कार्य योजना" :
-                         "Actionable steps supported strictly by official records"}
-                      </span>
-                    </div>
-                  </div>
-                  <ol className="practical-steps-list">
-                    {result.practical_steps.map((step, idx) => (
-                      <li key={idx} className="practical-step-item">
-                        <span className="step-number">{idx + 1}</span>
-                        <span className="step-text">{step}</span>
-                      </li>
+              {docSubTab === "sources" && (
+                <div className="dash-popular-container">
+                  <h3>Official Sources Registry</h3>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "12px" }}>
+                    {sourcesRegistry.map((s, idx) => (
+                      <div key={idx} style={{ padding: "10px", background: "var(--bg-secondary)", borderRadius: "8px" }}>
+                        <strong>{s.name}</strong> • <a href={s.base_url} target="_blank" rel="noreferrer">{s.base_url}</a>
+                      </div>
                     ))}
-                  </ol>
-                </section>
-              )}
-
-              {/* Missing Evidence / Scope Warning */}
-              {result?.missing_evidence_warning && (
-                <div className="notice-card warn" style={{ marginTop: "16px" }}>
-                  <div className="notice-icon">⚠️</div>
-                  <div className="notice-body">
-                    <strong>
-                      {result.language === "mr" ? "अधिकृत माहिती मर्यादा सूचना" :
-                       result.language === "hi" ? "आधिकारिक साक्ष्य सीमा चेतावनी" :
-                       "Official Evidence Scope Warning"}
-                    </strong>
-                    <p>{result.missing_evidence_warning}</p>
                   </div>
                 </div>
               )}
-            </section>
+            </div>
           )}
 
-          {/* Conflicts Warning */}
-          {result?.conflicts?.length > 0 && (
-            <div className="notice-card conflict">
-              <div className="notice-icon">⚡</div>
-              <div className="notice-body">
-                <strong>Source Discrepancies Detected</strong>
-                <p>The verified documents contain conflicting terms or numbers on this topic:</p>
-                <ul>
-                  {result.conflicts.map((c, i) => (
-                    <li key={i}>
-                      <strong>{c.topic}</strong>: {c.explanation}
-                    </li>
-                  ))}
-                </ul>
+          {/* =========================================================================
+              SCREEN 6: SETTINGS
+              ========================================================================= */}
+          {activeTab === "settings" && (
+            <div className="settings-cards-grid">
+              {/* Language Preferences */}
+              <div className="settings-panel-card">
+                <h3 className="settings-panel-title">
+                  <span>🌐</span>
+                  <span>{t.langPrefTitle || "भाषा सेटिंग"}</span>
+                </h3>
+                <div className="settings-row-item">
+                  <div>
+                    <div className="settings-item-label">UI Language</div>
+                    <div className="settings-item-desc">Change the display language for all menus and buttons</div>
+                  </div>
+                  <select
+                    value={selectedLang}
+                    onChange={(e) => handleLanguageChange(e.target.value)}
+                    className="dash-lang-select-btn"
+                  >
+                    <option value="hi">हिंदी (Hindi)</option>
+                    <option value="en">English</option>
+                    <option value="mr">मराठी (Marathi)</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* AI Model Preferences */}
+              <div className="settings-panel-card">
+                <h3 className="settings-panel-title">
+                  <span>🧠</span>
+                  <span>{t.aiModelPrefTitle || "AI मॉडल"}</span>
+                </h3>
+                <div className="settings-row-item">
+                  <div>
+                    <div className="settings-item-label">Active Provider</div>
+                    <div className="settings-item-desc">{health?.llm_model || "Local Grounded Synthesis"}</div>
+                  </div>
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    style={{ fontSize: "0.82rem", padding: "6px 12px" }}
+                    onClick={() => setShowApiKeyModal(true)}
+                  >
+                    Change Key
+                  </button>
+                </div>
+              </div>
+
+              {/* Theme Preferences */}
+              <div className="settings-panel-card">
+                <h3 className="settings-panel-title">
+                  <span>🎨</span>
+                  <span>{t.themePrefTitle || "थीम"}</span>
+                </h3>
+                <div className="settings-row-item">
+                  <div>
+                    <div className="settings-item-label">Appearance</div>
+                    <div className="settings-item-desc">Toggle between Light and Dark interface modes</div>
+                  </div>
+                  <button type="button" className="theme-toggle-btn" onClick={toggleTheme}>
+                    {theme === "light" ? t.themeLightBtn || "☀️ लाइट" : t.themeDarkBtn || "🌙 डार्क"}
+                  </button>
+                </div>
+              </div>
+
+              {/* Behavioral Preferences */}
+              <div className="settings-panel-card">
+                <h3 className="settings-panel-title">
+                  <span>⚡</span>
+                  <span>System Preferences</span>
+                </h3>
+                <div className="settings-row-item">
+                  <div>
+                    <div className="settings-item-label">{t.autoSearchPrefTitle || "ऑटो-सर्च (बोलने के बाद)"}</div>
+                    <div className="settings-item-desc">Automatically research when you finish speaking</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={autoSearchOnSpeech}
+                    onChange={(e) => setAutoSearchOnSpeech(e.target.checked)}
+                    style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                  />
+                </div>
+                <div className="settings-row-item">
+                  <div>
+                    <div className="settings-item-label">{t.showSourcesPrefTitle || "आधिकारिक स्रोत दिखाएं"}</div>
+                    <div className="settings-item-desc">Display direct government citations under each answer</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={showSourcesInAnswer}
+                    onChange={(e) => setShowSourcesInAnswer(e.target.checked)}
+                    style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                  />
+                </div>
+              </div>
+
+              {/* History Management */}
+              <div className="settings-panel-card" style={{ gridColumn: "1 / -1" }}>
+                <h3 className="settings-panel-title">
+                  <span>🗑️</span>
+                  <span>Data &amp; History Management</span>
+                </h3>
+                <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={handleClearAllHistory}
+                    disabled={clearingHistory || history.length === 0}
+                  >
+                    {t.resetHistoryBtn || "खोज इतिहास साफ करें"} ({history.length})
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-secondary"
+                    onClick={async () => {
+                      if (!window.confirm("Seed default 22 official schemes into database?")) return;
+                      await fetch(`${API}/schemes/seed`, { method: "POST", headers: { "X-Admin-Token": "admin123" } });
+                      fetchStructuredSchemes();
+                      fetchHealth();
+                    }}
+                  >
+                    🌱 Seed Default Official Schemes
+                  </button>
+                </div>
               </div>
             </div>
           )}
 
-          {/* Citations & Sources */}
-          {result?.sources?.length > 0 && (
-            <section className="sources-card">
-              <div className="sources-header">
-                <h3>Official Referenced Sources</h3>
-                <span className="badge-count">{result.sources.length} Verified</span>
+          {/* =========================================================================
+              SCREEN: HISTORY LOG (Dedicated Tab)
+              ========================================================================= */}
+          {activeTab === "history" && (
+            <div className="dash-popular-container">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+                <div>
+                  <h2 style={{ margin: 0, fontSize: "1.35rem", color: "var(--text-main)" }}>
+                    {t.recentQueries || "हाल के प्रश्न"}
+                  </h2>
+                  <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                    {history.length} saved sessions
+                  </span>
+                </div>
+                {history.length > 0 && (
+                  <button type="button" className="btn-secondary" onClick={handleClearAllHistory}>
+                    {t.clearAllHistory || "🗑️ सभी हटाएं"}
+                  </button>
+                )}
               </div>
 
-              <div className="sources-grid">
-                {result.sources.map((s) => (
-                  <div key={s.id} className="source-item">
-                    <div className="source-num">[{s.id}]</div>
-                    <div className="source-details">
-                      <div className="source-name" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
-                        {s.url ? (
-                          <a href={s.url} target="_blank" rel="noreferrer" className="source-link">
-                            {s.title} ↗
-                          </a>
-                        ) : (
-                          <span className="source-title-plain">{s.title}</span>
-                        )}
+              {history.length === 0 ? (
+                <p style={{ color: "var(--text-muted)" }}>{t.noHistoryYet}</p>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  {history.map((h) => (
+                    <div
+                      key={h.id}
+                      className="doc-table-row"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setQuestion(h.question);
+                        if (h.answer) {
+                          setResult({
+                            id: h.id,
+                            answer: h.answer,
+                            sources: h.sources || [],
+                            status: h.status,
+                            language: h.language || "hi",
+                          });
+                        } else {
+                          ask(null, h.question);
+                        }
+                        setActiveTab("ask-ai");
+                      }}
+                    >
+                      <div>
+                        <strong>{h.question}</strong>
+                        <div style={{ fontSize: "0.78rem", color: "var(--text-dim)", marginTop: "2px" }}>
+                          📅 {h.created_at ? new Date(h.created_at).toLocaleString() : "Recent"}
+                        </div>
+                      </div>
+                      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                        <span style={{ fontSize: "0.82rem", color: "var(--accent)", fontWeight: 600 }}>Load in Ask AI ➔</span>
                         <button
                           type="button"
-                          className={`btn-listen-mini ${ttsPlaying && ttsSource === `source-${s.id}` ? "playing" : ""}`}
-                          onClick={() => {
-                            if (ttsPlaying && ttsSource === `source-${s.id}`) {
-                              stopTts();
-                            } else {
-                              const srcText = `${s.title}. Authority: ${s.authority || s.department || "Official department"}.`;
-                              playTts(srcText, `source-${s.id}`, result?.language || selectedLang);
-                            }
-                          }}
-                          title="Listen to official document citation"
+                          className="history-delete-btn"
+                          style={{ opacity: 1 }}
+                          onClick={(e) => handleDeleteHistoryItem(e, h.id)}
                         >
-                          {ttsPlaying && ttsSource === `source-${s.id}` ? "⏹️ Stop" : "🔊 Listen"}
-                        </button>
-                      </div>
-
-                      {s.url ? (
-                        <div style={{ fontSize: "0.75rem", color: "var(--accent)", wordBreak: "break-all" }}>
-                          {s.url}
-                        </div>
-                      ) : (
-                        <div style={{ fontSize: "0.75rem", color: "#e11d48", fontWeight: 500 }}>
-                          ⚠️ Source URL unavailable on official portal
-                        </div>
-                      )}
-
-                      <div className="source-meta">
-                        <span className="meta-badge authority">🏛️ {s.department || s.authority || "Official Authority"}</span>
-                        <span className="meta-badge date" title="Official publication or revision date provided by source">
-                          📅 Official Date: {s.last_updated || (s.has_official_date ? (s.updated_date || s.publication_date) : "Official update date not available.")}
-                        </span>
-                        <span className="meta-badge checked" title="Date verified by our system" style={{ color: "#059669", background: "rgba(16, 185, 129, 0.1)", borderColor: "rgba(16, 185, 129, 0.3)" }}>
-                          🛡️ Checked: {s.last_checked || "Verified during retrieval"}
-                        </span>
-                        {s.page_number && (
-                          <span className="meta-badge page">📄 Page {s.page_number}</span>
-                        )}
-                        {s.category && (
-                          <span className="meta-badge category">📁 {s.category.replace(/_/g, " ")}</span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="source-advisory" style={{
-                marginTop: "16px",
-                padding: "10px 14px",
-                background: "rgba(245, 158, 11, 0.08)",
-                border: "1px solid rgba(245, 158, 11, 0.25)",
-                borderRadius: "var(--radius-sm)",
-                fontSize: "0.82rem",
-                color: "var(--text-dim)",
-                lineHeight: "1.5"
-              }}>
-                ℹ️ <strong>Official Freshness Notice:</strong> Information is directly grounded in official government records. Verified Check Date reflects when our system checked the source; Official Date reflects the publication date declared by the issuing department. Please verify details on the official government portal before making administrative or financial decisions.
-              </div>
-            </section>
-          )}
-
-          {/* Retrieved Evidence Chunks with Similarity Scores */}
-          {result?.retrieved_chunks?.length > 0 && (
-            <section className="sources-card" style={{ marginTop: "20px" }}>
-              <div className="sources-header">
-                <h3>🔍 Retrieved Evidence Chunks &amp; Similarity Scores</h3>
-                <span className="badge-count" style={{ background: "rgba(59, 130, 246, 0.15)", color: "#2563eb" }}>
-                  {result.retrieved_chunks.length} Chunks (k=5)
-                </span>
-              </div>
-              <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "12px" }}>
-                {result.retrieved_chunks.map((chk) => (
-                  <div key={chk.chunk_index} style={{
-                    background: "var(--bg-secondary)",
-                    border: "1px solid var(--panel-border)",
-                    borderRadius: "var(--radius-md)",
-                    padding: "14px",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px"
-                  }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "6px" }}>
-                      <span style={{ fontWeight: 700, color: "var(--text-main)", fontSize: "0.88rem" }}>
-                        Chunk {chk.chunk_index}: {chk.source}
-                      </span>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <span style={{
-                          padding: "2px 8px",
-                          borderRadius: "12px",
-                          fontSize: "0.78rem",
-                          fontWeight: 700,
-                          background: "rgba(16, 185, 129, 0.15)",
-                          color: "#059669",
-                          fontFamily: "var(--font-mono)"
-                        }}>
-                          Similarity Score: {chk.similarity_score}
-                        </span>
-                        <button
-                          type="button"
-                          className={`btn-listen-mini ${ttsPlaying && ttsSource === `chunk-${chk.chunk_index}` ? "playing" : ""}`}
-                          onClick={() => {
-                            if (ttsPlaying && ttsSource === `chunk-${chk.chunk_index}`) {
-                              stopTts();
-                            } else {
-                              playTts(chk.text, `chunk-${chk.chunk_index}`, result?.language || selectedLang);
-                            }
-                          }}
-                          title="Listen to this official evidence chunk read aloud"
-                        >
-                          {ttsPlaying && ttsSource === `chunk-${chk.chunk_index}` ? "⏹️ Stop" : "🔊 Listen"}
+                          ✕
                         </button>
                       </div>
                     </div>
-                    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", fontSize: "0.78rem", color: "var(--text-muted)" }}>
-                      <span>📄 Page: <strong>{chk.page}</strong></span>
-                      <span>🏛️ Dept: <strong>{chk.department}</strong></span>
-                      <span>📅 Year: <strong>{chk.year}</strong></span>
-                      <span>📑 Type: <strong>{chk.document_type}</strong></span>
-                    </div>
-                    <div style={{
-                      background: "var(--input-bg)",
-                      border: "1px solid var(--panel-border)",
-                      borderRadius: "4px",
-                      padding: "8px 10px",
-                      fontSize: "0.82rem",
-                      color: "var(--text-main)",
-                      fontFamily: "var(--font-mono)",
-                      maxHeight: "120px",
-                      overflowY: "auto",
-                      whiteSpace: "pre-wrap"
-                    }}>
-                      {chk.text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </main>
       </div>
 
-
-
-      {/* API Key Modal */}
+      {/* 3. MODAL: API KEY CONFIGURATION */}
       {showApiKeyModal && (
         <div className="modal-overlay" onClick={() => setShowApiKeyModal(false)}>
           <div className="modal-card" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>AI Provider Configuration</h3>
+              <h3>{t.apiKeyModalTitle || "AI Provider Configuration"}</h3>
               <button className="close-btn" onClick={() => setShowApiKeyModal(false)}>✕</button>
             </div>
-
             <div className="api-modal-content">
-              <p>
-                The research agent can run on either <strong>Groq (Free &amp; Ultra-Fast)</strong> or <strong>Anthropic Claude</strong>.
-              </p>
-
-              {/* Instant Key Activation Form */}
-              <form onSubmit={handleSaveKey} className="key-activate-form" style={{marginTop: "16px", marginBottom: "20px"}}>
-                <div style={{display: "flex", gap: "10px", marginBottom: "10px"}}>
+              <p>{t.apiKeyModalDesc || "The research agent can run on either Groq or Anthropic Claude."}</p>
+              <form onSubmit={handleSaveKey} style={{ marginTop: "16px" }}>
+                <div style={{ display: "flex", gap: "10px", marginBottom: "12px" }}>
                   <button
                     type="button"
                     className={`btn-secondary ${keyProvider === "groq" ? "active" : ""}`}
-                    style={{
-                      flex: 1,
-                      borderColor: keyProvider === "groq" ? "var(--accent)" : "var(--panel-border)",
-                      color: keyProvider === "groq" ? "var(--accent)" : "var(--text-muted)",
-                      fontWeight: 600,
-                    }}
+                    style={{ flex: 1, borderColor: keyProvider === "groq" ? "var(--accent)" : "var(--panel-border)" }}
                     onClick={() => setKeyProvider("groq")}
                   >
-                    ⚡ Groq (Free & Fast)
+                    ⚡ Groq (Llama-3.3-70B)
                   </button>
                   <button
                     type="button"
                     className={`btn-secondary ${keyProvider === "anthropic" ? "active" : ""}`}
-                    style={{
-                      flex: 1,
-                      borderColor: keyProvider === "anthropic" ? "var(--accent)" : "var(--panel-border)",
-                      color: keyProvider === "anthropic" ? "var(--accent)" : "var(--text-muted)",
-                      fontWeight: 600,
-                    }}
+                    style={{ flex: 1, borderColor: keyProvider === "anthropic" ? "var(--accent)" : "var(--panel-border)" }}
                     onClick={() => setKeyProvider("anthropic")}
                   >
                     🧠 Anthropic Claude
                   </button>
                 </div>
-
-                <div className="form-group" style={{marginBottom: "12px"}}>
-                  <label>
-                    {keyProvider === "groq" ? "Groq API Key (starts with gsk_)" : "Anthropic API Key (starts with sk-ant-)"}
-                  </label>
+                <div className="form-group" style={{ marginBottom: "12px" }}>
+                  <label>{keyProvider === "groq" ? "Groq API Key (starts with gsk_)" : "Anthropic API Key"}</label>
                   <input
                     type="password"
                     placeholder={keyProvider === "groq" ? "gsk_..." : "sk-ant-..."}
@@ -1534,903 +2398,84 @@ export default function App() {
                     required
                   />
                 </div>
-
-                <div style={{display: "flex", gap: "10px", alignItems: "center"}}>
-                  <button type="submit" className="btn-primary" disabled={savingKey || !apiKeyInput.trim()}>
-                    {savingKey ? "Saving & Activating..." : "Save & Activate Key"}
-                  </button>
-                  {keyProvider === "groq" && (
-                    <a
-                      href="https://console.groq.com/keys"
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{fontSize: "0.82rem", color: "var(--accent)", textDecoration: "none", fontWeight: 600}}
-                    >
-                      Get Free Groq Key ↗
-                    </a>
-                  )}
-                </div>
-
+                <button type="submit" className="btn-primary" disabled={savingKey || !apiKeyInput.trim()}>
+                  {savingKey ? "Activating..." : t.saveApiKeyBtn || "Activate API Key"}
+                </button>
                 {keySaveStatus && (
-                  <div style={{
-                    marginTop: "12px",
-                    padding: "10px 14px",
-                    borderRadius: "var(--radius-md)",
-                    fontSize: "0.85rem",
-                    background: keySaveStatus.startsWith("✅") ? "var(--emerald-bg)" : "var(--rose-bg)",
-                    color: keySaveStatus.startsWith("✅") ? "var(--emerald-text)" : "var(--rose-text)",
-                    border: `1px solid ${keySaveStatus.startsWith("✅") ? "var(--emerald-border)" : "var(--rose-border)"}`,
-                  }}>
+                  <p style={{ marginTop: "10px", fontSize: "0.85rem", color: keySaveStatus.startsWith("✅") ? "green" : "red" }}>
                     {keySaveStatus}
-                  </div>
+                  </p>
                 )}
               </form>
-
-              <div className="config-box">
-                <span className="config-title">Option 1: Free Groq API Key (Recommended)</span>
-                <ol>
-                  <li>Get a free key instantly at <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer" style={{color: "#38bdf8"}}>console.groq.com/keys</a> (no credit card needed).</li>
-                  <li>Open the <code>.env</code> file in the project root:</li>
-                  <pre className="code-block">GROQ_API_KEY=gsk_your_groq_key_here</pre>
-                  <li>Save the file. It will immediately enable live research!</li>
-                </ol>
-              </div>
-
-              <div className="config-box">
-                <span className="config-title">Option 2: Anthropic Claude Key</span>
-                <ol>
-                  <li>Get an Anthropic key at <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noreferrer" style={{color: "#38bdf8"}}>console.anthropic.com</a>.</li>
-                  <li>In <code>.env</code> set:</li>
-                  <pre className="code-block">ANTHROPIC_API_KEY=sk-ant-api03-your-key-here</pre>
-                </ol>
-              </div>
-
-              <div className="status-summary">
-                <div><strong>Current Engine:</strong> {health?.llm_model || "None configured"}</div>
-                <div><strong>Status:</strong> {health?.has_api_key ? "✅ Live & Ready" : "⚠️ Key required for live research"}</div>
-              </div>
-
-              <button className="btn-primary" onClick={() => setShowApiKeyModal(false)}>
-                Close
-              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Schemes Explorer Modal */}
-      {showSchemesModal && (
-        <div className="modal-overlay" onClick={() => setShowSchemesModal(false)}>
-          <div
-            className="modal-card"
-            style={{ maxWidth: "1100px", width: "95vw", maxHeight: "90vh", display: "flex", flexDirection: "column" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <div>
-                <h3 style={{ margin: 0 }}>📊 Maharashtra Active Agriculture Schemes (2026–2027)</h3>
-                <p style={{ margin: "4px 0 0 0", fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  Department of Agriculture, Govt of Maharashtra • 104 Active Schemes • BDS Outlays &amp; Expenditures (Rs. in Lakhs)
-                </p>
-              </div>
-              <button className="close-btn" onClick={() => setShowSchemesModal(false)}>✕</button>
-            </div>
-
-            <div style={{ padding: "16px 24px", overflowY: "auto", flex: 1 }}>
-              {/* Quick Metrics Bar */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "12px", marginBottom: "16px" }}>
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700 }}>Total Schemes</div>
-                  <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--text-main)", marginTop: "2px" }}>104 Schemes</div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>63 General • 19 SCCS • 22 TCS</div>
-                </div>
-
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700 }}>2026-27 Proposed Outlay</div>
-                  <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--accent)", marginTop: "2px" }}>₹12,438.14 Cr</div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>Rs. 12,43,813.52 Lakh</div>
-                </div>
-
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700 }}>BDS Released by FD</div>
-                  <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "var(--text-main)", marginTop: "2px" }}>₹3,508.79 Cr</div>
-                  <div style={{ fontSize: "0.72rem", color: "var(--text-dim)" }}>Rs. 35,08,78.90 Lakh</div>
-                </div>
-
-                <div style={{ background: "var(--bg-secondary)", padding: "12px 14px", borderRadius: "var(--radius-md)", border: "1px solid var(--panel-border)" }}>
-                  <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 700 }}>BDS Expenditure</div>
-                  <div style={{ fontSize: "1.3rem", fontWeight: 700, color: "#10b981", marginTop: "2px" }}>₹2,218.61 Cr</div>
-                  <div style={{ fontSize: "0.72rem", color: "#10b981" }}>63.2% of release spent</div>
-                </div>
-              </div>
-
-              {/* Filter and Search Bar */}
-              <div style={{ display: "flex", gap: "12px", alignItems: "center", flexWrap: "wrap", marginBottom: "16px" }}>
-                <input
-                  type="text"
-                  placeholder="🔍 Search scheme name, code (e.g., Namo, Krushi, POCRA, 1101010312)..."
-                  value={schemeSearch}
-                  onChange={(e) => setSchemeSearch(e.target.value)}
-                  style={{
-                    flex: "1 1 300px",
-                    padding: "9px 14px",
-                    background: "var(--input-bg)",
-                    border: "1px solid var(--input-border)",
-                    borderRadius: "var(--radius-md)",
-                    color: "var(--text-main)",
-                    fontSize: "0.88rem"
-                  }}
-                />
-
-                <div style={{ display: "flex", gap: "6px" }}>
-                  {["all", "General", "SCCS", "TCS"].map((plan) => (
-                    <button
-                      key={plan}
-                      type="button"
-                      onClick={() => setSchemePlanFilter(plan)}
-                      style={{
-                        padding: "6px 14px",
-                        borderRadius: "20px",
-                        fontSize: "0.82rem",
-                        fontWeight: 600,
-                        border: "1px solid",
-                        cursor: "pointer",
-                        background: schemePlanFilter === plan ? "var(--accent)" : "var(--bg-secondary)",
-                        color: schemePlanFilter === plan ? "#ffffff" : "var(--text-muted)",
-                        borderColor: schemePlanFilter === plan ? "var(--accent)" : "var(--panel-border)"
-                      }}
-                    >
-                      {plan === "all" ? "All Plans (104)" : plan}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Table */}
-              <div style={{ border: "1px solid var(--panel-border)", borderRadius: "var(--radius-md)", overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.84rem", textAlign: "left" }}>
-                  <thead>
-                    <tr style={{ background: "var(--bg-secondary)", borderBottom: "1px solid var(--panel-border)" }}>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Sr</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Plan</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Code</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Scheme Title</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "right" }}>2026-27 Proposed (Lakh)</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "right" }}>BDS Released (Lakh)</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "right" }}>BDS Exp (Lakh)</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "center" }}>SDG</th>
-                      <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "center" }}>Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {schemesList
-                      .filter((s) => {
-                        const matchesPlan = schemePlanFilter === "all" || s.plan_type === schemePlanFilter;
-                        const query = schemeSearch.toLowerCase().trim();
-                        const matchesQuery = !query ||
-                          s.scheme_title.toLowerCase().includes(query) ||
-                          s.scheme_code.toLowerCase().includes(query);
-                        return matchesPlan && matchesQuery;
-                      })
-                      .map((s) => (
-                        <tr
-                          key={`${s.sr_no}-${s.scheme_code}`}
-                          style={{
-                            borderBottom: "1px solid var(--panel-border)",
-                            transition: "background 0.15s ease"
-                          }}
-                        >
-                          <td style={{ padding: "10px 12px", color: "var(--text-dim)", fontFamily: "var(--font-mono)" }}>{s.sr_no}</td>
-                          <td style={{ padding: "10px 12px" }}>
-                            <span style={{
-                              padding: "2px 8px",
-                              borderRadius: "12px",
-                              fontSize: "0.75rem",
-                              fontWeight: 600,
-                              background: s.plan_type === "General" ? "rgba(59, 130, 246, 0.12)" : s.plan_type === "SCCS" ? "rgba(168, 85, 247, 0.12)" : "rgba(234, 88, 12, 0.12)",
-                              color: s.plan_type === "General" ? "#2563eb" : s.plan_type === "SCCS" ? "#9333ea" : "#c2410c"
-                            }}>
-                              {s.plan_type}
-                            </span>
-                          </td>
-                          <td style={{ padding: "10px 12px", fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                            {s.scheme_code}
-                          </td>
-                          <td style={{ padding: "10px 12px", fontWeight: 600, color: "var(--text-main)", maxWidth: "340px" }}>
-                            {s.scheme_title}
-                          </td>
-                          <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 600, color: "var(--accent)" }}>
-                            Rs. {s.proposed_outlay_2026_27_lakh.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                          </td>
-                          <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "var(--font-mono)", color: "var(--text-muted)" }}>
-                            Rs. {s.bds_release_by_fd_till_07_oct_26_lakh.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                          </td>
-                          <td style={{ padding: "10px 12px", textAlign: "right", fontFamily: "var(--font-mono)", color: s.bds_expenditure_till_07_oct_26_lakh > 0 ? "#10b981" : "var(--text-dim)", fontWeight: 600 }}>
-                            Rs. {s.bds_expenditure_till_07_oct_26_lakh.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
-                          </td>
-                          <td style={{ padding: "10px 12px", textAlign: "center" }}>
-                            <span style={{
-                              padding: "2px 6px",
-                              borderRadius: "4px",
-                              fontSize: "0.72rem",
-                              fontWeight: 700,
-                              background: s.sdg_status === "A" ? "rgba(16, 185, 129, 0.15)" : "rgba(156, 163, 175, 0.15)",
-                              color: s.sdg_status === "A" ? "#059669" : "#6b7280"
-                            }}>
-                              {s.sdg_status || "—"}
-                            </span>
-                          </td>
-                          <td style={{ padding: "10px 12px", textAlign: "center" }}>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const q = `What are the financial outlays, allocations, and status for ${s.scheme_title} (Code: ${s.scheme_code}) under ${s.plan_type} plan?`;
-                                setQuestion(q);
-                                setShowSchemesModal(false);
-                                ask(null, q);
-                              }}
-                              style={{
-                                padding: "4px 10px",
-                                background: "var(--accent)",
-                                color: "#ffffff",
-                                border: "none",
-                                borderRadius: "4px",
-                                fontSize: "0.76rem",
-                                fontWeight: 600,
-                                cursor: "pointer"
-                              }}
-                            >
-                              Research ↗
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div style={{ padding: "12px 24px", borderTop: "1px solid var(--panel-border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                Showing active records parsed from Maharashtra Department of Agriculture BDS.
-              </span>
-              <button className="btn-primary" onClick={() => setShowSchemesModal(false)}>
-                Close Explorer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Structured Schemes Catalog Modal (PostgreSQL / Relational DB 9 Fields) */}
-      {showStructuredModal && (
-        <div className="modal-overlay" onClick={() => setShowStructuredModal(false)}>
-          <div
-            className="modal-card"
-            style={{ maxWidth: "1200px", width: "96vw", maxHeight: "92vh", display: "flex", flexDirection: "column" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <div>
-                <h3 style={{ margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span>🏛️</span> Structured Government Schemes (आधिकारिक सरकारी योजनाएं)
-                </h3>
-                <p style={{ margin: "4px 0 0 0", fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  PostgreSQL / Relational Storage • 9 Standard Fields: Scheme name, Hindi name, Category, Beneficiary, Eligibility, Benefits, Documents, State/District, Status
-                </p>
-              </div>
-              <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                <button
-                  type="button"
-                  className="btn-primary"
-                  style={{ fontSize: "0.82rem", padding: "6px 14px", background: "var(--emerald)", border: "none" }}
-                  onClick={() => setShowExtractModal(true)}
-                >
-                  ➕ Extract from Document
-                </button>
-                <button className="close-btn" onClick={() => setShowStructuredModal(false)}>✕</button>
-              </div>
-            </div>
-
-            <div style={{ padding: "16px 24px", overflowY: "auto", flex: 1 }}>
-              {/* Controls */}
-              <div style={{ display: "flex", gap: "12px", marginBottom: "16px", flexWrap: "wrap", alignItems: "center" }}>
-                <input
-                  type="text"
-                  placeholder="🔍 Search scheme name, Hindi name (उदा. किसान, KCC, कुसुम, scholarship), eligibility, benefits..."
-                  value={structuredSearch}
-                  onChange={(e) => setStructuredSearch(e.target.value)}
-                  style={{
-                    flex: "1 1 300px",
-                    padding: "10px 14px",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--panel-border)",
-                    background: "var(--bg-secondary)",
-                    color: "var(--text-main)",
-                    fontSize: "0.9rem",
-                  }}
-                />
-                <select
-                  value={structuredCatFilter}
-                  onChange={(e) => setStructuredCatFilter(e.target.value)}
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--panel-border)",
-                    background: "var(--bg-secondary)",
-                    color: "var(--text-main)",
-                    fontSize: "0.88rem",
-                  }}
-                >
-                  <option value="all">All Categories</option>
-                  <option value="Agriculture">🌾 Agriculture & Farmers</option>
-                  <option value="Women">👩 Women & Child Development</option>
-                  <option value="Credit">💳 Credit & Finance</option>
-                  <option value="Insurance">🛡️ Crop Insurance</option>
-                  <option value="Irrigation">💧 Irrigation & Energy</option>
-                  <option value="Education">🎓 Education & Scholarships</option>
-                  <option value="Health">🏥 Health & Medical</option>
-                  <option value="Nutrition">🥗 Nutrition & Poshan</option>
-                  <option value="Housing">🏠 Housing</option>
-                </select>
-                <span style={{ fontSize: "0.85rem", color: "var(--text-dim)", fontWeight: 600 }}>
-                  {structuredSchemes.length} Total Schemes Seeded
-                </span>
-              </div>
-
-              {/* Grid of 9-field Scheme Cards */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))", gap: "16px" }}>
-                {structuredSchemes
-                  .filter((s) => {
-                    const matchesSearch =
-                      !structuredSearch ||
-                      s.scheme_name.toLowerCase().includes(structuredSearch.toLowerCase()) ||
-                      s.hindi_name.toLowerCase().includes(structuredSearch.toLowerCase()) ||
-                      s.eligibility.toLowerCase().includes(structuredSearch.toLowerCase()) ||
-                      s.benefits.toLowerCase().includes(structuredSearch.toLowerCase()) ||
-                      s.state_district.toLowerCase().includes(structuredSearch.toLowerCase());
-                    const matchesCat =
-                      structuredCatFilter === "all" ||
-                      (structuredCatFilter === "Women"
-                        ? (s.category.toLowerCase().includes("women") ||
-                           s.category.toLowerCase().includes("child") ||
-                           s.category.toLowerCase().includes("girl") ||
-                           s.category.toLowerCase().includes("maternity") ||
-                           s.category.toLowerCase().includes("shg") ||
-                           s.category.toLowerCase().includes("shelter"))
-                        : s.category.toLowerCase().includes(structuredCatFilter.toLowerCase()));
-                    return matchesSearch && matchesCat;
-                  })
-                  .map((s) => (
-                    <div
-                      key={s.scheme_id || s.id}
-                      style={{
-                        background: "var(--bg-card)",
-                        border: "1px solid var(--panel-border)",
-                        borderRadius: "var(--radius-lg)",
-                        padding: "16px",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "10px",
-                        boxShadow: "var(--shadow-sm)",
-                      }}
-                    >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
-                        <div>
-                          <h4 style={{ margin: 0, fontSize: "1.05rem", color: "var(--text-main)" }}>
-                            {s.hindi_name}
-                          </h4>
-                          <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                            {s.scheme_name}
-                          </span>
-                        </div>
-                        <span style={{
-                          background: "var(--emerald-bg)",
-                          color: "var(--emerald-text)",
-                          border: "1px solid var(--emerald-border)",
-                          padding: "2px 8px",
-                          borderRadius: "10px",
-                          fontSize: "0.72rem",
-                          fontWeight: 700,
-                          whiteSpace: "nowrap"
-                        }}>
-                          ● {s.status}
-                        </span>
-                      </div>
-
-                      <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                        <span style={{ background: "var(--bg-secondary)", color: "var(--text-dim)", padding: "2px 8px", borderRadius: "6px", fontSize: "0.72rem" }}>
-                          🏷️ {s.category}
-                        </span>
-                        <span style={{ background: "var(--bg-secondary)", color: "var(--accent)", padding: "2px 8px", borderRadius: "6px", fontSize: "0.72rem", fontWeight: 600 }}>
-                          📍 {s.state_district}
-                        </span>
-                      </div>
-
-                      <div style={{ fontSize: "0.82rem", lineHeight: "1.4", color: "var(--text-main)", background: "var(--bg-secondary)", padding: "8px 10px", borderRadius: "var(--radius-sm)" }}>
-                        <strong>👥 लाभार्थी:</strong> {s.beneficiary}
-                      </div>
-
-                      <div style={{ fontSize: "0.82rem", lineHeight: "1.4", color: "var(--text-main)" }}>
-                        <strong>🎯 पात्रता (Eligibility):</strong>
-                        <p style={{ margin: "2px 0 0", color: "var(--text-muted)" }}>{s.eligibility}</p>
-                      </div>
-
-                      <div style={{ fontSize: "0.82rem", lineHeight: "1.4", color: "var(--text-main)" }}>
-                        <strong>💰 लाभ (Benefits):</strong>
-                        <p style={{ margin: "2px 0 0", color: "var(--text-muted)" }}>{s.benefits}</p>
-                      </div>
-
-                      <div style={{ fontSize: "0.82rem", lineHeight: "1.4", color: "var(--text-main)" }}>
-                        <strong>📄 दस्तावेज़ (Documents):</strong>
-                        <div style={{ margin: "2px 0 0", color: "var(--text-muted)", whiteSpace: "pre-line" }}>{s.documents}</div>
-                      </div>
-
-                      <div style={{ marginTop: "auto", paddingTop: "10px", borderTop: "1px solid var(--panel-border)", display: "flex", justifyContent: "space-between", alignItems: "center", gap: "8px" }}>
-                        {s.official_source_url ? (
-                          <a href={s.official_source_url} target="_blank" rel="noreferrer" style={{ fontSize: "0.76rem", color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>
-                            🌐 Official Portal ↗
-                          </a>
-                        ) : <span />}
-
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const q = `${s.hindi_name} (${s.scheme_name}) के लिए क्या पात्रता, लाभ और दस्तावेज़ हैं?`;
-                            setQuestion(q);
-                            setSelectedLang("hi");
-                            setShowStructuredModal(false);
-                            ask(null, q);
-                          }}
-                          style={{
-                            padding: "6px 12px",
-                            background: "var(--accent)",
-                            color: "#ffffff",
-                            border: "none",
-                            borderRadius: "var(--radius-sm)",
-                            fontSize: "0.78rem",
-                            fontWeight: 600,
-                            cursor: "pointer",
-                          }}
-                        >
-                          Research in Hindi 🔍
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            </div>
-
-            <div style={{ padding: "12px 24px", borderTop: "1px solid var(--panel-border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                Database synced with Official Central & State Government Ministries.
-              </span>
-              <button className="btn-primary" onClick={() => setShowStructuredModal(false)}>
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Extract & Ingest Scheme Modal */}
+      {/* 4. MODAL: EXTRACT SCHEME FROM TEXT */}
       {showExtractModal && (
         <div className="modal-overlay" onClick={() => setShowExtractModal(false)}>
-          <div
-            className="modal-card"
-            style={{ maxWidth: "680px", width: "90vw" }}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="modal-card" style={{ maxWidth: "680px" }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <div>
-                <h3 style={{ margin: 0 }}>➕ Extract & Ingest Structured Scheme</h3>
-                <p style={{ margin: "4px 0 0 0", fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  Paste official PDF text, GR, or notification in Hindi or English to automatically clean, normalize, and store into PostgreSQL/database.
-                </p>
-              </div>
+              <h3>➕ Extract & Ingest Scheme</h3>
               <button className="close-btn" onClick={() => setShowExtractModal(false)}>✕</button>
             </div>
-
-            <form onSubmit={handleExtractScheme} style={{ padding: "20px 24px" }}>
-              <div style={{ marginBottom: "14px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                  <label style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                    Document / Notification Text (Hindi / English):
-                  </label>
-                  <button
-                    type="button"
-                    className={`voice-mic-btn ${isListening && listeningTarget === "extract" ? "listening" : ""}`}
-                    style={{ padding: "4px 12px", fontSize: "0.78rem" }}
-                    onClick={() => (isListening && listeningTarget === "extract" ? stopVoiceInput() : startVoiceInput("extract"))}
-                    title="Dictate document notification text using microphone"
-                  >
-                    <span>{isListening && listeningTarget === "extract" ? "⏹️ Stop Dictation" : "🎙️ Dictate Text (बोलून लिहा)"}</span>
-                  </button>
-                </div>
-                <textarea
-                  rows={8}
-                  style={{
-                    width: "100%",
-                    padding: "10px 12px",
-                    borderRadius: "var(--radius-md)",
-                    border: "1px solid var(--panel-border)",
-                    background: "var(--bg-secondary)",
-                    color: "var(--text-main)",
-                    fontSize: "0.88rem",
-                    fontFamily: "var(--font-mono)",
-                  }}
-                  placeholder="Paste official notification text here (e.g. Scheme Name, Eligibility, Benefits, Documents Required, State)..."
-                  value={extractText}
-                  onChange={(e) => setExtractText(e.target.value)}
-                  required
-                />
-              </div>
-
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
-                <button type="button" className="btn-secondary" onClick={() => setShowExtractModal(false)}>
-                  Cancel
-                </button>
+            <form onSubmit={handleExtractScheme} style={{ padding: "20px" }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-muted)", margin: "0 0 10px 0" }}>
+                Paste official government resolution or policy text in Hindi, Marathi, or English to extract structured fields.
+              </p>
+              <textarea
+                rows={7}
+                style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid var(--panel-border)", background: "var(--bg-secondary)", color: "var(--text-main)" }}
+                placeholder="Paste scheme description, eligibility, benefits text..."
+                value={extractText}
+                onChange={(e) => setExtractText(e.target.value)}
+                required
+              />
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "12px" }}>
+                <button type="button" className="btn-secondary" onClick={() => setShowExtractModal(false)}>Cancel</button>
                 <button type="submit" className="btn-primary" disabled={extracting || !extractText.trim()}>
-                  {extracting ? "Extracting & Normalizing..." : "Extract & Save Scheme"}
+                  {extracting ? "Extracting..." : "Extract & Save"}
                 </button>
               </div>
-
               {extractStatus && (
-                <div style={{
-                  marginTop: "14px",
-                  padding: "10px 14px",
-                  borderRadius: "var(--radius-md)",
-                  fontSize: "0.85rem",
-                  background: extractStatus.startsWith("✅") ? "var(--emerald-bg)" : "var(--rose-bg)",
-                  color: extractStatus.startsWith("✅") ? "var(--emerald-text)" : "var(--rose-text)",
-                  border: `1px solid ${extractStatus.startsWith("✅") ? "var(--emerald-border)" : "var(--rose-border)"}`,
-                }}>
+                <p style={{ marginTop: "10px", fontSize: "0.85rem", color: extractStatus.startsWith("✅") ? "green" : "red" }}>
                   {extractStatus}
-                </div>
+                </p>
               )}
             </form>
           </div>
         </div>
       )}
 
-      {/* Official Documents Hub & Document Voice Reader Modal */}
-      {showDocsModal && (
-        <div className="modal-overlay" onClick={() => { closeDocumentReader(); setShowDocsModal(false); }}>
-          <div
-            className="modal-card"
-            style={{ maxWidth: "1150px", width: "95vw", maxHeight: "92vh", display: "flex", flexDirection: "column" }}
-            onClick={(e) => e.stopPropagation()}
-          >
+      {/* 5. MODAL: DOCUMENT TEXT READER WITH VOICE TTS */}
+      {selectedDoc && (
+        <div className="modal-overlay" onClick={() => setSelectedDoc(null)}>
+          <div className="modal-card" style={{ maxWidth: "800px", maxHeight: "88vh" }} onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div>
-                <h3 style={{ margin: 0, display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span>📑</span> Official Government Documents &amp; Guidelines (अधिकृत दस्तऐवज)
-                </h3>
-                <p style={{ margin: "4px 0 0 0", fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                  Verified Gazettes, Policy Circulars, Compendiums &amp; Guidelines • Indexed for Grounded RAG with Voice Read Aloud
-                </p>
+                <h3 style={{ margin: 0 }}>📄 {selectedDoc.title}</h3>
+                <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                  {selectedDoc.authority} • {selectedDoc.pages_count} Pages
+                </span>
               </div>
-              <button className="close-btn" onClick={() => { closeDocumentReader(); setShowDocsModal(false); }}>✕</button>
+              <button className="close-btn" onClick={() => setSelectedDoc(null)}>✕</button>
             </div>
-
-            <div style={{ padding: "16px 24px", overflowY: "auto", flex: 1 }}>
-              {selectedDoc ? (
-                /* Document Full Reader View with Audio Toolbar */
-                <div className="doc-reader-container">
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", flexWrap: "wrap", gap: "10px" }}>
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={closeDocumentReader}
-                      style={{ fontSize: "0.82rem", padding: "6px 14px", display: "inline-flex", alignItems: "center", gap: "6px" }}
-                    >
-                      ← Back to All Documents
-                    </button>
-
-                    {/* Audio Player Toolbar for this Document */}
-                    <div className="audio-player-toolbar">
-                      {ttsPlaying && ttsSource === `doc-${selectedDoc.id}` ? (
-                        <>
-                          {ttsPaused ? (
-                            <button type="button" className="audio-btn active" onClick={resumeTts} title="Resume voice readout">
-                              ▶️ Resume
-                            </button>
-                          ) : (
-                            <button type="button" className="audio-btn active" onClick={pauseTts} title="Pause voice readout">
-                              ⏸️ Pause
-                            </button>
-                          )}
-                          <button type="button" className="audio-btn danger" onClick={stopTts} title="Stop voice readout">
-                            ⏹️ Stop
-                          </button>
-                          <div className="audio-waveform-bars" title="Voice audio playing">
-                            <span className="audio-wave-bar" />
-                            <span className="audio-wave-bar" />
-                            <span className="audio-wave-bar" />
-                            <span className="audio-wave-bar" />
-                            <span className="audio-wave-bar" />
-                          </div>
-                          <span style={{ fontSize: "0.75rem", color: "var(--accent)", fontWeight: 700 }}>
-                            Paragraph {ttsCurrentChunk}/{ttsTotalChunks}
-                          </span>
-                        </>
-                      ) : (
-                        <button
-                          type="button"
-                          className="audio-btn"
-                          onClick={() => playTts(selectedDocText, `doc-${selectedDoc.id}`, selectedLang === "mr" ? "mr" : selectedLang === "hi" ? "hi" : "en")}
-                          disabled={docTextLoading || !selectedDocText}
-                          title="Listen to this entire official document read aloud"
-                        >
-                          🔊 Read Full Document Aloud (संपूर्ण दस्तऐवज ऐका)
-                        </button>
-                      )}
-
-                      <div className="speed-selector-group" title="Adjust speech playback speed">
-                        {[0.8, 1.0, 1.25, 1.5].map((rate) => (
-                          <button
-                            key={rate}
-                            type="button"
-                            className={`speed-chip ${ttsRate === rate ? "active" : ""}`}
-                            onClick={() => changeTtsRate(rate)}
-                          >
-                            {rate}x
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="doc-reader-meta-bar">
-                    <div>
-                      <h4 style={{ margin: "0 0 4px", fontSize: "1.1rem", color: "var(--text-main)" }}>
-                        {selectedDoc.title}
-                      </h4>
-                      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                        <span>🏛️ <strong>Authority:</strong> {selectedDoc.authority}</span>
-                        <span>📑 <strong>Type:</strong> {selectedDoc.document_type || "Official Guidelines"}</span>
-                        {selectedDoc.publication_date && <span>📅 <strong>Date:</strong> {selectedDoc.publication_date}</span>}
-                        {selectedDoc.updated_date && <span>🛡️ <strong>Updated:</strong> {selectedDoc.updated_date}</span>}
-                      </div>
-                    </div>
-                    {selectedDoc.source_url && (
-                      <a
-                        href={selectedDoc.source_url}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{ fontSize: "0.82rem", color: "var(--accent)", fontWeight: 700, textDecoration: "none" }}
-                      >
-                        🌐 Official Portal ↗
-                      </a>
-                    )}
-                  </div>
-
-                  {docTextLoading ? (
-                    <div style={{ padding: "40px", textAlign: "center", color: "var(--text-muted)" }}>
-                      <span className="spinner" style={{ borderColor: "rgba(2, 132, 199, 0.3)", borderTopColor: "var(--accent)", width: "24px", height: "24px", margin: "0 auto 12px", display: "block" }} />
-                      Loading official document contents...
-                    </div>
-                  ) : (
-                    <div className="doc-content-viewer">
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px", borderBottom: "1px solid var(--panel-border)", paddingBottom: "8px" }}>
-                        <span style={{ fontSize: "0.8rem", color: "var(--text-dim)", fontWeight: 600 }}>
-                          💡 Tip: Click any paragraph to listen to it read aloud.
-                        </span>
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          style={{ padding: "3px 10px", fontSize: "0.75rem" }}
-                          onClick={() => {
-                            navigator.clipboard.writeText(selectedDocText);
-                            alert("Document text copied to clipboard!");
-                          }}
-                        >
-                          📋 Copy Text
-                        </button>
-                      </div>
-
-                      {selectedDocText.split("\n\n").map((para, pIdx) => {
-                        const trimmed = para.trim();
-                        if (!trimmed) return null;
-                        const isSpeakingThis = ttsPlaying && ttsSource === `doc-${selectedDoc.id}` && ttsCurrentChunk === pIdx + 1;
-                        return (
-                          <div
-                            key={pIdx}
-                            className={`doc-paragraph-item ${isSpeakingThis ? "currently-speaking" : ""}`}
-                            onClick={() => playTts(trimmed, `doc-${selectedDoc.id}`, selectedLang === "mr" ? "mr" : selectedLang === "hi" ? "hi" : "en")}
-                            title="Click to listen to this paragraph"
-                          >
-                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
-                              <p style={{ margin: 0, flex: 1, whiteSpace: "pre-wrap" }}>{trimmed}</p>
-                              <button
-                                type="button"
-                                className={`btn-listen-mini ${isSpeakingThis ? "playing" : ""}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  playTts(trimmed, `doc-${selectedDoc.id}`, selectedLang === "mr" ? "mr" : selectedLang === "hi" ? "hi" : "en");
-                                }}
-                                style={{ flexShrink: 0 }}
-                              >
-                                {isSpeakingThis ? "⏹️" : "🔊"}
-                              </button>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                /* Documents List View */
-                <div>
-                  {/* Search & Filter Bar */}
-                  <div style={{ display: "flex", gap: "10px", marginBottom: "16px", flexWrap: "wrap", alignItems: "center" }}>
-                    <div style={{ display: "flex", flex: "1 1 320px", gap: "6px" }}>
-                      <input
-                        type="text"
-                        placeholder="🔍 Search official documents (e.g. scholarship, KCC, pest, fertilizer, PM-KISAN)..."
-                        value={docSearch}
-                        onChange={(e) => setDocSearch(e.target.value)}
-                        style={{
-                          flex: 1,
-                          padding: "9px 14px",
-                          borderRadius: "var(--radius-md)",
-                          border: "1px solid var(--panel-border)",
-                          background: "var(--input-bg)",
-                          color: "var(--text-main)",
-                          fontSize: "0.88rem",
-                        }}
-                      />
-                      <button
-                        type="button"
-                        className={`voice-mic-btn ${isListening && listeningTarget === "docSearch" ? "listening" : ""}`}
-                        onClick={() => (isListening && listeningTarget === "docSearch" ? stopVoiceInput() : startVoiceInput("docSearch"))}
-                        title="Speak to search documents"
-                        style={{ padding: "8px 12px" }}
-                      >
-                        <span>{isListening && listeningTarget === "docSearch" ? "⏹️ Stop" : "🎙️ Speak"}</span>
-                      </button>
-                    </div>
-
-                    <select
-                      value={docCatFilter}
-                      onChange={(e) => setDocCatFilter(e.target.value)}
-                      style={{
-                        padding: "9px 12px",
-                        borderRadius: "var(--radius-md)",
-                        border: "1px solid var(--panel-border)",
-                        background: "var(--bg-secondary)",
-                        color: "var(--text-main)",
-                        fontSize: "0.84rem",
-                      }}
-                    >
-                      <option value="all">All Documents ({docsList.length})</option>
-                      <option value="agriculture">🌾 Agriculture & Farming</option>
-                      <option value="pest">🐛 Pest & Plant Protection</option>
-                      <option value="fertilizer">🧪 Fertilizer & Soil Health</option>
-                      <option value="education">🎓 Education & Scholarships</option>
-                      <option value="women">👩 Women & Child Schemes</option>
-                    </select>
-
-                    <button
-                      type="button"
-                      className="btn-secondary"
-                      onClick={fetchDocuments}
-                      title="Reload document list"
-                      style={{ padding: "8px 12px", fontSize: "0.82rem" }}
-                    >
-                      🔄 Refresh
-                    </button>
-                  </div>
-
-                  {docsLoading ? (
-                    <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
-                      Loading documents repository...
-                    </div>
-                  ) : (
-                    <div style={{ border: "1px solid var(--panel-border)", borderRadius: "var(--radius-md)", overflowX: "auto" }}>
-                      <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.84rem", textAlign: "left" }}>
-                        <thead>
-                          <tr style={{ background: "var(--bg-secondary)", borderBottom: "1px solid var(--panel-border)" }}>
-                            <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>ID</th>
-                            <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Document Title</th>
-                            <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Authority / Ministry</th>
-                            <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600 }}>Type / Date</th>
-                            <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "center" }}>Indexed</th>
-                            <th style={{ padding: "10px 12px", color: "var(--text-muted)", fontWeight: 600, textAlign: "center" }}>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {docsList
-                            .filter((doc) => {
-                              const q = docSearch.toLowerCase().trim();
-                              const matchesSearch = !q ||
-                                doc.title.toLowerCase().includes(q) ||
-                                (doc.authority && doc.authority.toLowerCase().includes(q)) ||
-                                (doc.document_type && doc.document_type.toLowerCase().includes(q));
-                              const cat = docCatFilter.toLowerCase();
-                              const matchesCat = cat === "all" ||
-                                (cat === "pest" && (doc.title.toLowerCase().includes("pest") || doc.title.toLowerCase().includes("cibrc"))) ||
-                                (cat === "fertilizer" && (doc.title.toLowerCase().includes("fertilizer") || doc.title.toLowerCase().includes("soil"))) ||
-                                (cat === "education" && (doc.title.toLowerCase().includes("scholarship") || doc.title.toLowerCase().includes("matric"))) ||
-                                (cat === "women" && (doc.title.toLowerCase().includes("women") || doc.title.toLowerCase().includes("child"))) ||
-                                (cat === "agriculture" && (doc.title.toLowerCase().includes("agriculture") || doc.title.toLowerCase().includes("crop") || doc.title.toLowerCase().includes("farmer") || doc.title.toLowerCase().includes("kisan")));
-                              return matchesSearch && matchesCat;
-                            })
-                            .map((doc) => (
-                              <tr
-                                key={doc.id}
-                                style={{
-                                  borderBottom: "1px solid var(--panel-border)",
-                                  transition: "background 0.15s ease",
-                                }}
-                              >
-                                <td style={{ padding: "10px 12px", color: "var(--text-dim)", fontFamily: "var(--font-mono)" }}>
-                                  #{doc.id}
-                                </td>
-                                <td style={{ padding: "10px 12px", fontWeight: 600, color: "var(--text-main)", maxWidth: "340px" }}>
-                                  {doc.title}
-                                </td>
-                                <td style={{ padding: "10px 12px", color: "var(--text-muted)", fontSize: "0.82rem" }}>
-                                  {doc.authority || "Government Authority"}
-                                </td>
-                                <td style={{ padding: "10px 12px", fontSize: "0.78rem", color: "var(--text-dim)" }}>
-                                  <span style={{ background: "var(--bg-secondary)", padding: "2px 6px", borderRadius: "4px", border: "1px solid var(--panel-border)", marginRight: "6px" }}>
-                                    {doc.document_type || "TXT"}
-                                  </span>
-                                  {doc.publication_date || doc.updated_date || "Official"}
-                                </td>
-                                <td style={{ padding: "10px 12px", textAlign: "center" }}>
-                                  <span style={{
-                                    padding: "2px 8px",
-                                    borderRadius: "10px",
-                                    fontSize: "0.74rem",
-                                    fontWeight: 700,
-                                    background: doc.indexed ? "var(--emerald-bg)" : "var(--amber-bg)",
-                                    color: doc.indexed ? "var(--emerald-text)" : "var(--amber-text)",
-                                    border: `1px solid ${doc.indexed ? "var(--emerald-border)" : "var(--amber-border)"}`
-                                  }}>
-                                    {doc.indexed ? "● Indexed" : "Pending"}
-                                  </span>
-                                </td>
-                                <td style={{ padding: "10px 12px", textAlign: "center" }}>
-                                  <button
-                                    type="button"
-                                    onClick={() => openDocumentDetails(doc)}
-                                    style={{
-                                      padding: "5px 12px",
-                                      background: "linear-gradient(135deg, #0284c7, #0d9488)",
-                                      color: "#ffffff",
-                                      border: "none",
-                                      borderRadius: "6px",
-                                      fontSize: "0.78rem",
-                                      fontWeight: 600,
-                                      cursor: "pointer",
-                                      display: "inline-flex",
-                                      alignItems: "center",
-                                      gap: "5px",
-                                    }}
-                                  >
-                                    <span>📖 Read &amp; Listen 🔊</span>
-                                  </button>
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div style={{ padding: "12px 24px", borderTop: "1px solid var(--panel-border)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
-                {docsList.length} Official Grounded Documents Indexed in ChromaDB &amp; SQLite.
-              </span>
-              <button className="btn-primary" onClick={() => { closeDocumentReader(); setShowDocsModal(false); }}>
-                Close Hub
-              </button>
+            <div style={{ padding: "16px 20px" }}>
+              <div className="doc-reader-meta-bar">
+                <span>{selectedDoc.source_url ? <a href={selectedDoc.source_url} target="_blank" rel="noreferrer">Official Link ↗</a> : "Verified Local Source"}</span>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  style={{ fontSize: "0.82rem", padding: "6px 14px" }}
+                  onClick={() => playTts(selectedDoc.text, `doc-${selectedDoc.id}`, selectedLang)}
+                >
+                  {ttsPlaying && ttsSource === `doc-${selectedDoc.id}` ? "⏹️ Stop Audio" : "🔊 Read Document Aloud"}
+                </button>
+              </div>
+              <div className="doc-content-viewer">
+                {selectedDoc.text}
+              </div>
             </div>
           </div>
         </div>
