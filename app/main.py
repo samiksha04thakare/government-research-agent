@@ -2,7 +2,7 @@ import os
 import secrets
 from pathlib import Path
 
-from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Response, UploadFile
+from fastapi import Depends, FastAPI, File, Form, Header, HTTPException, Request, Response, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -805,6 +805,64 @@ def get_source(sid: int):
         return {c: getattr(doc, c) for c in
                 ("id", "title", "authority", "source_url", "document_type",
                  "publication_date", "updated_date", "version", "indexed")}
+
+
+@app.post("/scraper/import-csv")
+async def import_scraped_csv(file: UploadFile = File(...)):
+    """Import scraped government schemes from CSV, normalize fields, upsert to SQL, and index in ChromaDB."""
+    if not file.filename or not file.filename.lower().endswith(".csv"):
+        raise HTTPException(
+            status_code=400,
+            detail="Please upload a CSV file."
+        )
+
+    try:
+        content = await file.read()
+        from app.sources.csv_importer import process_scraped_csv
+        return process_scraped_csv(content)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Failed to process CSV: {exc}")
+
+
+@app.post("/scraper/import-json")
+async def import_scraped_json(file: UploadFile = File(...)):
+    """Import scraped government schemes from JSON file, normalize fields, upsert to SQL, and index in ChromaDB."""
+    if not file.filename or not file.filename.lower().endswith(".json"):
+        raise HTTPException(
+            status_code=400,
+            detail="Please upload a JSON file."
+        )
+
+    try:
+        content = await file.read()
+        from app.sources.csv_importer import process_scraped_json
+        return process_scraped_json(content)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Failed to process JSON: {exc}")
+
+
+@app.post("/scraper/ingest")
+async def ingest_scraped_data(request: Request):
+    """Direct API / Webhook ingestion endpoint for Apify, web scrapers, and automated pipelines.
+    
+    Accepts JSON body: array of schemes `[{"scheme_name": "...", "official_url": "..."}]`
+    or wrapped object `{"schemes": [...]}` / `{"items": [...]}`.
+    Normalizes with Python, deduplicates via canonical scheme IDs, upserts to PostgreSQL/SQLite,
+    and indexes into ChromaDB embeddings.
+    """
+    try:
+        body = await request.json()
+        from app.sources.csv_importer import process_scraped_json
+        return process_scraped_json(body)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"Failed to ingest scraped payload: {exc}")
+
 
 
 # Mount frontend static distribution if built

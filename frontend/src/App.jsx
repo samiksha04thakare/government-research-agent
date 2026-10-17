@@ -368,8 +368,31 @@ export default function App() {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingDoc(true);
-    setUploadStatus("Uploading official document...");
+    const fname = file.name.toLowerCase();
+
     try {
+      if (fname.endsWith(".csv") || fname.endsWith(".json")) {
+        const endpoint = fname.endsWith(".csv") ? `${API}/scraper/import-csv` : `${API}/scraper/import-json`;
+        setUploadStatus(fname.endsWith(".csv") ? "Processing and validating scraped CSV schemes..." : "Processing and validating scraped JSON schemes...");
+        const formData = new FormData();
+        formData.append("file", file);
+
+        const res = await fetch(endpoint, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await safeParseJson(res);
+        if (!res.ok) throw new Error(data?.detail || "Import failed");
+
+        setUploadStatus(`✅ Imported ${data.records_imported || 0} schemes (${data.chunks_indexed || 0} chunks indexed in ChromaDB)!`);
+        fetchSchemes();
+        fetchDocuments();
+        fetchHealth();
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
+
+      setUploadStatus("Uploading official document...");
       const formData = new FormData();
       formData.append("file", file);
       formData.append("title", file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " "));
@@ -2012,14 +2035,14 @@ export default function App() {
                       ref={fileInputRef}
                       style={{ display: "none" }}
                       onChange={handleFileUpload}
-                      accept=".pdf,.txt,.html,.doc,.docx"
+                      accept=".pdf,.txt,.html,.doc,.docx,.csv,.json"
                     />
                     <span className="docs-cloud-icon">☁️</span>
                     <strong style={{ fontSize: "1.1rem", color: "var(--text-main)" }}>
-                      {t.uploadCardTitle || "दस्तावेज़ अपलोड करें"}
+                      {t.uploadCardTitle || "दस्तावेज़ या स्क्रैप डेटा अपलोड करें"}
                     </strong>
                     <span style={{ fontSize: "0.84rem", color: "var(--text-muted)" }}>
-                      {t.uploadCardSub || "PDF, DOC, DOCX, PNG, JPG (अधिकतम 20MB)"}
+                      {t.uploadCardSub || "PDF, DOCX, TXT, CSV, JSON (अधिकतम 20MB)"}
                     </span>
                     <button type="button" className="btn-primary" style={{ marginTop: "6px" }}>
                       {uploadingDoc ? "Uploading..." : t.chooseFileBtn || "फ़ाइल चुनें"}

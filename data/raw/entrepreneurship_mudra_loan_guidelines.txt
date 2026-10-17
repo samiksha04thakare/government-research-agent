@@ -1,0 +1,65 @@
+# Pradhan Mantri MUDRA Yojana (PMMY) Operational Guidelines & Loan Application Manual
+# Official Authority: Department of Financial Services (DFS), Ministry of Finance, Government of India & MUDRA Ltd.
+# Official Source Portals: https://www.mudra.org.in | https://udyamimitra.in
+# Publication Date: 2025-01-20 | Version: 2.1 | Document Type: Official Policy & Operational Manual
+# Target Category: Entrepreneurship, MSME Credit, Government Schemes
+
+## 1. Scheme Objective & Executive Summary
+Pradhan Mantri MUDRA Yojana (PMMY) was launched by the Government of India to "fund the unfunded" by facilitating collateral-free institutional credit to non-corporate, non-farm micro and small enterprises (MSEs). The scheme enables micro-entrepreneurs, artisans, shopkeepers, service providers, women entrepreneurs, and small manufacturing units to access affordable credit through Public Sector Banks, Private Sector Banks, Regional Rural Banks (RRBs), Small Finance Banks (SFBs), Micro Finance Institutions (MFIs), and Non-Banking Financial Companies (NBFCs).
+
+## 2. Loan Categories & Financial Assistance Limits
+MUDRA loans are structured into three distinct credit stages based on the growth stage and funding requirements of the enterprise, with an enhanced tier under recent Union Budget reforms:
+1. Shishu (शिशु): Covers loans up to ₹50,000 for early-stage entrepreneurs and tiny micro-units starting operations. There are zero processing fees for Shishu loans across all lending institutions.
+2. Kishore (किशोर): Covers loan amounts above ₹50,000 and up to ₹5,00,000 for purchasing equipment, machinery, initial inventory, or expanding an established micro-enterprise.
+3. Tarun (तरुण): Covers loan amounts above ₹5,00,000 and up to ₹10,00,000 for business expansion, technological upgrading, and meeting higher working capital requirements.
+4. Tarun Plus (तरुण प्लस): Under the Union Budget 2024-2025 announcement, the MUDRA loan ceiling has been enhanced up to ₹20,00,000 for entrepreneurs who have previously availed and successfully repaid loans under the Tarun category.
+
+## 3. Eligibility Criteria
+- Any Indian citizen aged 18 years and above having a viable business plan for a non-farm income-generating activity.
+- Covered sectors: Manufacturing, trading, service sector, shopkeeping, artisanal crafts, small transport operations (auto-rickshaw, taxi, small goods vehicles), food processing, textile tailoring, and beauty/wellness parlors.
+- Allied agricultural activities: Activities allied to agriculture such as dairy farming, poultry farming, pisciculture, beekeeping, agro-processing, cold chains, and agri-business centers are fully eligible for PMMY loans.
+- Credit Standing: The applicant must not have defaulted on any loan with any bank or financial institution, and must maintain a satisfactory credit history.
+
+## 4. Collateral-Free Credit & Security Norms
+- No Collateral Security: In accordance with Reserve Bank of India (RBI) mandates, banks and financial institutions are strictly prohibited from demanding any collateral security or third-party guarantee for MUDRA loans up to the prescribed ceiling.
+- Credit Guarantee Cover: All eligible PMMY loans are guaranteed by the Credit Guarantee Fund for Micro Units (CGFMU), administered by the National Credit Guarantee Trustee Company (NCGTC), Government of India.
+- Primary Security: Hypothecation of assets, machinery, equipment, or inventory purchased out of the bank loan proceeds serves as the primary security.
+
+## 5. Interest Rates & Repayment Terms
+- Interest Rates: Concessional interest rates linked to the lending institution's External Benchmark Lending Rate (EBLR) or Marginal Cost of Funds based Lending Rate (MCLR).
+- Repayment Period: Typically 3 to 5 years (36 to 60 months) with flexible moratorium periods (up to 6 months) depending on the business cash-flow cycle.
+- MUDRA RuPay Debit Card: For the working capital / cash-credit component, borrowers receive a MUDRA RuPay Card, allowing convenient withdrawal from ATMs and POS terminals without incurring interest on unused limits.
+
+## 6. Application Process: Step-by-Step Procedure
+Applicants can apply through both online and offline institutional channels:
+
+### A. Online Application via Udyami Mitra Portal (www.udyamimitra.in)
+1. Step 1 - Registration: Visit the official Udyami Mitra portal (https://udyamimitra.in) or JanSamarth portal (https://www.jansamarth.in). Register using your active mobile number and email ID.
+2. Step 2 - Profile & Scheme Selection: Choose 'Apply for MUDRA Loan' and select the appropriate loan category: Shishu (up to ₹50K), Kishore (₹50K - ₹5L), or Tarun (₹5L - ₹10L/₹20L).
+3. Step 3 - Information Submission: Enter personal details, proposed enterprise address, business activity, required loan amount, and existing banking relationship.
+4. Step 4 - Document Upload: Upload digital copies of identity proof, address proof, Udyam Registration Certificate, quotation for machinery/equipment, and bank statements.
+5. Step 5 - Preferred Lenders & ARN: Select up to 3 preferred banks or NBFCs in your locality. Submit the application to generate a unique Application Reference Number (ARN) for real-time tracking.
+
+### B. Offline Application via Bank Branches & Financial Institutions
+1. Step 1: Visit the nearest branch of any Public Sector Bank (e.g., SBI, PNB, Bank of Baroda), Private Bank, Regional Rural Bank (RRB), Small Finance Bank, or registered NBFC/MFI.
+2. Step 2: Request the standardized PMMY Application Form (1-page simplified form for Shishu; 2-page standard form for Kishore and Tarun).
+3. Step 3: Complete the form with business details, cost of equipment/project, and submit with self-attested KYC documents, quotations from authorized suppliers, and passport photos.
+4. Step 4: The lending branch carries out field verification and credit appraisal.
+5. Step 5: Loan sanction and disbursement directly to the machinery supplier (for term loan) and credit into current/overdraft account with issuance of MUDRA RuPay Card.
+
+## 7. Mandatory Required Documents Checklist
+1. Identity Proof: Aadhaar Card, PAN Card, Voter ID Card, Driving Licence, or Passport.
+2. Proof of Residence: Aadhaar Card, recent electricity bill, telephone bill, water bill, or Ration Card.
+3. Proof of Business Enterprise: Udyam Registration Certificate (obtained free at udyamregistration.gov.in), Trade Licence, Shop & Establishment Act Certificate, or GSTIN (where applicable).
+4. Project Proposal & Machinery Quotations: Detailed project report specifying estimated cost of project, machinery quotations from authorized manufacturers/dealers, and projected revenue (for Kishore and Tarun).
+5. Bank Statements: Last 6 months bank statement of the applicant / existing business entity.
+6. Identity of Partners/Directors: Partnership Deed, Memorandum of Association (MOA), Articles of Association (AOA) in case of partnerships or private companies.
+7. Photographs: 2 recent passport size photographs of the applicant / promoter / partners.
+8. Caste/Category Certificate: SC, ST, OBC, or Minority certificate if claiming government subsidy or specialized entrepreneurship reservations.
+
+## 8. Official Contacts, Toll-Free Helplines & Portals
+- Official Scheme Website: https://www.mudra.org.in
+- Digital Application Portal: https://udyamimitra.in
+- National JanSamarth Portal: https://www.jansamarth.in
+- National Toll-Free Helplines: 1800 180 1111 | 1800 11 0001
+- Administrative Ministry: Department of Financial Services (DFS), Ministry of Finance, Government of India.

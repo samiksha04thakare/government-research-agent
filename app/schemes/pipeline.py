@@ -475,6 +475,7 @@ SCHEME_IDENTIFIER_MAP = [
     ("Soil Health", ["soil health", "मृदा स्वास्थ्य", "मृदा कार्ड", "माती परीक्षण"]),
     ("PM-JAY", ["ayushman", "pm-jay", "pmjay", "आयुष्मान"]),
     ("PMAY-G", ["pmay", "awas yojana", "ग्रामीण आवास", "आवास योजना"]),
+    ("MUDRA", ["mudra", "मुद्रा", "pmmy", "udyamimitra", "udyami mitra", "shishu", "kishore", "tarun"]),
 ]
 
 

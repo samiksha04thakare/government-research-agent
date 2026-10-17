@@ -56,6 +56,13 @@ CATEGORY_ROUTES: dict[str, dict[str, Any]] = {
         "filter": {"category": "education_scholarships"},
         "source_description": "State & Central Scholarships, Fellowships & Educational Support Guidelines",
     },
+    "entrepreneurship": {
+        "scope": "government_related",
+        "has_documents": True,
+        "target_categories": ["government_schemes", "entrepreneurship"],
+        "filter": None,
+        "source_description": "PMMY MUDRA Loans, MSME Credit, Stand-Up India & Entrepreneurship Schemes",
+    },
     "jobs_recruitment": {
         "scope": "government_related",
         "has_documents": False,

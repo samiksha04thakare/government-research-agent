@@ -1,3 +1,4 @@
+import chromadb
 from functools import lru_cache
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
@@ -8,11 +9,16 @@ from app.rag.embeddings import get_embeddings
 
 
 @lru_cache(maxsize=1)
+def get_chroma_client() -> chromadb.ClientAPI:
+    return chromadb.PersistentClient(path=CHROMA_DIR)
+
+
+@lru_cache(maxsize=1)
 def get_store() -> Chroma:
     return Chroma(
+        client=get_chroma_client(),
         collection_name="gov_docs",
         embedding_function=get_embeddings(),
-        persist_directory=CHROMA_DIR,
     )
 
 

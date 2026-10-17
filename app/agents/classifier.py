@@ -11,6 +11,7 @@ log = get_logger("classifier")
 # The 14 recognized categories plus out_of_scope
 ALL_CATEGORIES = [
     "government_schemes",
+    "entrepreneurship",
     "agriculture",
     "crop_problems",
     "pest_management",
@@ -37,6 +38,7 @@ AGRICULTURE_CATEGORIES = {
 
 GOVERNMENT_CATEGORIES = {
     "government_schemes",
+    "entrepreneurship",
     "jobs_recruitment",
     "education_scholarships",
     "health",
@@ -59,12 +61,16 @@ def get_scope_for_category(category: str) -> str:
 
 class ClassificationResult(BaseModel):
     category: str = Field(
-        description="The detected category: government_schemes, agriculture, crop_problems, pest_management, "
+        description="The detected category: government_schemes, entrepreneurship, agriculture, crop_problems, pest_management, "
                     "fertilizers, farmer_questions, jobs_recruitment, education_scholarships, health, "
                     "documents_certificates, tax_gst, pension, transport, other_government, or out_of_scope."
     )
     scope: Literal["government_related", "agriculture_related", "out_of_scope"] = Field(
         description="High level scope: government_related, agriculture_related, or out_of_scope."
+    )
+    intent: str = Field(
+        default="General",
+        description="User intent: Application, Eligibility, Benefits, Status, Information, or Grievance."
     )
     reasoning: str = Field(
         default="",
@@ -162,14 +168,33 @@ def heuristic_classify(question: str) -> ClassificationResult:
             reasoning="Input is casual greeting or chit-chat."
         )
 
-    # 2. Check if question directly matches any official government scheme
+    # 2. Check for Entrepreneurship / MUDRA / MSME loan schemes
+    mudra_terms = [
+        "mudra", "मुद्रा", "pmmy", "udyamimitra", "udyami mitra",
+        "shishu loan", "kishore loan", "tarun loan", "micro unit",
+        "business loan", "व्यवसाय कर्ज", "बिजनेस लोन", "उद्योग कर्ज",
+        "msme loan", "stand-up india", "stand up india", "उद्यमिता", "entrepreneurship"
+    ]
+    if any(term in q_lower for term in mudra_terms):
+        intent = "Application" if any(w in q_lower for w in ["आवेदन", "apply", "application", "अर्ज", "फॉर्म", "form", "प्रक्रिया", "process", "कैसे करें", "कसा करावा", "पद्धत"]) else "Information"
+        return ClassificationResult(
+            category="entrepreneurship",
+            scope="government_related",
+            intent=intent,
+            reasoning="Question is about Pradhan Mantri MUDRA Yojana / MSME entrepreneurship loans."
+        )
+
+    # 3. Check if question directly matches any official government scheme
     try:
         from app.schemes.pipeline import find_matching_scheme_for_query
         matched_scheme = find_matching_scheme_for_query(q_clean)
         if matched_scheme:
+            cat = "entrepreneurship" if ("entrepreneurship" in (matched_scheme.category or "").lower() or "mudra" in (matched_scheme.scheme_name or "").lower()) else "government_schemes"
+            intent = "Application" if any(w in q_lower for w in ["आवेदन", "apply", "application", "अर्ज", "फॉर्म", "form", "प्रक्रिया", "process", "कैसे करें", "कसा करावा", "पद्धत"]) else "Information"
             return ClassificationResult(
-                category="government_schemes",
+                category=cat,
                 scope="government_related",
+                intent=intent,
                 reasoning=f"Question directly references official government scheme: {matched_scheme.scheme_name}."
             )
     except Exception:
@@ -382,7 +407,7 @@ def classify(question: str) -> dict:
     fast_check = heuristic_classify(question)
     if fast_check.category in (
         "out_of_scope", "pest_management", "fertilizers",
-        "crop_problems", "government_schemes", "education_scholarships"
+        "crop_problems", "government_schemes", "education_scholarships", "entrepreneurship"
     ):
         return fast_check.model_dump()
 

@@ -540,6 +540,9 @@ def format_citations_markdown(citations: list[dict[str, Any]], language: str = "
             entry += f"\n   - ⚠️ **{flag_lbl}:** {issues}"
         lines.append(entry)
 
-    disclaimer = labels.get("advisory_disclaimer", ADVISORY_DISCLAIMER)
-    lines.append(f"\n_{disclaimer}_")
+    if lang_key == "en":
+        disclaimer = ADVISORY_DISCLAIMER
+    else:
+        disclaimer = f"_{labels.get('advisory_disclaimer', ADVISORY_DISCLAIMER)}_"
+    lines.append(f"\n{disclaimer}")
     return "\n".join(lines)

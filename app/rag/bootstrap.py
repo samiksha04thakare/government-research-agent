@@ -70,6 +70,13 @@ BASELINE_DOCUMENTS = [
         "source_url": "https://mahadbt.maharashtra.gov.in",
         "publication_date": "2025-01-10",
     },
+    {
+        "file": "data/raw/entrepreneurship_mudra_loan_guidelines.txt",
+        "title": "Pradhan Mantri MUDRA Yojana (PMMY) Operational Guidelines & Loan Application Manual",
+        "authority": "Department of Financial Services, Ministry of Finance, Govt of India & MUDRA Ltd.",
+        "source_url": "https://www.mudra.org.in",
+        "publication_date": "2025-01-20",
+    },
 ]
 
 

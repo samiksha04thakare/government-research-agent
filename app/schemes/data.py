@@ -320,5 +320,19 @@ OFFICIAL_SCHEMES_SEED = [
         "official_source_url": "https://poshantracker.in",
         "authority": "Ministry of Women and Child Development, GoI & WCD Maharashtra",
         "guidelines_summary": "Flagship national nutrition initiative upgrading Anganwadi centres for holistic child and maternal nutrition."
+    },
+    {
+        "scheme_name": "Pradhan Mantri MUDRA Yojana (PMMY)",
+        "hindi_name": "प्रधानमंत्री मुद्रा योजना (पीएमएमवाई)",
+        "category": "Entrepreneurship & MSME Credit",
+        "beneficiary": "Non-corporate, non-farm small and micro enterprise owners, artisans, traders, shopkeepers, women entrepreneurs, service units, food processing units, and allied agricultural enterprises (dairy, poultry, fisheries)",
+        "eligibility": "Any Indian citizen aged 18+ with a viable business plan for non-farm income generating activities in manufacturing, trading, or service sectors. Clean credit history with no prior defaults with any financial institution.",
+        "benefits": "Collateral-free institutional loans across three tiers with zero processing fees for Shishu:\n1. Shishu (शिशु): Loans up to ₹50,000 for early-stage micro-enterprises.\n2. Kishore (किशोर): Loans above ₹50,000 and up to ₹5,00,000 for equipment, machinery, and working capital.\n3. Tarun (तरुण): Loans above ₹5,00,000 and up to ₹10,00,000 (and extended up to ₹20,00,000 under Tarun Plus for previous successful borrowers).\nNo collateral security or third-party guarantee required (100% covered under Credit Guarantee Fund for Micro Units - CGFMU). Working capital limit managed via MUDRA RuPay Debit Card.",
+        "documents": "1. Identity Proof: Aadhaar Card / Voter ID / PAN Card / Driving Licence\n2. Address Proof: Aadhaar Card / Electricity Bill / Telephone Bill\n3. Business Proof: Udyam Registration Certificate / Trade License / Shop & Establishment Certificate\n4. Project Report & Asset Quotation: Itemized machinery quotation and project cost details (for Kishore & Tarun)\n5. Bank Statements: Last 6 months bank statement\n6. Passport size photographs (2 copies)\n7. Category Certificate (SC/ST/OBC/Minority) if applicable",
+        "state_district": "Central / All India",
+        "status": "Active",
+        "official_source_url": "https://www.mudra.org.in",
+        "authority": "Department of Financial Services, Ministry of Finance, Government of India & MUDRA Ltd.",
+        "guidelines_summary": "National micro-finance credit initiative providing collateral-free loans up to ₹10 Lakhs (and ₹20 Lakhs under Tarun Plus) across Shishu, Kishore, and Tarun categories through all scheduled commercial banks, RRBs, SFBs, and NBFCs."
     }
 ]
