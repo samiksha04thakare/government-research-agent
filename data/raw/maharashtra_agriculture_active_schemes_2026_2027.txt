@@ -2,35 +2,35 @@
 Authority: Department of Agriculture, Government of Maharashtra
 Source URL: https://krishi.maharashtra.gov.in / Budget Distribution System (BDS)
 Document Type: Official Budgetary Statement & Active Schemes Directory
-Publication Date: 2026-10-07
-Updated Date: 2026-10-08
-Version: 2026-27.1
+Publication Date: 2026-10-20
+Updated Date: 2026-10-20
+Version: 2026-27.2
 
 ## Executive Budgetary Overview
 - Department: Agriculture, Government of Maharashtra
 - Total Active Schemes: 104 (General: 63, SCCS: 19, TCS: 22)
-- 2026-27 Total Demand Outlay: Rs. 1,97,59,37.68 Lakh (~Rs. 19,759.38 Crore)
-- 2026-27 Proposed Outlay: Rs. 1,24,38,13.52 Lakh (~Rs. 12,438.14 Crore)
-- 2026-27 Outlay for Budgeting: Rs. 1,24,38,13.52 Lakh
-- Final BDS Budget (Till 07-Oct-26): Rs. 1,29,88,01.48 Lakh (~Rs. 12,988.01 Crore)
-- BDS Funds Released by Finance Dept: Rs. 35,08,78.90 Lakh (~Rs. 3,508.79 Crore)
-- BDS Actual Expenditure: Rs. 22,18,60.60 Lakh (~Rs. 2,218.61 Crore, 63.23% of released funds)
+- 2026-27 Total Demand Outlay: Rs. 1,975,937.68 Lakh (~Rs. 19,759.38 Crore)
+- 2026-27 Proposed Outlay: Rs. 1,243,813.52 Lakh (~Rs. 12,438.14 Crore)
+- 2026-27 Outlay for Budgeting: Rs. 1,243,813.52 Lakh
+- Final BDS Budget (Till 20-Oct-26): Rs. 1,298,801.48 Lakh (~Rs. 12,988.01 Crore)
+- BDS Funds Released by Finance Dept: Rs. 351,261.60 Lakh (~Rs. 3,512.62 Crore)
+- BDS Actual Expenditure: Rs. 240,559.16 Lakh (~Rs. 2,405.59 Crore, 68.48% of released funds)
 
 ## Key Strategic Allocations & Flagship Programs
 1. **Namo Shetakari Mahasanmaan Nidhi Yojana (100% State Scheme)**:
    - Total 2026-27 Proposed Outlay: Rs. 6,06,000.00 Lakh (General: Rs. 4,78,740.00 Lakh | SCCS: Rs. 69,690.00 Lakh | TCS: Rs. 57,570.00 Lakh). Top priority direct farmer income assistance scheme matching PM-KISAN.
 2. **Krushi Samrudhi Yojana**:
-   - 2026-27 Proposed Outlay: Rs. 2,00,000.00 Lakh (Demand was Rs. 5,00,000.00 Lakh). Rs. 60,000 Lakh released and 100% utilized as of Oct 2026.
+   - 2026-27 Proposed Outlay: Rs. 2,00,000.00 Lakh (Demand was Rs. 5,00,000.00 Lakh). Rs. 60,000 Lakh released and utilized as of Oct 2026.
 3. **Project on Climate Resilient Agriculture (POCRA Phase-II)**:
-   - Scheme Code: 1101010317 | Proposed Outlay: Rs. 44,200.00 Lakh | Final BDS: Rs. 47,400.00 Lakh.
+   - Scheme Code: 1101010317 | Proposed Outlay: Rs. 44,200.00 Lakh | Final BDS: Rs. 47,400.00 Lakh | Expenditure: Rs. 37,358.60 Lakh.
 4. **SMART (State of Maharashtra Agri-business and Rural Transformation Program)**:
-   - Scheme Code: 1101010299 | Proposed Outlay: Rs. 40,000.00 Lakh | Actual expenditure: Rs. 13,949.00 Lakh.
+   - Scheme Code: 1101010299 | Proposed Outlay: Rs. 40,000.00 Lakh | Release: Rs. 13,949.00 Lakh | Expenditure: Rs. 13,949.00 Lakh.
 5. **Agricultural Mechanization Sub Mission & State Mechanization Scheme**:
-   - SMAM (1101010022): Proposed Rs. 32,000.00 Lakh; State Mechanization (1101010296): Proposed Rs. 2,000.00 Lakh.
+   - SMAM (1101010022): Proposed Rs. 32,000.00 Lakh | Release: Rs. 34,361.67 Lakh | Expenditure: Rs. 31,809.26 Lakh; State Mechanization (1101010296): Proposed Rs. 2,000.00 Lakh.
 6. **PMKSY - Per Drop More Crop (Micro Irrigation)**:
-   - General (1101010276): Proposed Rs. 30,545.00 Lakh | SCCS: Rs. 5,000.00 Lakh | TCS: Rs. 3,750.00 Lakh.
+   - General (1101010276): Proposed Rs. 30,545.00 Lakh | Final BDS: Rs. 37,609.93 Lakh | Release: Rs. 32,857.34 Lakh | Expenditure: Rs. 32,584.14 Lakh.
 7. **Maharashtra Agriculture Artificial Intelligence Policy 2025-2029**:
-   - Scheme Code: 1101100034 | Proposed Outlay: Rs. 10,000.00 Lakh (~Rs. 100 Crore) | BDS Release: Rs. 2,489.84 Lakh.
+   - Scheme Code: 1101100034 | Proposed Outlay: Rs. 10,000.00 Lakh (~Rs. 100 Crore) | BDS Release: Rs. 2,489.84 Lakh | Expenditure: Rs. 383.70 Lakh.
 8. **Digital Public Infrastructure & Early Warning (AgriStack & WINDS)**:
    - AgriStack: General (1101010316) Rs. 4,277.50 L, SCCS Rs. 250.00 L, TCS Rs. 405.00 L.
    - WINDS (Weather Information Network Data System): Central (1101010326) and State (1101010327).
@@ -45,626 +45,624 @@ Version: 2026-27.1
 - 2024-25 Outlay: Rs. 100,000.00 Lakh | Actual Exp: Rs. 406,370.41 Lakh
 - 2025-26 Outlay: Rs. 606,000.00 Lakh | Anticipated Exp: Rs. 606,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 606,000.00 Lakh | Proposed Outlay: Rs. 478,740.00 Lakh | Outlay for Budgeting: Rs. 478,740.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 478,740.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 478,740.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [2] Chief Minister Sustainable Agriculture Irrigation Scheme (General)
 - Scheme Code: 1101010302 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 40,000.00 Lakh | Actual Exp: Rs. 16,089.31 Lakh
 - 2025-26 Outlay: Rs. 50,000.00 Lakh | Anticipated Exp: Rs. 50,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 60,000.00 Lakh | Proposed Outlay: Rs. 2,000.00 Lakh | Outlay for Budgeting: Rs. 2,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,000.00 Lakh | FD Release: Rs. 400.00 Lakh | BDS Exp: Rs. 400.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,000.00 Lakh | FD Release: Rs. 400.00 Lakh | BDS Exp: Rs. 400.00 Lakh
 #### [3] Pradhan Mantri Krishi Sinchayee Yojna (PDMC) - Per Drop More Crop (Micro Irrigation)
 - Scheme Code: 1101010276 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 33,820.00 Lakh | Actual Exp: Rs. 60,883.19 Lakh
 - 2025-26 Outlay: Rs. 38,396.67 Lakh | Anticipated Exp: Rs. 38,396.67 Lakh
 - 2026-27 Demand Outlay: Rs. 94,500.00 Lakh | Proposed Outlay: Rs. 30,545.00 Lakh | Outlay for Budgeting: Rs. 30,545.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 37,609.93 Lakh | FD Release: Rs. 32,857.34 Lakh | BDS Exp: Rs. 32,565.45 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 37,609.93 Lakh | FD Release: Rs. 32,857.34 Lakh | BDS Exp: Rs. 32,584.14 Lakh
 #### [4] State sponsored Agricultural Mechanization Scheme
 - Scheme Code: 1101010296 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 25,000.00 Lakh | Actual Exp: Rs. 10,275.00 Lakh
 - 2025-26 Outlay: Rs. 40,000.00 Lakh | Anticipated Exp: Rs. 40,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 44,000.00 Lakh | Proposed Outlay: Rs. 2,000.00 Lakh | Outlay for Budgeting: Rs. 2,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,000.00 Lakh | FD Release: Rs. 800.00 Lakh | BDS Exp: Rs. 800.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,000.00 Lakh | FD Release: Rs. 800.00 Lakh | BDS Exp: Rs. 800.00 Lakh
 #### [5] Project on Climate Resilient Agriculture
 - Scheme Code: 1101010286 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 23,200.01 Lakh | Actual Exp: Rs. 3,041.89 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 0.00 Lakh | Outlay for Budgeting: Rs. 0.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [6] National Food Security Mission-Rice,Wheat,Pulses and Coarse Cereals
 - Scheme Code: 1101010272 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 21,667.00 Lakh | Actual Exp: Rs. 18,585.80 Lakh
 - 2025-26 Outlay: Rs. 23,815.00 Lakh | Anticipated Exp: Rs. 23,815.00 Lakh
 - 2026-27 Demand Outlay: Rs. 14,905.00 Lakh | Proposed Outlay: Rs. 11,872.50 Lakh | Outlay for Budgeting: Rs. 11,872.50 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 19,108.30 Lakh | FD Release: Rs. 14,595.33 Lakh | BDS Exp: Rs. 5,284.26 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 19,108.30 Lakh | FD Release: Rs. 14,595.33 Lakh | BDS Exp: Rs. 5,532.66 Lakh
 #### [7] Rashtriya Krishi Vikas Yojana (RKVY)
 - Scheme Code: 1101010023 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 21,467.00 Lakh | Actual Exp: Rs. 12,145.07 Lakh
 - 2025-26 Outlay: Rs. 32,595.00 Lakh | Anticipated Exp: Rs. 32,595.00 Lakh
 - 2026-27 Demand Outlay: Rs. 44,185.00 Lakh | Proposed Outlay: Rs. 20,105.00 Lakh | Outlay for Budgeting: Rs. 20,105.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [8] Special Action plan for Productivity growth and value chain development of cotton, soybean and other oilseed crops
 - Scheme Code: 1101010311 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 20,000.00 Lakh | Actual Exp: Rs. 308,167.75 Lakh
 - 2025-26 Outlay: Rs. 0.01 Lakh | Anticipated Exp: Rs. 0.01 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [9] State of Maharashtra Agri - business and Rural Tranformation Program (SMART).
 - Scheme Code: 1101010299 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 16,000.00 Lakh | Actual Exp: Rs. 27,906.00 Lakh
 - 2025-26 Outlay: Rs. 59,991.00 Lakh | Anticipated Exp: Rs. 59,991.00 Lakh
 - 2026-27 Demand Outlay: Rs. 80,015.00 Lakh | Proposed Outlay: Rs. 40,000.00 Lakh | Outlay for Budgeting: Rs. 40,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 40,000.00 Lakh | FD Release: Rs. 13,949.00 Lakh | BDS Exp: Rs. 13,949.00 Lakh
-#### [10] Prime Minister's Formalization of Micro Food Processing Industry Scheme (PMFME)(Centrally Sponsored Scheme )(General)
+- BDS Final Budget (Till 20-Oct-26): Rs. 40,000.00 Lakh | FD Release: Rs. 13,949.00 Lakh | BDS Exp: Rs. 13,949.00 Lakh
+#### [10] Prime Minister's Formalization of Micro Food Processing Industry  Scheme (PMFME)(Centrally Sponsored Scheme )(General)
 - Scheme Code: 1101010304 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 15,000.00 Lakh | Actual Exp: Rs. 26,533.32 Lakh
 - 2025-26 Outlay: Rs. 33,162.00 Lakh | Anticipated Exp: Rs. 33,162.00 Lakh
 - 2026-27 Demand Outlay: Rs. 33,333.33 Lakh | Proposed Outlay: Rs. 24,583.33 Lakh | Outlay for Budgeting: Rs. 24,583.33 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 24,583.33 Lakh | FD Release: Rs. 24,580.00 Lakh | BDS Exp: Rs. 14,025.70 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 24,583.33 Lakh | FD Release: Rs. 24,580.00 Lakh | BDS Exp: Rs. 15,687.07 Lakh
 #### [11] Agricultural Mechanisation Sub Mission
 - Scheme Code: 1101010022 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 14,531.00 Lakh | Actual Exp: Rs. 494.92 Lakh
 - 2025-26 Outlay: Rs. 13,298.33 Lakh | Anticipated Exp: Rs. 13,298.33 Lakh
 - 2026-27 Demand Outlay: Rs. 24,406.25 Lakh | Proposed Outlay: Rs. 32,000.00 Lakh | Outlay for Budgeting: Rs. 32,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 40,225.00 Lakh | FD Release: Rs. 34,361.67 Lakh | BDS Exp: Rs. 30,673.42 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 40,225.00 Lakh | FD Release: Rs. 34,361.67 Lakh | BDS Exp: Rs. 31,809.26 Lakh
 #### [12] Gopinath Munde Shetkari Suraksha Sanugrah Subsidy Scheme
 - Scheme Code: 1101010020 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 12,000.00 Lakh | Actual Exp: Rs. 8,657.32 Lakh
 - 2025-26 Outlay: Rs. 12,000.00 Lakh | Anticipated Exp: Rs. 12,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 20,000.00 Lakh | Proposed Outlay: Rs. 12,000.00 Lakh | Outlay for Budgeting: Rs. 12,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 12,000.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 12,000.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [13] Grant In Aid to Mahatma Phule Krishi Vidyapeeth
 - Scheme Code: 1101100005 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 10,000.00 Lakh | Actual Exp: Rs. 9,502.89 Lakh
 - 2025-26 Outlay: Rs. 10,000.00 Lakh | Anticipated Exp: Rs. 10,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 31,070.87 Lakh | Proposed Outlay: Rs. 11,597.00 Lakh | Outlay for Budgeting: Rs. 11,597.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 11,597.00 Lakh | FD Release: Rs. 894.60 Lakh | BDS Exp: Rs. 680.50 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 11,597.00 Lakh | FD Release: Rs. 894.60 Lakh | BDS Exp: Rs. 680.50 Lakh
 #### [14] Grant In Aid to Marathwada Krishi Vidyapeeth
 - Scheme Code: 1101100002 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 10,000.00 Lakh | Actual Exp: Rs. 4,592.00 Lakh
 - 2025-26 Outlay: Rs. 10,000.00 Lakh | Anticipated Exp: Rs. 10,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 11,260.00 Lakh | Proposed Outlay: Rs. 10,000.00 Lakh | Outlay for Budgeting: Rs. 10,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 10,000.00 Lakh | FD Release: Rs. 787.41 Lakh | BDS Exp: Rs. 278.47 Lakh
-#### [15] Sendriya sheti / Vishmukta sheti (state scheme ) for implementation of Dr. Punjabrao Deshmukh JaivikSheti Mission
+- BDS Final Budget (Till 20-Oct-26): Rs. 10,000.00 Lakh | FD Release: Rs. 787.41 Lakh | BDS Exp: Rs. 278.47 Lakh
+#### [15] Sendriya sheti / Vishmukta sheti (state scheme )   for implementation  of Dr. Punjabrao Deshmukh JaivikSheti Mission
 - Scheme Code: 1101010298 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 7,597.00 Lakh | Actual Exp: Rs. 5,272.87 Lakh
 - 2025-26 Outlay: Rs. 4,000.00 Lakh | Anticipated Exp: Rs. 4,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 10,000.00 Lakh | Proposed Outlay: Rs. 2,000.00 Lakh | Outlay for Budgeting: Rs. 2,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,000.00 Lakh | FD Release: Rs. 60.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,000.00 Lakh | FD Release: Rs. 60.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [16] CM Agri And Food Processing Scheme 100 percent State
 - Scheme Code: 1101090065 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 7,500.00 Lakh | Actual Exp: Rs. 6,269.37 Lakh
 - 2025-26 Outlay: Rs. 7,500.00 Lakh | Anticipated Exp: Rs. 7,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 10,000.00 Lakh | Proposed Outlay: Rs. 3,000.00 Lakh | Outlay for Budgeting: Rs. 3,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 3,000.00 Lakh | FD Release: Rs. 1,200.00 Lakh | BDS Exp: Rs. 1,200.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 3,000.00 Lakh | FD Release: Rs. 1,200.00 Lakh | BDS Exp: Rs. 1,200.00 Lakh
 #### [17] National Mission on Edible Oils - Oilseeds (NMEO)
 - Scheme Code: 1101010012 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 7,130.00 Lakh | Actual Exp: Rs. 7,139.80 Lakh
 - 2025-26 Outlay: Rs. 13,133.33 Lakh | Anticipated Exp: Rs. 13,133.33 Lakh
 - 2026-27 Demand Outlay: Rs. 11,875.00 Lakh | Proposed Outlay: Rs. 12,580.00 Lakh | Outlay for Budgeting: Rs. 12,580.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 15,579.78 Lakh | FD Release: Rs. 10,878.23 Lakh | BDS Exp: Rs. 2,386.24 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 15,579.78 Lakh | FD Release: Rs. 10,878.23 Lakh | BDS Exp: Rs. 2,934.86 Lakh
 #### [18] Grants-In-Aid to Dr.Punjabrao Deshmukh Krishi Vidyapeeth
 - Scheme Code: 1101100001 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 6,000.00 Lakh | Actual Exp: Rs. 11,831.00 Lakh
 - 2025-26 Outlay: Rs. 6,000.00 Lakh | Anticipated Exp: Rs. 6,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 27,030.00 Lakh | Proposed Outlay: Rs. 11,500.00 Lakh | Outlay for Budgeting: Rs. 11,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 21,500.00 Lakh | FD Release: Rs. 4,510.99 Lakh | BDS Exp: Rs. 3,907.33 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 21,500.00 Lakh | FD Release: Rs. 4,510.99 Lakh | BDS Exp: Rs. 3,907.33 Lakh
 #### [19] Grant In Aid to Dr. Balasaheb Sawant Konkan Krishi Vidyapeeth
 - Scheme Code: 1101100003 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 6,000.00 Lakh | Actual Exp: Rs. 3,968.79 Lakh
 - 2025-26 Outlay: Rs. 6,000.00 Lakh | Anticipated Exp: Rs. 6,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 13,873.08 Lakh | Proposed Outlay: Rs. 7,500.00 Lakh | Outlay for Budgeting: Rs. 7,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 7,500.00 Lakh | FD Release: Rs. 1,294.22 Lakh | BDS Exp: Rs. 1,289.61 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 7,500.00 Lakh | FD Release: Rs. 1,294.22 Lakh | BDS Exp: Rs. 1,289.61 Lakh
 #### [20] Sub Mission on Support to State Agriculture Extension Programme for Extension Reforms
 - Scheme Code: 1101010004 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 5,500.00 Lakh | Actual Exp: Rs. 3,109.87 Lakh
 - 2025-26 Outlay: Rs. 5,333.33 Lakh | Anticipated Exp: Rs. 5,333.33 Lakh
 - 2026-27 Demand Outlay: Rs. 18,652.93 Lakh | Proposed Outlay: Rs. 10,880.00 Lakh | Outlay for Budgeting: Rs. 10,880.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 13,396.00 Lakh | FD Release: Rs. 10,716.80 Lakh | BDS Exp: Rs. 4,715.08 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 13,396.00 Lakh | FD Release: Rs. 10,716.80 Lakh | BDS Exp: Rs. 5,011.30 Lakh
 #### [21] Office Building Construction for Agriculture Department
 - Scheme Code: 1101010303 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 4,200.00 Lakh | Actual Exp: Rs. 2,921.30 Lakh
 - 2025-26 Outlay: Rs. 15,000.00 Lakh | Anticipated Exp: Rs. 15,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 40,637.55 Lakh | Proposed Outlay: Rs. 16,412.26 Lakh | Outlay for Budgeting: Rs. 16,412.26 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 16,412.26 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 16,412.26 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [22] Grant in Aid to Rajarshi Chhatrapati Shahu Maharaj Shikshan Shulk Shishyavrutti Yojana (agri)
 - Scheme Code: 1101100030 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 3,500.00 Lakh | Actual Exp: Rs. 4,499.97 Lakh
 - 2025-26 Outlay: Rs. 4,500.00 Lakh | Anticipated Exp: Rs. 4,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 5,168.96 Lakh | Proposed Outlay: Rs. 4,500.00 Lakh | Outlay for Budgeting: Rs. 4,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 4,500.00 Lakh | FD Release: Rs. 1,300.00 Lakh | BDS Exp: Rs. 1,299.97 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 4,500.00 Lakh | FD Release: Rs. 1,300.00 Lakh | BDS Exp: Rs. 1,299.97 Lakh
 #### [23] Pramparagat Krishi Vikas Yojana
 - Scheme Code: 1101010274 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 3,333.00 Lakh | Actual Exp: Rs. 1,132.40 Lakh
 - 2025-26 Outlay: Rs. 5,268.33 Lakh | Anticipated Exp: Rs. 5,268.33 Lakh
 - 2026-27 Demand Outlay: Rs. 3,738.85 Lakh | Proposed Outlay: Rs. 2,972.50 Lakh | Outlay for Budgeting: Rs. 2,972.50 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,972.50 Lakh | FD Release: Rs. 1,213.33 Lakh | BDS Exp: Rs. 301.77 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,972.50 Lakh | FD Release: Rs. 1,213.33 Lakh | BDS Exp: Rs. 323.50 Lakh
 #### [24] Subsidy to meet expenditure for supply of DAP and Complex Fertilisers.
 - Scheme Code: 1101010283 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 3,000.00 Lakh | Actual Exp: Rs. 2,036.78 Lakh
 - 2025-26 Outlay: Rs. 3,000.00 Lakh | Anticipated Exp: Rs. 3,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 3,000.00 Lakh | Proposed Outlay: Rs. 3,000.00 Lakh | Outlay for Budgeting: Rs. 3,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 3,000.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 3,000.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [25] National Mission for Sustainable Agriculture - Rainfed Area Development Programme
 - Scheme Code: 1101010275 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2,787.00 Lakh | Actual Exp: Rs. 1,090.85 Lakh
 - 2025-26 Outlay: Rs. 3,480.00 Lakh | Anticipated Exp: Rs. 3,480.00 Lakh
 - 2026-27 Demand Outlay: Rs. 2,009.88 Lakh | Proposed Outlay: Rs. 640.00 Lakh | Outlay for Budgeting: Rs. 640.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 640.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 640.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [26] Pest surveillance and Advisiory Project ( CROPSAP) For Management of major pests of Soyabean,Cotton, Rice, Chickpea and Piegionpea
 - Scheme Code: 1101010235 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2,500.00 Lakh | Actual Exp: Rs. 1,477.08 Lakh
 - 2025-26 Outlay: Rs. 2,500.00 Lakh | Anticipated Exp: Rs. 2,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 2,500.00 Lakh | Proposed Outlay: Rs. 5,000.00 Lakh | Outlay for Budgeting: Rs. 5,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 5,000.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 5,000.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [27] Provision for Implementing E-Governance Project (Agriculture)
 - Scheme Code: 1101010241 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2,500.00 Lakh | Actual Exp: Rs. 902.92 Lakh
 - 2025-26 Outlay: Rs. 10,000.00 Lakh | Anticipated Exp: Rs. 10,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 10,000.00 Lakh | Proposed Outlay: Rs. 7,500.00 Lakh | Outlay for Budgeting: Rs. 7,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 7,500.00 Lakh | FD Release: Rs. 3,000.00 Lakh | BDS Exp: Rs. 151.29 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 7,500.00 Lakh | FD Release: Rs. 3,000.00 Lakh | BDS Exp: Rs. 323.33 Lakh
 #### [28] To give difference between Minimum Support Price (MSP) and agriculture produce market committee based rate to seed growing farmers
 - Scheme Code: 1101010297 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2,500.00 Lakh | Actual Exp: Rs. 73.09 Lakh
 - 2025-26 Outlay: Rs. 2,500.00 Lakh | Anticipated Exp: Rs. 2,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 5,617.00 Lakh | Proposed Outlay: Rs. 2,500.00 Lakh | Outlay for Budgeting: Rs. 2,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,500.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,500.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [29] Soil Health and Fertility Management Project under Rashtriya krishi vikas yojana
 - Scheme Code: 1101010284 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2,452.00 Lakh | Actual Exp: Rs. 353.33 Lakh
 - 2025-26 Outlay: Rs. 3,983.33 Lakh | Anticipated Exp: Rs. 3,983.33 Lakh
 - 2026-27 Demand Outlay: Rs. 5,274.04 Lakh | Proposed Outlay: Rs. 3,170.00 Lakh | Outlay for Budgeting: Rs. 3,170.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 3,170.00 Lakh | FD Release: Rs. 816.67 Lakh | BDS Exp: Rs. 557.51 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 3,170.00 Lakh | FD Release: Rs. 816.67 Lakh | BDS Exp: Rs. 578.15 Lakh
 #### [30] Crop Competition
 - Scheme Code: 1101010281 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 2,200.00 Lakh | Actual Exp: Rs. 806.86 Lakh
 - 2025-26 Outlay: Rs. 2,300.00 Lakh | Anticipated Exp: Rs. 2,300.00 Lakh
 - 2026-27 Demand Outlay: Rs. 2,400.00 Lakh | Proposed Outlay: Rs. 5,000.00 Lakh | Outlay for Budgeting: Rs. 5,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 5,000.00 Lakh | FD Release: Rs. 685.59 Lakh | BDS Exp: Rs. 598.13 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 5,000.00 Lakh | FD Release: Rs. 685.59 Lakh | BDS Exp: Rs. 606.02 Lakh
 #### [31] Provision for Seed Plantation Sub-Mission (SMSP)
 - Scheme Code: 1101010265 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2,167.00 Lakh | Actual Exp: Rs. 2,525.37 Lakh
 - 2025-26 Outlay: Rs. 2,666.67 Lakh | Anticipated Exp: Rs. 2,666.67 Lakh
 - 2026-27 Demand Outlay: Rs. 1,102.53 Lakh | Proposed Outlay: Rs. 833.33 Lakh | Outlay for Budgeting: Rs. 833.33 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 833.33 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 833.33 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [32] Special Component Plan Input subsidy under Special Component Plan
 - Scheme Code: 1101010282 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 1,600.00 Lakh | Actual Exp: Rs. 1,876.82 Lakh
 - 2025-26 Outlay: Rs. 1,600.00 Lakh | Anticipated Exp: Rs. 1,600.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,600.00 Lakh | Proposed Outlay: Rs. 1,600.00 Lakh | Outlay for Budgeting: Rs. 1,600.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,600.00 Lakh | FD Release: Rs. 900.00 Lakh | BDS Exp: Rs. 321.19 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,600.00 Lakh | FD Release: Rs. 900.00 Lakh | BDS Exp: Rs. 334.01 Lakh
 #### [33] Grant in Aid to Dr. Panjabrao Deshmukh Vasatigruh Nirvah Bhatta Yojana (Agri)
 - Scheme Code: 1101100031 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 1,500.00 Lakh | Actual Exp: Rs. 1,499.99 Lakh
 - 2025-26 Outlay: Rs. 1,500.00 Lakh | Anticipated Exp: Rs. 1,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 3,863.75 Lakh | Proposed Outlay: Rs. 1,500.00 Lakh | Outlay for Budgeting: Rs. 1,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 5,100.00 Lakh | FD Release: Rs. 900.00 Lakh | BDS Exp: Rs. 899.98 Lakh
-#### [34] Grant in aid to Mahatma Phule Krushi Vidyapeeth under ICAR Sponsored Schemes state share 25 percent 2415 31 Grants in aid Non Salary
+- BDS Final Budget (Till 20-Oct-26): Rs. 5,100.00 Lakh | FD Release: Rs. 900.00 Lakh | BDS Exp: Rs. 899.98 Lakh
+#### [34] Grant in aid to Mahatma Phule Krushi Vidyapeeth under ICAR Sponsored Schemes state share 25 percent 2415  31 Grants in aid Non  Salary
 - Scheme Code: 1101100025 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 1,100.00 Lakh | Actual Exp: Rs. 1,100.00 Lakh
 - 2025-26 Outlay: Rs. 1,212.68 Lakh | Anticipated Exp: Rs. 1,212.68 Lakh
 - 2026-27 Demand Outlay: Rs. 1,439.73 Lakh | Proposed Outlay: Rs. 1,213.00 Lakh | Outlay for Budgeting: Rs. 1,213.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,213.00 Lakh | FD Release: Rs. 606.50 Lakh | BDS Exp: Rs. 606.50 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,213.00 Lakh | FD Release: Rs. 606.50 Lakh | BDS Exp: Rs. 606.50 Lakh
 #### [35] Krishi Mahotsav (state plan)
 - Scheme Code: 1101010306 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 680.00 Lakh | Actual Exp: Rs. 492.71 Lakh
 - 2025-26 Outlay: Rs. 680.00 Lakh | Anticipated Exp: Rs. 680.00 Lakh
 - 2026-27 Demand Outlay: Rs. 680.00 Lakh | Proposed Outlay: Rs. 680.00 Lakh | Outlay for Budgeting: Rs. 680.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 680.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 680.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [36] Vasantrao Naik State Agricultural Management Training Institute.
 - Scheme Code: 1101010018 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 600.00 Lakh | Actual Exp: Rs. 0.01 Lakh
 - 2025-26 Outlay: Rs. 1,118.00 Lakh | Anticipated Exp: Rs. 1,118.00 Lakh
 - 2026-27 Demand Outlay: Rs. 4,511.31 Lakh | Proposed Outlay: Rs. 1,200.00 Lakh | Outlay for Budgeting: Rs. 1,200.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,200.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,200.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [37] Timely Reporting of Agriculture Intelligence Statistics
 - Scheme Code: 1101010025 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 533.00 Lakh | Actual Exp: Rs. 432.30 Lakh
 - 2025-26 Outlay: Rs. 600.00 Lakh | Anticipated Exp: Rs. 600.00 Lakh
 - 2026-27 Demand Outlay: Rs. 650.00 Lakh | Proposed Outlay: Rs. 650.00 Lakh | Outlay for Budgeting: Rs. 650.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 650.00 Lakh | FD Release: Rs. 650.00 Lakh | BDS Exp: Rs. 306.92 Lakh
-#### [38] Grant in aid to Dr Punjabrao Deshmukh Krushi Vidyapeeth For ICAR Sponsored Schemes state share 25 percent 2415 31 Grants in aid No Salary
+- BDS Final Budget (Till 20-Oct-26): Rs. 650.00 Lakh | FD Release: Rs. 650.00 Lakh | BDS Exp: Rs. 314.61 Lakh
+#### [38] Grant in aid to Dr Punjabrao Deshmukh Krushi Vidyapeeth For ICAR Sponsored Schemes state share 25 percent 2415  31 Grants in aid No Salary
 - Scheme Code: 1101100027 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 500.00 Lakh | Actual Exp: Rs. 500.00 Lakh
 - 2025-26 Outlay: Rs. 745.36 Lakh | Anticipated Exp: Rs. 745.36 Lakh
 - 2026-27 Demand Outlay: Rs. 894.43 Lakh | Proposed Outlay: Rs. 750.00 Lakh | Outlay for Budgeting: Rs. 750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 750.00 Lakh | FD Release: Rs. 187.05 Lakh | BDS Exp: Rs. 187.05 Lakh
-#### [39] Grant in aid to Vasantrao Naik Marathwada Krushi Vidyapeeth For ICAR Sponsored Schemes state share 25 percent 2415 31 Grants in aid Non Salary
+- BDS Final Budget (Till 20-Oct-26): Rs. 750.00 Lakh | FD Release: Rs. 356.75 Lakh | BDS Exp: Rs. 356.75 Lakh
+#### [39] Grant in aid to Vasantrao Naik Marathwada Krushi Vidyapeeth For ICAR Sponsored Schemes state share 25 percent 2415  31 Grants in aid Non Salary
 - Scheme Code: 1101100028 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 500.00 Lakh | Actual Exp: Rs. 462.00 Lakh
 - 2025-26 Outlay: Rs. 830.00 Lakh | Anticipated Exp: Rs. 830.00 Lakh
 - 2026-27 Demand Outlay: Rs. 871.00 Lakh | Proposed Outlay: Rs. 850.00 Lakh | Outlay for Budgeting: Rs. 850.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 850.00 Lakh | FD Release: Rs. 140.07 Lakh | BDS Exp: Rs. 140.07 Lakh
-#### [40] Grant in aid to Dr Balasaheb Sawant Kokan Krushi Vidyapeeth under ICAR Sponsored Schemes state share 25 percent2415 31 Grants in aid Non Salary
+- BDS Final Budget (Till 20-Oct-26): Rs. 850.00 Lakh | FD Release: Rs. 299.61 Lakh | BDS Exp: Rs. 140.07 Lakh
+#### [40] Grant in aid to Dr Balasaheb Sawant Kokan Krushi Vidyapeeth under ICAR Sponsored Schemes state share 25 percent2415  31  Grants in aid Non Salary
 - Scheme Code: 1101100026 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 500.00 Lakh | Actual Exp: Rs. 278.80 Lakh
 - 2025-26 Outlay: Rs. 588.47 Lakh | Anticipated Exp: Rs. 588.47 Lakh
 - 2026-27 Demand Outlay: Rs. 758.31 Lakh | Proposed Outlay: Rs. 590.00 Lakh | Outlay for Budgeting: Rs. 590.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 590.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 590.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [41] Promotion of Group Farming in Farmers
 - Scheme Code: 1101010289 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 500.00 Lakh | Actual Exp: Rs. 7.50 Lakh
 - 2025-26 Outlay: Rs. 0.01 Lakh | Anticipated Exp: Rs. 0.01 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [42] Training to Government Employee
 - Scheme Code: 1110070001 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 500.00 Lakh | Actual Exp: Rs. 0.01 Lakh
 - 2025-26 Outlay: Rs. 660.09 Lakh | Anticipated Exp: Rs. 660.09 Lakh
 - 2026-27 Demand Outlay: Rs. 680.73 Lakh | Proposed Outlay: Rs. 700.00 Lakh | Outlay for Budgeting: Rs. 700.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 700.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 700.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [43] Improvement of Crop statistics
 - Scheme Code: 1101010026 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 292.97 Lakh | Actual Exp: Rs. 153.30 Lakh
 - 2025-26 Outlay: Rs. 350.00 Lakh | Anticipated Exp: Rs. 350.00 Lakh
 - 2026-27 Demand Outlay: Rs. 400.00 Lakh | Proposed Outlay: Rs. 400.00 Lakh | Outlay for Budgeting: Rs. 400.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 400.00 Lakh | FD Release: Rs. 190.91 Lakh | BDS Exp: Rs. 87.31 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 400.00 Lakh | FD Release: Rs. 190.91 Lakh | BDS Exp: Rs. 92.98 Lakh
 #### [44] World Agriculture Census
 - Scheme Code: 1101010028 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 200.00 Lakh | Actual Exp: Rs. 96.41 Lakh
 - 2025-26 Outlay: Rs. 610.00 Lakh | Anticipated Exp: Rs. 610.00 Lakh
 - 2026-27 Demand Outlay: Rs. 327.00 Lakh | Proposed Outlay: Rs. 327.00 Lakh | Outlay for Budgeting: Rs. 327.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 327.00 Lakh | FD Release: Rs. 54.54 Lakh | BDS Exp: Rs. 53.21 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 327.00 Lakh | FD Release: Rs. 108.00 Lakh | BDS Exp: Rs. 53.21 Lakh
 #### [45] Study Tour of Farmers Outside the Country
 - Scheme Code: 1101010017 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 200.00 Lakh | Actual Exp: Rs. 0.01 Lakh
 - 2025-26 Outlay: Rs. 200.00 Lakh | Anticipated Exp: Rs. 200.00 Lakh
 - 2026-27 Demand Outlay: Rs. 500.00 Lakh | Proposed Outlay: Rs. 400.00 Lakh | Outlay for Budgeting: Rs. 400.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 400.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 400.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [46] HORTICULTURE PLANT PROTECTION-SCHEME STATE PLAN
 - Scheme Code: 1101010287 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 139.00 Lakh | Actual Exp: Rs. 0.01 Lakh
 - 2025-26 Outlay: Rs. 152.27 Lakh | Anticipated Exp: Rs. 152.27 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [47] Coconut Insurance Under Pradhanmantri Crop Insurance Scheme.(State Share 25%)
 - Scheme Code: 1101010285 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 2.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 2.50 Lakh | Anticipated Exp: Rs. 2.50 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [48] National Food Security Mission-Sugarcane
 - Scheme Code: 1101010271 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.02 Lakh | Actual Exp: Rs. 869.60 Lakh
 - 2025-26 Outlay: Rs. 0.02 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 0.02 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [49] National Food Security Mission- Cotton
 - Scheme Code: 1101010270 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.02 Lakh | Actual Exp: Rs. 0.10 Lakh
 - 2025-26 Outlay: Rs. 0.02 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 0.02 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [50] Project on Climate Resilient Agriculture (Phase-II)
 - Scheme Code: 1101010317 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 35,142.00 Lakh | Anticipated Exp: Rs. 35,142.00 Lakh
 - 2026-27 Demand Outlay: Rs. 90,000.00 Lakh | Proposed Outlay: Rs. 44,200.00 Lakh | Outlay for Budgeting: Rs. 44,200.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 47,400.00 Lakh | FD Release: Rs. 47,378.57 Lakh | BDS Exp: Rs. 24,576.29 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 47,400.00 Lakh | FD Release: Rs. 47,378.57 Lakh | BDS Exp: Rs. 37,358.60 Lakh
 #### [51] Agristack (Digital Public Infrastructure for Agriculture) Scheme
 - Scheme Code: 1101010316 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 9,162.00 Lakh | Anticipated Exp: Rs. 3,415.97 Lakh
 - 2026-27 Demand Outlay: Rs. 3,415.97 Lakh | Proposed Outlay: Rs. 4,277.50 Lakh | Outlay for Budgeting: Rs. 4,277.50 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 5,281.94 Lakh | FD Release: Rs. 2,108.23 Lakh | BDS Exp: Rs. 2.07 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 5,281.94 Lakh | FD Release: Rs. 2,108.23 Lakh | BDS Exp: Rs. 109.54 Lakh
 #### [52] Prime Minister Formalization of Micro Food Processing Enterprises Scheme (Central Share 100%) (Scheme)
 - Scheme Code: 1101010314 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 4,022.63 Lakh | Anticipated Exp: Rs. 4,022.63 Lakh
 - 2026-27 Demand Outlay: Rs. 4,022.63 Lakh | Proposed Outlay: Rs. 4,022.63 Lakh | Outlay for Budgeting: Rs. 4,022.63 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 4,022.63 Lakh | FD Release: Rs. 700.00 Lakh | BDS Exp: Rs. 341.55 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 4,022.63 Lakh | FD Release: Rs. 700.00 Lakh | BDS Exp: Rs. 374.75 Lakh
 #### [53] 2401-Crop Husbandry 00 103-Seeds (00)(29) Krishi Unnati Yojana, Seed Testing Laboratory Strengthening Scheme (Central Share 100%)
 - Scheme Code: 1101010315 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 33.58 Lakh | Anticipated Exp: Rs. 33.58 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [54] National Mission on Natural Farming-NMNF
 - Scheme Code: 1101010319 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 10,505.38 Lakh
 - 2026-27 Demand Outlay: Rs. 9,080.82 Lakh | Proposed Outlay: Rs. 7,450.00 Lakh | Outlay for Budgeting: Rs. 7,450.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 11,490.00 Lakh | FD Release: Rs. 9,191.40 Lakh | BDS Exp: Rs. 3,824.51 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 11,490.00 Lakh | FD Release: Rs. 9,191.40 Lakh | BDS Exp: Rs. 3,938.31 Lakh
 #### [55] Maharashtra Agriculture Artificial Intelligence Policy 2025-2029
 - Scheme Code: 1101100034 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 3,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 25,000.00 Lakh | Proposed Outlay: Rs. 10,000.00 Lakh | Outlay for Budgeting: Rs. 10,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 10,000.00 Lakh | FD Release: Rs. 2,489.84 Lakh | BDS Exp: Rs. 383.70 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 10,000.00 Lakh | FD Release: Rs. 2,489.84 Lakh | BDS Exp: Rs. 383.70 Lakh
 #### [56] Mission for Atmanirbharta in Pulses
 - Scheme Code: 1101010325 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 12,595.00 Lakh | Proposed Outlay: Rs. 10,667.50 Lakh | Outlay for Budgeting: Rs. 10,667.50 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 13,586.57 Lakh | FD Release: Rs. 9,193.33 Lakh | BDS Exp: Rs. 2,738.19 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 13,586.57 Lakh | FD Release: Rs. 9,193.33 Lakh | BDS Exp: Rs. 2,845.59 Lakh
 #### [57] Mission for Atmanirbharta in Pulses (100 )
 - Scheme Code: 1101010324 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.01 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 63.73 Lakh | FD Release: Rs. 42.48 Lakh | BDS Exp: Rs. 0.05 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 63.73 Lakh | FD Release: Rs. 42.48 Lakh | BDS Exp: Rs. 0.05 Lakh
 #### [58] Krushi Samrudhi Yojana
 - Scheme Code: 1101010323 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 500,000.00 Lakh | Proposed Outlay: Rs. 200,000.00 Lakh | Outlay for Budgeting: Rs. 200,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 200,000.00 Lakh | FD Release: Rs. 60,000.00 Lakh | BDS Exp: Rs. 60,000.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 200,000.00 Lakh | FD Release: Rs. 60,000.00 Lakh | BDS Exp: Rs. 60,000.00 Lakh
 #### [59] Strengthening of Seed Quality Control Components
 - Scheme Code: 1101010322 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 6,015.73 Lakh | Proposed Outlay: Rs. 2,311.32 Lakh | Outlay for Budgeting: Rs. 2,311.32 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,160.45 Lakh | FD Release: Rs. 1,647.88 Lakh | BDS Exp: Rs. 250.51 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,160.45 Lakh | FD Release: Rs. 1,647.88 Lakh | BDS Exp: Rs. 250.51 Lakh
 #### [60] Purchase of Breeder Seed under National Mission on Edible Oil (Centrally Sponsored Scheme) (Central Share 100%) (Scheme)
 - Scheme Code: 1101010320 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,150.00 Lakh | Proposed Outlay: Rs. 520.00 Lakh | Outlay for Budgeting: Rs. 520.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 520.00 Lakh | FD Release: Rs. 156.78 Lakh | BDS Exp: Rs. 0.84 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 520.00 Lakh | FD Release: Rs. 156.78 Lakh | BDS Exp: Rs. 0.84 Lakh
 #### [61] National Seed Reserve Scheme
 - Scheme Code: 1101010321 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 129.83 Lakh | Proposed Outlay: Rs. 126.67 Lakh | Outlay for Budgeting: Rs. 126.67 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 126.67 Lakh | FD Release: Rs. 98.58 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 126.67 Lakh | FD Release: Rs. 98.58 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [62] WINDS (Weather Information Network Data System)
 - Scheme Code: 1101010326 | Plan: General | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 9,420.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 9,420.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [63] WINDS (Weather Information Network Data System) State
 - Scheme Code: 1101010327 | Plan: General | SDG Status: NA
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 4,309.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
-
+- BDS Final Budget (Till 20-Oct-26): Rs. 4,309.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 ### Plan Type: SCCS
 #### [64] Rashtriya Krishi Vikas Yojana (RKVY)
 - Scheme Code: 1201010117 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 9,890.00 Lakh | Actual Exp: Rs. 4,327.36 Lakh
 - 2025-26 Outlay: Rs. 8,166.67 Lakh | Anticipated Exp: Rs. 8,166.67 Lakh
 - 2026-27 Demand Outlay: Rs. 11,070.00 Lakh | Proposed Outlay: Rs. 6,500.00 Lakh | Outlay for Budgeting: Rs. 6,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 6,500.00 Lakh | FD Release: Rs. 6,500.00 Lakh | BDS Exp: Rs. 443.33 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 6,500.00 Lakh | FD Release: Rs. 6,500.00 Lakh | BDS Exp: Rs. 461.69 Lakh
 #### [65] National Food Security Mission for Foodgrains (Rice,Wheat,Pulses and Coarse Cereals)
 - Scheme Code: 1201010123 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 6,352.00 Lakh | Actual Exp: Rs. 2,693.62 Lakh
 - 2025-26 Outlay: Rs. 5,060.62 Lakh | Anticipated Exp: Rs. 5,060.62 Lakh
 - 2026-27 Demand Outlay: Rs. 2,154.45 Lakh | Proposed Outlay: Rs. 1,904.45 Lakh | Outlay for Budgeting: Rs. 1,904.45 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,312.82 Lakh | FD Release: Rs. 2,312.82 Lakh | BDS Exp: Rs. 264.53 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,312.82 Lakh | FD Release: Rs. 2,312.82 Lakh | BDS Exp: Rs. 288.09 Lakh
 #### [66] Pradhan Mantri Krishi Sinchayee Yojna (PMKSY) - Per Drop More Crop (Micro Irrigation)
 - Scheme Code: 1201010125 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 4,950.00 Lakh | Actual Exp: Rs. 730.35 Lakh
 - 2025-26 Outlay: Rs. 8,336.50 Lakh | Anticipated Exp: Rs. 8,336.50 Lakh
 - 2026-27 Demand Outlay: Rs. 6,300.00 Lakh | Proposed Outlay: Rs. 5,000.00 Lakh | Outlay for Budgeting: Rs. 5,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 5,000.00 Lakh | FD Release: Rs. 5,000.00 Lakh | BDS Exp: Rs. 559.41 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 5,000.00 Lakh | FD Release: Rs. 5,000.00 Lakh | BDS Exp: Rs. 725.81 Lakh
 #### [67] Krishi Unnati Yojana -Sub Mission on Agricultural Mechanisation (CSS).
 - Scheme Code: 1201010121 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 3,978.00 Lakh | Actual Exp: Rs. 461.07 Lakh
 - 2025-26 Outlay: Rs. 3,666.67 Lakh | Anticipated Exp: Rs. 3,666.67 Lakh
 - 2026-27 Demand Outlay: Rs. 5,500.00 Lakh | Proposed Outlay: Rs. 3,000.00 Lakh | Outlay for Budgeting: Rs. 3,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 5,455.00 Lakh | FD Release: Rs. 5,455.00 Lakh | BDS Exp: Rs. 2,084.65 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 5,455.00 Lakh | FD Release: Rs. 5,455.00 Lakh | BDS Exp: Rs. 2,286.88 Lakh
 #### [68] Prime Minister Formalization of Micro Food Processing Enterprises Scheme
 - Scheme Code: 1201010135 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 3,875.00 Lakh | Actual Exp: Rs. 62.69 Lakh
 - 2025-26 Outlay: Rs. 3,816.97 Lakh | Anticipated Exp: Rs. 3,816.97 Lakh
 - 2026-27 Demand Outlay: Rs. 3,816.97 Lakh | Proposed Outlay: Rs. 2,750.00 Lakh | Outlay for Budgeting: Rs. 2,750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,750.00 Lakh | FD Release: Rs. 2,750.00 Lakh | BDS Exp: Rs. 612.95 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,750.00 Lakh | FD Release: Rs. 2,750.00 Lakh | BDS Exp: Rs. 627.03 Lakh
 #### [69] Provision for Seed Plantation Sub-Mission (SMSP)
 - Scheme Code: 1201010104 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 2,007.00 Lakh | Actual Exp: Rs. 377.57 Lakh
 - 2025-26 Outlay: Rs. 1,333.33 Lakh | Anticipated Exp: Rs. 1,333.33 Lakh
 - 2026-27 Demand Outlay: Rs. 167.25 Lakh | Proposed Outlay: Rs. 167.25 Lakh | Outlay for Budgeting: Rs. 167.25 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 167.25 Lakh | FD Release: Rs. 167.25 Lakh | BDS Exp: Rs. 0.00 Lakh
-#### [70] National Mission on Edible Oils - Oilseeds (NMEO) (SCP) (CSS)
+- BDS Final Budget (Till 20-Oct-26): Rs. 167.25 Lakh | FD Release: Rs. 167.25 Lakh | BDS Exp: Rs. 0.00 Lakh
+#### [70] National Mission on Edible Oils - Oilseeds (NMEO) (SCP)  (CSS)
 - Scheme Code: 1201010130 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 1,580.00 Lakh | Actual Exp: Rs. 1,095.03 Lakh
 - 2025-26 Outlay: Rs. 1,980.00 Lakh | Anticipated Exp: Rs. 1,980.00 Lakh
 - 2026-27 Demand Outlay: Rs. 2,575.00 Lakh | Proposed Outlay: Rs. 2,000.00 Lakh | Outlay for Budgeting: Rs. 2,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,366.55 Lakh | FD Release: Rs. 2,366.55 Lakh | BDS Exp: Rs. 397.65 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,366.55 Lakh | FD Release: Rs. 2,366.55 Lakh | BDS Exp: Rs. 530.35 Lakh
 #### [71] Krishi Unnati Yojana (State Plan) Sub Mission on Support to State Agriculture Extension Programme for Extension Reforms (C.S.S) (State Share-40) (S.C.P)
 - Scheme Code: 1201010124 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 1,075.00 Lakh | Actual Exp: Rs. 456.05 Lakh
 - 2025-26 Outlay: Rs. 1,666.67 Lakh | Anticipated Exp: Rs. 1,666.67 Lakh
 - 2026-27 Demand Outlay: Rs. 2,796.87 Lakh | Proposed Outlay: Rs. 1,750.00 Lakh | Outlay for Budgeting: Rs. 1,750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 2,006.00 Lakh | FD Release: Rs. 2,006.00 Lakh | BDS Exp: Rs. 530.65 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 2,006.00 Lakh | FD Release: Rs. 2,006.00 Lakh | BDS Exp: Rs. 573.56 Lakh
 #### [72] National Mission for Sustainable Agriculture - Rainfed Area Development Programme
 - Scheme Code: 1201010118 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 655.00 Lakh | Actual Exp: Rs. 74.17 Lakh
 - 2025-26 Outlay: Rs. 645.33 Lakh | Anticipated Exp: Rs. 645.33 Lakh
 - 2026-27 Demand Outlay: Rs. 291.49 Lakh | Proposed Outlay: Rs. 250.00 Lakh | Outlay for Budgeting: Rs. 250.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 250.00 Lakh | FD Release: Rs. 250.00 Lakh | BDS Exp: Rs. 0.00 Lakh
-#### [73] Krushi Unnati Yojana Parmparagat Krushi Vikas Yojana (Schedule Cast Plan)
+- BDS Final Budget (Till 20-Oct-26): Rs. 250.00 Lakh | FD Release: Rs. 250.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+#### [73] Krushi Unnati Yojana Parmparagat Krushi Vikas Yojana   (Schedule Cast Plan)
 - Scheme Code: 1201010126 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 527.00 Lakh | Actual Exp: Rs. 280.22 Lakh
 - 2025-26 Outlay: Rs. 715.00 Lakh | Anticipated Exp: Rs. 715.00 Lakh
 - 2026-27 Demand Outlay: Rs. 508.49 Lakh | Proposed Outlay: Rs. 375.98 Lakh | Outlay for Budgeting: Rs. 375.98 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 375.98 Lakh | FD Release: Rs. 375.98 Lakh | BDS Exp: Rs. 23.03 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 375.98 Lakh | FD Release: Rs. 375.98 Lakh | BDS Exp: Rs. 29.12 Lakh
 #### [74] Bhausaheb Fundkar Horticulture Plantation Scheme (scp)
 - Scheme Code: 1201020015 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 400.00 Lakh | Actual Exp: Rs. 278.95 Lakh
 - 2025-26 Outlay: Rs. 400.00 Lakh | Anticipated Exp: Rs. 400.00 Lakh
 - 2026-27 Demand Outlay: Rs. 3,200.00 Lakh | Proposed Outlay: Rs. 1,000.00 Lakh | Outlay for Budgeting: Rs. 1,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,000.00 Lakh | FD Release: Rs. 200.00 Lakh | BDS Exp: Rs. 200.00 Lakh
-#### [75] Krushi Unnati Yojana Soil Health Card Schedule Cast Plan
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,000.00 Lakh | FD Release: Rs. 200.00 Lakh | BDS Exp: Rs. 200.00 Lakh
+#### [75] Krushi Unnati Yojana Soil Health Card   Schedule Cast Plan
 - Scheme Code: 1201030018 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 229.00 Lakh | Actual Exp: Rs. 106.67 Lakh
 - 2025-26 Outlay: Rs. 540.00 Lakh | Anticipated Exp: Rs. 540.00 Lakh
 - 2026-27 Demand Outlay: Rs. 796.37 Lakh | Proposed Outlay: Rs. 625.00 Lakh | Outlay for Budgeting: Rs. 625.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 625.00 Lakh | FD Release: Rs. 625.00 Lakh | BDS Exp: Rs. 61.48 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 625.00 Lakh | FD Release: Rs. 625.00 Lakh | BDS Exp: Rs. 61.48 Lakh
 #### [76] National Food Security Mission- Cotton
 - Scheme Code: 1201010120 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.02 Lakh | Actual Exp: Rs. 0.02 Lakh
 - 2025-26 Outlay: Rs. 0.02 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 0.02 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [77] National Food Security Mission-Sugarcane
 - Scheme Code: 1201010122 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.02 Lakh | Actual Exp: Rs. 0.02 Lakh
 - 2025-26 Outlay: Rs. 0.02 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 0.02 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [78] Prime Minister Formalization of Micro Food Processing Enterprises Scheme (Central Share 100%) (Scheme)
 - Scheme Code: 1201010137 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 418.00 Lakh | Anticipated Exp: Rs. 418.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [79] Agristack (Digital Public Infrastructure for agricultural) scheme
 - Scheme Code: 1201010139 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 512.20 Lakh
 - 2026-27 Demand Outlay: Rs. 512.20 Lakh | Proposed Outlay: Rs. 250.00 Lakh | Outlay for Budgeting: Rs. 250.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 802.36 Lakh | FD Release: Rs. 802.32 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 802.36 Lakh | FD Release: Rs. 802.32 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [80] Mission for Atmanirbharta in Pulses
 - Scheme Code: 1201010140 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 1,820.55 Lakh | Proposed Outlay: Rs. 1,000.00 Lakh | Outlay for Budgeting: Rs. 1,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,765.10 Lakh | FD Release: Rs. 1,765.10 Lakh | BDS Exp: Rs. 186.06 Lakh
-#### [81] National Mission on Natural Farming-NMNF
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,765.10 Lakh | FD Release: Rs. 1,765.10 Lakh | BDS Exp: Rs. 205.67 Lakh
+#### [81] National Mission  on Natural Farming-NMNF
 - Scheme Code: 1201010138 | Plan: SCCS | SDG Status: NA
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,397.05 Lakh | Proposed Outlay: Rs. 1,125.00 Lakh | Outlay for Budgeting: Rs. 1,125.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,767.58 Lakh | FD Release: Rs. 1,767.58 Lakh | BDS Exp: Rs. 372.46 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,767.58 Lakh | FD Release: Rs. 1,767.58 Lakh | BDS Exp: Rs. 416.76 Lakh
 #### [82] Namo Shetakri Mahasanmaan Nidhi Yojana (100 % State Scheme)
 - Scheme Code: 1201010141 | Plan: SCCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 69,690.00 Lakh | Outlay for Budgeting: Rs. 69,690.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 69,690.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
-
+- BDS Final Budget (Till 20-Oct-26): Rs. 69,690.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 ### Plan Type: TCS
 #### [83] Rashtriya Krishi Vikas Yojana (RKVY)
 - Scheme Code: 1301010025 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 3,500.00 Lakh | Actual Exp: Rs. 1,647.65 Lakh
 - 2025-26 Outlay: Rs. 3,500.00 Lakh | Anticipated Exp: Rs. 3,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 4,745.00 Lakh | Proposed Outlay: Rs. 3,500.00 Lakh | Outlay for Budgeting: Rs. 3,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 3,500.00 Lakh | FD Release: Rs. 3,500.00 Lakh | BDS Exp: Rs. 559.97 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 3,500.00 Lakh | FD Release: Rs. 3,500.00 Lakh | BDS Exp: Rs. 624.74 Lakh
 #### [84] Pradhan Mantri Krishi Sinchayee Yojna (PMKSY) - Per Drop More Crop (Micro Irrigation)
 - Scheme Code: 1301010035 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 3,500.00 Lakh | Actual Exp: Rs. 1,438.07 Lakh
 - 2025-26 Outlay: Rs. 3,750.00 Lakh | Anticipated Exp: Rs. 3,750.00 Lakh
 - 2026-27 Demand Outlay: Rs. 4,200.00 Lakh | Proposed Outlay: Rs. 3,750.00 Lakh | Outlay for Budgeting: Rs. 3,750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 3,750.00 Lakh | FD Release: Rs. 3,750.00 Lakh | BDS Exp: Rs. 660.89 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 3,750.00 Lakh | FD Release: Rs. 3,750.00 Lakh | BDS Exp: Rs. 761.84 Lakh
 #### [85] National Food Security Mission for Foodgrains (Rice,Wheat,Pulses and Coarse Cereals)
 - Scheme Code: 1301010031 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 2,750.00 Lakh | Actual Exp: Rs. 1,377.34 Lakh
 - 2025-26 Outlay: Rs. 2,000.00 Lakh | Anticipated Exp: Rs. 2,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,626.00 Lakh | Proposed Outlay: Rs. 1,750.00 Lakh | Outlay for Budgeting: Rs. 1,750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,750.00 Lakh | FD Release: Rs. 1,750.00 Lakh | BDS Exp: Rs. 185.73 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,750.00 Lakh | FD Release: Rs. 1,750.00 Lakh | BDS Exp: Rs. 213.17 Lakh
 #### [86] Krishi Unnati Yojana -Sub Mission on Agricultural Mechanisation (CSS).
 - Scheme Code: 1301010028 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 2,250.00 Lakh | Actual Exp: Rs. 361.76 Lakh
 - 2025-26 Outlay: Rs. 2,500.00 Lakh | Anticipated Exp: Rs. 2,500.00 Lakh
 - 2026-27 Demand Outlay: Rs. 4,468.75 Lakh | Proposed Outlay: Rs. 2,500.00 Lakh | Outlay for Budgeting: Rs. 2,500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 4,320.00 Lakh | FD Release: Rs. 4,320.00 Lakh | BDS Exp: Rs. 2,977.68 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 4,320.00 Lakh | FD Release: Rs. 4,320.00 Lakh | BDS Exp: Rs. 3,156.59 Lakh
 #### [87] The Prime Minister's Formalization of Micro Food Processing Enterprises Scheme (PMFME)
 - Scheme Code: 1301010041 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 1,250.00 Lakh | Actual Exp: Rs. 34.26 Lakh
 - 2025-26 Outlay: Rs. 1,000.00 Lakh | Anticipated Exp: Rs. 1,000.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,000.00 Lakh | Proposed Outlay: Rs. 1,000.00 Lakh | Outlay for Budgeting: Rs. 1,000.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,000.00 Lakh | FD Release: Rs. 1,000.00 Lakh | BDS Exp: Rs. 272.44 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,000.00 Lakh | FD Release: Rs. 1,000.00 Lakh | BDS Exp: Rs. 292.47 Lakh
 #### [88] To start New Agriculture college at sonapur,Gadhchiroli through the Dr.Punjabrao Deshmukh Krushi Vidyapith under TSP
 - Scheme Code: 1301100001 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 1,065.11 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 1,050.00 Lakh | Anticipated Exp: Rs. 1,050.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,971.93 Lakh | Proposed Outlay: Rs. 1,196.55 Lakh | Outlay for Budgeting: Rs. 1,196.55 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,196.55 Lakh | FD Release: Rs. 420.00 Lakh | BDS Exp: Rs. 188.08 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,196.55 Lakh | FD Release: Rs. 420.00 Lakh | BDS Exp: Rs. 188.08 Lakh
 #### [89] Provision for Seed Plantation Sub-Mission (SMSP)
 - Scheme Code: 1301010027 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 1,000.00 Lakh | Actual Exp: Rs. 300.33 Lakh
 - 2025-26 Outlay: Rs. 1,125.00 Lakh | Anticipated Exp: Rs. 1,125.00 Lakh
 - 2026-27 Demand Outlay: Rs. 125.82 Lakh | Proposed Outlay: Rs. 125.00 Lakh | Outlay for Budgeting: Rs. 125.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 125.00 Lakh | FD Release: Rs. 125.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 125.00 Lakh | FD Release: Rs. 125.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [90] National Mission on Edible Oils - Oilseeds (NMEO) (TSP)
 - Scheme Code: 1301010033 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 750.00 Lakh | Actual Exp: Rs. 497.13 Lakh
 - 2025-26 Outlay: Rs. 750.00 Lakh | Anticipated Exp: Rs. 750.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,375.00 Lakh | Proposed Outlay: Rs. 750.00 Lakh | Outlay for Budgeting: Rs. 750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,774.92 Lakh | FD Release: Rs. 1,774.92 Lakh | BDS Exp: Rs. 308.71 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,774.92 Lakh | FD Release: Rs. 1,774.92 Lakh | BDS Exp: Rs. 399.04 Lakh
 #### [91] Krishi Unnati Yojana (State Plan) Sub Mission on Support to State Agriculture Extension Programme for Extension Reforms. (C.S.S) (State Share-40) (T.S.P)
 - Scheme Code: 1301010036 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 662.50 Lakh | Actual Exp: Rs. 295.86 Lakh
 - 2025-26 Outlay: Rs. 750.00 Lakh | Anticipated Exp: Rs. 750.00 Lakh
 - 2026-27 Demand Outlay: Rs. 2,212.43 Lakh | Proposed Outlay: Rs. 750.00 Lakh | Outlay for Budgeting: Rs. 750.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,598.00 Lakh | FD Release: Rs. 1,598.00 Lakh | BDS Exp: Rs. 414.48 Lakh
-#### [92] Krushi Unnati Yojana Parmparagat Krushi Vikas Yojana Tribal Sub Plan
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,598.00 Lakh | FD Release: Rs. 1,598.00 Lakh | BDS Exp: Rs. 464.75 Lakh
+#### [92] Krushi Unnati Yojana Parmparagat Krushi Vikas Yojana  Tribal Sub Plan
 - Scheme Code: 1301010037 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 442.50 Lakh | Actual Exp: Rs. 195.25 Lakh
 - 2025-26 Outlay: Rs. 492.60 Lakh | Anticipated Exp: Rs. 492.60 Lakh
 - 2026-27 Demand Outlay: Rs. 400.66 Lakh | Proposed Outlay: Rs. 400.00 Lakh | Outlay for Budgeting: Rs. 400.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 400.00 Lakh | FD Release: Rs. 400.00 Lakh | BDS Exp: Rs. 44.81 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 400.00 Lakh | FD Release: Rs. 400.00 Lakh | BDS Exp: Rs. 45.89 Lakh
 #### [93] National Mission for Sustainable Agriculture - Rainfed Area Development Programme
 - Scheme Code: 1301010026 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 327.50 Lakh | Actual Exp: Rs. 128.66 Lakh
 - 2025-26 Outlay: Rs. 250.00 Lakh | Anticipated Exp: Rs. 250.00 Lakh
 - 2026-27 Demand Outlay: Rs. 198.63 Lakh | Proposed Outlay: Rs. 200.00 Lakh | Outlay for Budgeting: Rs. 200.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 200.00 Lakh | FD Release: Rs. 200.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 200.00 Lakh | FD Release: Rs. 200.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [94] Krushi Unnati Yojana Soil Health Card Tribal Sub Plan
 - Scheme Code: 1301030024 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 182.50 Lakh | Actual Exp: Rs. 83.33 Lakh
 - 2025-26 Outlay: Rs. 125.00 Lakh | Anticipated Exp: Rs. 125.00 Lakh
 - 2026-27 Demand Outlay: Rs. 621.70 Lakh | Proposed Outlay: Rs. 625.00 Lakh | Outlay for Budgeting: Rs. 625.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 625.00 Lakh | FD Release: Rs. 625.00 Lakh | BDS Exp: Rs. 52.09 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 625.00 Lakh | FD Release: Rs. 625.00 Lakh | BDS Exp: Rs. 52.09 Lakh
 #### [95] Bhausaheb fundkar horticulture plantation scheme (TSP)
 - Scheme Code: 1301020016 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 50.00 Lakh | Actual Exp: Rs. 35.00 Lakh
 - 2025-26 Outlay: Rs. 50.00 Lakh | Anticipated Exp: Rs. 50.00 Lakh
 - 2026-27 Demand Outlay: Rs. 2,000.00 Lakh | Proposed Outlay: Rs. 500.00 Lakh | Outlay for Budgeting: Rs. 500.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 500.00 Lakh | FD Release: Rs. 85.25 Lakh | BDS Exp: Rs. 85.25 Lakh
-#### [96] Planting fruit Trees and vegetables in the Tribal family homestead
+- BDS Final Budget (Till 20-Oct-26): Rs. 500.00 Lakh | FD Release: Rs. 85.25 Lakh | BDS Exp: Rs. 85.25 Lakh
+#### [96] Planting fruit Trees and vegetables in the  Tribal family homestead
 - Scheme Code: 1301020015 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 40.00 Lakh | Actual Exp: Rs. 23.86 Lakh
 - 2025-26 Outlay: Rs. 44.00 Lakh | Anticipated Exp: Rs. 44.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 0.00 Lakh | Outlay for Budgeting: Rs. 0.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [97] National Food Security Mission- Cotton
 - Scheme Code: 1301010029 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.02 Lakh | Actual Exp: Rs. 0.02 Lakh
 - 2025-26 Outlay: Rs. 0.02 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 0.02 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.02 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.02 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [98] National Food Security Mission-Sugarcane
 - Scheme Code: 1301010030 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.02 Lakh | Actual Exp: Rs. 0.02 Lakh
 - 2025-26 Outlay: Rs. 0.02 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 0.02 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.02 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.02 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [99] National Mission for Sustainable Agriculture Sub Mission on Agro Forestry TSP
 - Scheme Code: 1301010038 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.01 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.01 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 0.02 Lakh | Outlay for Budgeting: Rs. 0.02 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.02 Lakh | BDS Exp: Rs. 0.00 Lakh
-#### [100] Prime Minister Formalisation of Micro Food Processing Enterprises Scheme. (PMFME) (Central Share 100%) (Scheme)
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.02 Lakh | FD Release: Rs. 0.02 Lakh | BDS Exp: Rs. 0.00 Lakh
+#### [100] Prime Minister Formalisation of Micro Food Processing Enterprises Scheme.  (PMFME) (Central Share 100%) (Scheme)
 - Scheme Code: 1301010042 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.01 Lakh | Anticipated Exp: Rs. 0.01 Lakh
 - 2026-27 Demand Outlay: Rs. 0.01 Lakh | Proposed Outlay: Rs. 0.01 Lakh | Outlay for Budgeting: Rs. 0.01 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.01 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 0.01 Lakh | FD Release: Rs. 0.01 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [101] Agristack (Digital Public Infrastructure for Agriculture
 - Scheme Code: 1301010043 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 405.17 Lakh
 - 2026-27 Demand Outlay: Rs. 405.17 Lakh | Proposed Outlay: Rs. 405.00 Lakh | Outlay for Budgeting: Rs. 405.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 601.74 Lakh | FD Release: Rs. 601.74 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 601.74 Lakh | FD Release: Rs. 601.74 Lakh | BDS Exp: Rs. 0.00 Lakh
 #### [102] Mission for Atmanirbharta in Pulses
 - Scheme Code: 1301010044 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.02 Lakh
 - 2026-27 Demand Outlay: Rs. 1,374.00 Lakh | Proposed Outlay: Rs. 1,375.00 Lakh | Outlay for Budgeting: Rs. 1,375.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,375.00 Lakh | FD Release: Rs. 1,375.00 Lakh | BDS Exp: Rs. 122.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,375.00 Lakh | FD Release: Rs. 1,375.00 Lakh | BDS Exp: Rs. 136.41 Lakh
 #### [103] National Mission on Natural Farming (NMNF)
 - Scheme Code: 1301100002 | Plan: TCS | SDG Status: NA
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 1,164.20 Lakh | Proposed Outlay: Rs. 1,162.50 Lakh | Outlay for Budgeting: Rs. 1,162.50 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 1,472.98 Lakh | FD Release: Rs. 1,472.98 Lakh | BDS Exp: Rs. 468.60 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 1,472.98 Lakh | FD Release: Rs. 1,472.98 Lakh | BDS Exp: Rs. 477.23 Lakh
 #### [104] Namo Shetakri Mahasanmaan Nidhi Yojana (100 % State Scheme)
 - Scheme Code: 1301010045 | Plan: TCS | SDG Status: A
 - 2024-25 Outlay: Rs. 0.00 Lakh | Actual Exp: Rs. 0.00 Lakh
 - 2025-26 Outlay: Rs. 0.00 Lakh | Anticipated Exp: Rs. 0.00 Lakh
 - 2026-27 Demand Outlay: Rs. 0.00 Lakh | Proposed Outlay: Rs. 57,570.00 Lakh | Outlay for Budgeting: Rs. 57,570.00 Lakh
-- BDS Final Budget (Till 07-Oct-26): Rs. 57,570.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh
+- BDS Final Budget (Till 20-Oct-26): Rs. 57,570.00 Lakh | FD Release: Rs. 0.00 Lakh | BDS Exp: Rs. 0.00 Lakh

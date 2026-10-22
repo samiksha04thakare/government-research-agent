@@ -2,7 +2,7 @@
 
 > **Source-grounded, multi-agent government research platform built with Agentic RAG, LangGraph, FastAPI, ChromaDB, PostgreSQL, and React (Vite).**
 
-Provides verifiable, multilingual research and query assistance for Indian central and state government schemes, guidelines, agricultural advisories, and citizen welfare programs with strict 1-to-1 official citations and information freshness auditing.
+Provides verifiable, multilingual research and query assistance for Indian central and state government guidelines, policies, agricultural advisories, and citizen welfare programs with strict 1-to-1 official citations and information freshness auditing.
 
 ---
 
@@ -30,7 +30,7 @@ Provides verifiable, multilingual research and query assistance for Indian centr
                ┌─────────────────┴─────────────────┐
                ▼                                   ▼
       PostgreSQL / SQLite                     ChromaDB
-    (Structured Scheme DB)            (Vector Embeddings & Chunks)
+    (Structured Database)             (Vector Embeddings & Chunks)
                │                                   │
                └─────────────────┬─────────────────┘
                                  │
@@ -54,7 +54,7 @@ Provides verifiable, multilingual research and query assistance for Indian centr
 1. **Automated Scraper & Ingestion Pipeline**:
    - Ingests direct payloads from Apify webhooks, scraper scripts, CSV datasets, and JSON/JSONL dumps.
    - Built-in heuristic enrichment for national portals (`india.gov.in`, `myscheme.gov.in`).
-   - Cleans HTML clutter, validates official `.gov.in` / `.nic.in` domains, and maps canonical scheme IDs.
+   - Cleans HTML clutter, validates official `.gov.in` / `.nic.in` domains, and maps canonical records.
 
 2. **Dual-Storage Engine**:
    - **Relational Storage (PostgreSQL / SQLite)**: Stores tabular metadata (benefits, eligibility criteria, required documents, jurisdiction, authority).
@@ -68,7 +68,7 @@ Provides verifiable, multilingual research and query assistance for Indian centr
 
 4. **Multilingual Localization (English, Hindi, Marathi)**:
    - Dynamic language switching (`en`, `hi`, `mr`).
-   - Preserves all official figures, scheme names, dates, percentages, and citations in natural Devanagari script.
+   - Preserves all official figures, program names, dates, percentages, and citations in natural Devanagari script.
 
 5. **Strict Grounding & Citation Auditing**:
    - Numbered markers (`[1]`, `[2]`) map 1-to-1 to official sources.

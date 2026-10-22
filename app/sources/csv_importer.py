@@ -7,8 +7,10 @@ Implements:
 4. ChromaDB vectorstore indexing preserving exact 8-field metadata compliance.
 """
 import json
+import re
 from datetime import datetime, timezone
 import hashlib
+import io
 from io import BytesIO
 from typing import Any
 from urllib.parse import urlparse
@@ -53,7 +55,56 @@ def _compute_hash(text: str) -> str:
 def enrich_scraped_scheme_metadata(name: str, raw_row: dict) -> dict[str, str]:
     """Enrich scraped items with verified official scheme details, category, and authority."""
     n = name.lower()
+    url_str = str(
+        raw_row.get("official_url") or raw_row.get("official_source_url") or raw_row.get("url")
+        or raw_row.get("web_scraper_start_url") or raw_row.get("link") or ""
+    ).lower()
     details = {}
+
+    # Check Maharashtra PoCRA (Nanaji Deshmukh Krishi Sanjivani Prakalp)
+    if "mahapocra" in url_str or "pocra" in n:
+        details["category"] = "Agriculture & Farmer Welfare"
+        details["authority"] = "Department of Agriculture, Government of Maharashtra (Nanaji Deshmukh Krishi Sanjivani Prakalp / PoCRA)"
+        details["state_district"] = "Maharashtra"
+        details["official_url"] = "https://dbt.mahapocra.gov.in/"
+        details["beneficiary"] = "Farmers, village communities, and Farmer Producer Organizations (FPOs/SHGs) in Maharashtra"
+        if "communit" in n:
+            details["hindi_name"] = "नानाजी देशमुख कृषी संजीवनी प्रकल्प - समुदाय डीबीटी (PoCRA Communities DBT)"
+            details["benefits"] = "Financial assistance to execute community natural resource management works as per Village Development Plans (VDP)."
+            details["eligibility"] = "Village Climate Change Adaptation Committees (VCCMC) and Gram Panchayats in PoCRA project villages."
+            details["documents"] = "Gram Sabha resolution, approved Village Development Plan (VDP), VCCMC bank account details."
+            details["guidelines_summary"] = "MahaPoCRA Communities DBT provides financial assistance to village-level institutions for community water, soil, and natural resource conservation."
+        elif "fpo" in n or "self help" in n or "shg" in n:
+            details["hindi_name"] = "नानाजी देशमुख कृषी संजीवनी प्रकल्प - एफपीओ व बचत गट डीबीटी (PoCRA FPO & SHG DBT)"
+            details["benefits"] = "Financial grants and matching assistance for FPOs, FPCs, and Women SHGs for post-harvest processing, seed supply chain, and Custom Hiring Centres (CHC)."
+            details["eligibility"] = "Registered Farmer Producer Companies (FPCs/FPOs) and active Women SHGs in PoCRA project districts."
+            details["documents"] = "FPO/SHG registration certificate, audited balance sheets, business plan project report, bank account details."
+            details["guidelines_summary"] = "MahaPoCRA FPO & Self Help Groups DBT supports farmer collectives and women SHGs in establishing agribusiness value chain infrastructure."
+        else:
+            details["hindi_name"] = "नानाजी देशमुख कृषी संजीवनी प्रकल्प - शेतकरी डीबीटी (PoCRA Farmers DBT)"
+            details["benefits"] = "Direct benefit transfer (DBT) financial assistance and subsidies for climate-resilient farming, micro-irrigation, individual farm ponds, and horticulture under PoCRA."
+            details["eligibility"] = "Small and marginal farmers residing in notified climate-vulnerable project villages across Maharashtra."
+            details["documents"] = "7/12 extract (Satbara), 8-A land holding certificate, Aadhaar card, bank account linked with NPCI."
+            details["guidelines_summary"] = "MahaPoCRA Farmers DBT enables registered farmers in 15 project districts of Maharashtra to apply directly for climate-resilient agricultural subsidies and financial assistance."
+        return details
+
+    # Check Maharashtra MSRTC 50% Concession for Women (Mahila Sanman Yojana)
+    if "st-bus" in url_str or "msrtc" in url_str or "half-ticket" in url_str or "msrtc" in n or "half ticket" in n or "mahila sanman" in n or "concession on bus fare" in n:
+        details["category"] = "Transport & Women Welfare"
+        details["authority"] = "Maharashtra State Road Transport Corporation (MSRTC), Government of Maharashtra"
+        details["state_district"] = "Maharashtra"
+        details["official_url"] = "https://msrtc.maharashtra.gov.in/"
+        details["hindi_name"] = "एसटी बस महिला सन्मान योजना (५०% प्रवास सवलत)"
+        details["beneficiary"] = "All women and female passengers traveling in Maharashtra"
+        details["benefits"] = "50% concession on passenger bus ticket fare across all MSRTC State Transport bus services (Ordinary, Semi-luxury, Shivshahi, Shivneri AC) within Maharashtra for all women passengers."
+        details["eligibility"] = "All women and female citizens of any age group traveling within Maharashtra (no age limit applies)."
+        details["documents"] = "Aadhaar Card or Government Photo ID for verification if requested."
+        details["guidelines_summary"] = (
+            "MSRTC Mahila Sanman Yojana provides a 50% concession on bus fares to all women passengers traveling on Maharashtra State Road Transport Corporation buses across Maharashtra. "
+            "Applicable on all MSRTC services including Ordinary (साधी बस), Semi-Luxury (निमआराम), Shivshahi, and Shivneri AC buses. "
+            "Does not apply to municipal city buses (PMC, PCMC, NMMT, BEST). Available for online booking and on-spot bus conductor ticketing."
+        )
+        return details
 
     # Category
     if not raw_row.get("category"):
@@ -135,6 +186,34 @@ def enrich_scraped_scheme_metadata(name: str, raw_row: dict) -> dict[str, str]:
     return details
 
 
+def _parse_multi_table_csv(content_str: str) -> list[dict[str, Any]]:
+    """Parse CSV text containing single or concatenated tables with multi-line quoted fields."""
+    import csv
+    f = io.StringIO(content_str)
+    reader = csv.reader(f)
+    current_headers = None
+    records = []
+
+    for row in reader:
+        if not row:
+            continue
+        first_col = str(row[0]).strip().lstrip('\ufeff').lower()
+        if first_col in ("web_scraper_order", "scheme_name", "name", "title", "scheme", "data"):
+            current_headers = [str(c).strip().lstrip('\ufeff').lower().replace(" ", "_") for c in row]
+            continue
+        if current_headers:
+            row_dict = {}
+            for idx, val in enumerate(row):
+                if idx < len(current_headers):
+                    col_name = current_headers[idx]
+                    row_dict[col_name] = val
+                else:
+                    row_dict[f"extra_col_{idx}"] = val
+            records.append(row_dict)
+
+    return records
+
+
 def process_scraped_records(records: list[dict[str, Any]], source_type: str = "scraper_import") -> dict[str, Any]:
     """Validate URLs, normalize fields, upsert to SQL, and index into ChromaDB from a list of records."""
     if not records:
@@ -147,6 +226,34 @@ def process_scraped_records(records: list[dict[str, Any]], source_type: str = "s
             "message": "Payload contained no data records."
         }
 
+    # Pre-processing: Identify comment/FAQ rows and associate them by start_url
+    qa_by_url: dict[str, list[tuple[str, str, str]]] = {}
+    main_records: list[dict[str, Any]] = []
+
+    for r in records:
+        if not isinstance(r, dict):
+            continue
+        creator = str(r.get("creator") or r.get("creator2") or "").strip().lower()
+        d_val = str(r.get("data") or r.get("scheme_name") or r.get("name") or "").strip()
+        d2_val = str(r.get("data2") or "").strip()
+        d3_val = str(r.get("data3") or "").strip()
+        u_val = str(r.get("web_scraper_start_url") or r.get("official_url") or r.get("url") or "").strip()
+
+        is_qa = False
+        if creator and ("says" in creator or "comment" in creator):
+            # Check for questions first
+            if "?" in d_val or "लागू" in d_val or "आहे" in d_val or any(w in d_val.lower() for w in ["kiti", "where", "when", "how", "allowed", "booking"]):
+                is_qa = True
+            elif any(term in d_val.lower() for term in ["concession", "scheme", "yojana", "dbt", "kisan", "subsid"]):
+                is_qa = False
+            elif d2_val and not d_val.lower().startswith("msrtc"):
+                is_qa = True
+
+        if is_qa and u_val:
+            qa_by_url.setdefault(u_val, []).append((d_val, d2_val, d3_val))
+        else:
+            main_records.append(r)
+
     imported_schemes = []
     all_chunks = []
     all_chunk_ids = []
@@ -155,20 +262,33 @@ def process_scraped_records(records: list[dict[str, Any]], source_type: str = "s
     now_ts = _now_iso()
     store = get_store()
 
-    for idx, raw_row in enumerate(records, start=1):
+    for idx, raw_row in enumerate(main_records, start=1):
         if not isinstance(raw_row, dict):
             continue
 
-        # Standardize keys to lowercase with underscores
-        row = {str(k).strip().lower().replace(" ", "_"): v for k, v in raw_row.items()}
+        # Standardize keys to lowercase with underscores and alphanumeric variants
+        row = {}
+        for k, v in raw_row.items():
+            k_clean = str(k).strip().lower()
+            row[k_clean] = v
+            row[k_clean.replace(" ", "_")] = v
+            k_alphanum = re.sub(r"[^a-z0-9]+", "_", k_clean).strip("_")
+            row[k_alphanum] = v
 
         raw_name = str(
             row.get("scheme_name") or row.get("name") or row.get("title") or row.get("scheme") or row.get("data") or ""
         ).strip()
         raw_url = str(
-            row.get("official_url") or row.get("official_source_url") or row.get("url") or row.get("source_url")
+            row.get("official_url") or row.get("official_source_url") or row.get("official_link")
+            or row.get("myscheme_url") or row.get("url") or row.get("source_url")
             or row.get("web_scraper_start_url") or row.get("link") or ""
         ).strip()
+
+        # If primary URL is invalid, try fallback to myscheme_url or official_link
+        if not _is_valid_url(raw_url):
+            fallback_url = str(row.get("myscheme_url") or row.get("official_link") or "").strip()
+            if _is_valid_url(fallback_url):
+                raw_url = fallback_url
 
         if not raw_name:
             continue
@@ -179,39 +299,81 @@ def process_scraped_records(records: list[dict[str, Any]], source_type: str = "s
 
         # Normalized values and enriched metadata
         scheme_name = normalize_text(raw_name)
-        official_url = raw_url
+        if "msrtc" in scheme_name.lower() and "mahila sanman" not in scheme_name.lower():
+            scheme_name = f"{scheme_name} (Mahila Sanman Yojana)"
+        elif "mahapocra" in raw_url.lower() and "pocra" not in scheme_name.lower():
+            scheme_name = f"MahaPoCRA - {scheme_name}"
+
         enrichment = enrich_scraped_scheme_metadata(scheme_name, row)
+        official_url = enrichment.get("official_url") or raw_url
+
+        raw_data2 = str(row.get("data2") or "").strip()
 
         hindi_name = normalize_text(
             str(row.get("hindi_name") or row.get("hindi") or row.get("scheme_name_hi") or enrichment.get("hindi_name") or scheme_name)
         )
         category = normalize_text(
-            str(row.get("category") or row.get("sector") or enrichment.get("category") or "Government Schemes & Welfare")
+            str(row.get("category") or row.get("tags_categories") or row.get("tags__categories") or row.get("sector") or enrichment.get("category") or "Government Schemes & Welfare")
         )
         beneficiary = normalize_text(
             str(row.get("beneficiary") or row.get("target_beneficiary") or enrichment.get("beneficiary") or "Eligible citizens and farmer families")
         )
-        eligibility = normalize_text(
-            str(row.get("eligibility") or row.get("eligibility_criteria") or enrichment.get("eligibility") or "Subject to official department verification and guidelines.")
-        )
-        benefits = normalize_text(
-            str(row.get("benefits") or row.get("benefit") or enrichment.get("benefits") or "Direct benefit transfer and institutional support under scheme rules.")
-        )
+
+        raw_elig = str(row.get("eligibility") or row.get("eligibility_criteria") or row.get("eligibility_general") or enrichment.get("eligibility") or "").strip()
+        raw_excl = str(row.get("exclusions_ineligibility") or row.get("exclusions__ineligibility") or row.get("exclusions") or "").strip()
+        if raw_excl and raw_excl not in raw_elig:
+            eligibility = normalize_text(f"{raw_elig}\nExclusions: {raw_excl}" if raw_elig else f"Exclusions: {raw_excl}")
+        else:
+            eligibility = normalize_text(raw_elig or "Subject to official department verification and guidelines.")
+
+        benefits_val = str(row.get("benefits") or row.get("benefit") or enrichment.get("benefits") or "")
+        if not benefits_val and raw_data2 and not raw_data2.lower().startswith("says") and len(raw_data2) > 10:
+            benefits_val = raw_data2
+        benefits = normalize_text(benefits_val or "Direct benefit transfer and institutional support under scheme rules.")
+
         documents = normalize_text(
             str(row.get("documents") or row.get("documents_required") or enrichment.get("documents") or "Aadhaar Card, Bank Passbook, and Identity documents.")
         )
         state_district = normalize_text(
-            str(row.get("state_district") or row.get("state") or row.get("district") or enrichment.get("state_district") or "Central / All India")
+            str(row.get("state_district") or row.get("state") or row.get("district")
+                or (row.get("state_ut_ministry") or row.get("state__ut__ministry") if str(row.get("level", "")).lower() != "central" else "")
+                or enrichment.get("state_district") or "Central / All India")
         )
         status = normalize_text(str(row.get("status") or enrichment.get("status") or "Active"))
         authority = normalize_text(
-            str(row.get("authority") or row.get("department") or row.get("ministry") or enrichment.get("authority") or "Government Authority")
-        )
-        guidelines_summary = normalize_text(
-            str(row.get("guidelines_summary") or row.get("summary") or row.get("description") or enrichment.get("guidelines_summary") or f"{scheme_name} - {benefits}")
+            str(row.get("authority") or row.get("department") or row.get("ministry")
+                or row.get("state_ut_ministry") or row.get("state__ut__ministry")
+                or enrichment.get("authority") or "Government Authority")
         )
 
-        canonical_id = row.get("scheme_id") or get_canonical_scheme_id(scheme_name, hindi_name, official_url)
+        raw_desc = str(row.get("guidelines_summary") or row.get("summary") or row.get("description") or enrichment.get("guidelines_summary") or "").strip()
+        if not raw_desc and raw_data2 and not raw_data2.lower().startswith("says"):
+            raw_desc = raw_data2
+
+        raw_proc = str(row.get("application_process") or "").strip()
+        raw_mode = str(row.get("application_mode") or "").strip()
+        desc_parts = [raw_desc] if raw_desc else [f"{scheme_name} - {benefits}"]
+        if raw_mode:
+            desc_parts.append(f"Application Mode: {raw_mode}")
+        if raw_proc and raw_proc not in raw_desc:
+            desc_parts.append(f"Application Process: {raw_proc}")
+
+        # Attach citizen Q&A / FAQs if available for this URL
+        matching_qas = qa_by_url.get(raw_url) or qa_by_url.get(official_url)
+        if matching_qas:
+            faq_parts = ["\n--- Verified Citizen Q&A & FAQs ---"]
+            for q_text, a_text, _ in matching_qas:
+                clean_q = normalize_text(q_text)
+                clean_a = normalize_text(a_text)
+                if clean_a:
+                    faq_parts.append(f"• Question: {clean_q}\n  Answer / Clarification: {clean_a}")
+                else:
+                    faq_parts.append(f"• Citizen Query: {clean_q}")
+            desc_parts.append("\n".join(faq_parts))
+
+        guidelines_summary = normalize_text("\n\n".join(desc_parts))
+
+        canonical_id = row.get("scheme_id") or row.get("scheme_slug") or get_canonical_scheme_id(scheme_name, hindi_name, official_url)
 
         scheme_payload = {
             "scheme_id": canonical_id,
@@ -271,9 +433,9 @@ def process_scraped_records(records: list[dict[str, Any]], source_type: str = "s
         chunks = chunk_documents([lc_doc])
 
         if chunks:
-            # Clean obsolete chunks for this source_url or canonical_id if present
+            # Clean obsolete chunks for this scheme_id if present
             try:
-                existing = store.get(where={"source_url": official_url})
+                existing = store.get(where={"scheme_id": canonical_id})
                 if existing and existing.get("ids"):
                     store.delete(ids=existing["ids"])
             except Exception as clean_err:
@@ -316,7 +478,12 @@ def process_scraped_records(records: list[dict[str, Any]], source_type: str = "s
         imported_schemes.append(scheme_dict)
 
     if all_chunks:
-        store.add_documents(all_chunks, ids=all_chunk_ids)
+        BATCH_SIZE = 100
+        for b_start in range(0, len(all_chunks), BATCH_SIZE):
+            store.add_documents(
+                all_chunks[b_start : b_start + BATCH_SIZE],
+                ids=all_chunk_ids[b_start : b_start + BATCH_SIZE],
+            )
 
     return {
         "status": "success",
@@ -330,25 +497,35 @@ def process_scraped_records(records: list[dict[str, Any]], source_type: str = "s
 
 def process_scraped_csv(content: bytes) -> dict[str, Any]:
     """Parse CSV content, validate URLs, normalize fields, upsert to SQL, and index into ChromaDB."""
-    try:
-        df = pd.read_csv(BytesIO(content))
-    except Exception as exc:
-        raise HTTPException(status_code=400, detail=f"Invalid CSV format: {exc}")
+    content_str = content.decode("utf-8", errors="replace").strip()
+    if not content_str:
+        raise HTTPException(status_code=400, detail="Uploaded CSV file is empty.")
 
-    # Standardize column headers (lowercase, trimmed)
-    df.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
+    records = _parse_multi_table_csv(content_str)
+
+    if not records:
+        # Fallback to standard pandas read_csv
+        try:
+            df = pd.read_csv(BytesIO(content))
+            df.columns = [str(c).strip().lower().replace(" ", "_") for c in df.columns]
+            records = df.fillna("").to_dict(orient="records")
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"Invalid CSV format: {exc}")
 
     # Required column resolution (support synonyms)
-    name_col = next((c for c in df.columns if c in ("scheme_name", "name", "title", "scheme")), None)
-    url_col = next((c for c in df.columns if c in ("official_url", "official_source_url", "url", "source_url")), None)
+    has_valid_header = any(
+        isinstance(r, dict)
+        and any(k in r for k in ("scheme_name", "name", "title", "scheme", "data"))
+        and any(k in r for k in ("official_url", "official_source_url", "url", "source_url", "official_link", "myscheme_url", "web_scraper_start_url", "link"))
+        for r in records
+    )
 
-    if not name_col or not url_col:
+    if not has_valid_header:
         raise HTTPException(
             status_code=400,
-            detail="CSV must contain 'scheme_name' and 'official_url' columns."
+            detail="CSV must contain 'scheme_name' and 'official_url' columns (or 'data' and 'web_scraper_start_url')."
         )
 
-    records = df.fillna("").to_dict(orient="records")
     return process_scraped_records(records, source_type="csv_import")
 
 
@@ -409,7 +586,7 @@ def process_scraped_json(payload: bytes | str | list | dict) -> dict[str, Any]:
     has_valid_header = any(
         isinstance(r, dict)
         and any(k in r for k in ("scheme_name", "name", "title", "scheme", "data"))
-        and any(k in r for k in ("official_url", "official_source_url", "url", "source_url", "web_scraper_start_url", "link"))
+        and any(k in r for k in ("official_url", "official_source_url", "url", "source_url", "official_link", "myscheme_url", "web_scraper_start_url", "link"))
         for r in records
     )
     if not has_valid_header:

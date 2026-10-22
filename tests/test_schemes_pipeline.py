@@ -1,5 +1,5 @@
 """Unit and Integration Tests for Structured Scheme Ingestion, Normalization, PostgreSQL/SQLite storage, and Hindi Answer Synthesis."""
-import pytest
+# pyrefly: ignore[missing-import]
 from fastapi.testclient import TestClient
 
 from app.database.db import Scheme, SessionLocal

@@ -22,6 +22,36 @@ RELEVANCE_NOT_FOUND_MESSAGE = (
 def classify_query(state: ResearchState) -> ResearchState:
     q = state["question"]
     target_lang, detected_lang = resolve_language(state.get("language"), q)
+
+    # If scheme_id is provided, enforce strict scheme-scoped routing and ChromaDB filtering
+    scheme_id = state.get("target_scheme_id") or state.get("scheme_id")
+    if scheme_id:
+        from app.database.db import SessionLocal
+        from app.schemes.pipeline import get_scheme_by_id_or_code, find_explicit_scheme_in_query
+        with SessionLocal() as db:
+            target_scheme = get_scheme_by_id_or_code(scheme_id, db=db)
+            if target_scheme:
+                # Check if question specifically asks about a DIFFERENT scheme (Requirement 6)
+                other_scheme = find_explicit_scheme_in_query(q, db=db)
+                if other_scheme and other_scheme.scheme_id != target_scheme.scheme_id:
+                    target_scheme = other_scheme
+
+                canon_id = target_scheme.scheme_id
+                target_dict = target_scheme.to_dict()
+                log.info("Scheme-scoped research activated for '%s'", canon_id)
+                return {
+                    "category": target_scheme.category,
+                    "scope": "government_related",
+                    "source_route": {"has_documents": True, "filter": {"scheme_id": canon_id}},
+                    "metadata_filter": {"scheme_id": canon_id},
+                    "target_scheme_id": canon_id,
+                    "matched_scheme": target_dict,
+                    "loops": 0,
+                    "evidence": [],
+                    "language": target_lang,
+                    "detected_language": detected_lang,
+                }
+
     res = classifier.classify(q)
     cat = res.get("category", "out_of_scope")
     scope = res.get("scope", "out_of_scope")
@@ -90,6 +120,13 @@ def route_after_classify(state: ResearchState) -> str:
 
 
 def analyze_query(state: ResearchState) -> ResearchState:
+    if state.get("matched_scheme"):
+        return {
+            "intent": planner.analyze(state["question"]),
+            "loops": 0,
+            "evidence": [],
+            "matched_scheme": state["matched_scheme"],
+        }
     from app.schemes.pipeline import find_matching_scheme_for_query
     matched = find_matching_scheme_for_query(state["question"])
     matched_dict = matched.to_dict() if matched else None
@@ -102,6 +139,16 @@ def analyze_query(state: ResearchState) -> ResearchState:
 
 
 def plan_research(state: ResearchState) -> ResearchState:
+    if state.get("target_scheme_id") and state.get("matched_scheme"):
+        s = state["matched_scheme"]
+        s_name = s.get("scheme_name", "")
+        h_name = s.get("hindi_name", "")
+        return {
+            "sub_questions": [
+                state["question"],
+                f"{s_name} {h_name} eligibility criteria benefits application process documents",
+            ]
+        }
     return {"sub_questions": planner.plan(state["question"], state["intent"])}
 
 
@@ -109,6 +156,13 @@ def retrieve(state: ResearchState) -> ResearchState:
     filters = state.get("metadata_filter")
     cat = state.get("category", "unknown")
     q_main = state.get("question", "")
+
+    # Identify target scheme if scoped
+    target_sid = state.get("target_scheme_id")
+    if not target_sid and state.get("matched_scheme"):
+        target_sid = state["matched_scheme"].get("scheme_id")
+
+    scheme_filter = {"scheme_id": target_sid} if target_sid else None
 
     evidence_map = {
         (e["metadata"].get("content_hash"), e["text"][:80]): e
@@ -118,9 +172,26 @@ def retrieve(state: ResearchState) -> ResearchState:
     all_scores = []
 
     for q in state["sub_questions"]:
-        raw_items = vector_search(q, k=4, filters=filters)
+        # If target scheme is specified, query with scheme_id filter first
+        raw_items = []
+        if scheme_filter:
+            try:
+                raw_items = vector_search(q, k=4, filters=scheme_filter)
+            except Exception:
+                raw_items = []
+
+        # If scoped search yielded no documents or no target_sid, fallback to general/category filters
+        if not raw_items:
+            raw_items = vector_search(q, k=4, filters=filters)
+
         raw_retrieved_count += len(raw_items)
         for item in raw_items:
+            # Cross-scheme contamination prevention: if target_sid is specified, reject any item
+            # whose scheme_id is explicitly different from target_sid
+            item_sid = str(item.get("metadata", {}).get("scheme_id") or "").strip().upper()
+            if target_sid and item_sid and item_sid != target_sid.strip().upper():
+                continue
+
             score = item.get("similarity_score", 0.0)
             all_scores.append(score)
             if score >= RELEVANCE_THRESHOLD:
@@ -133,14 +204,13 @@ def retrieve(state: ResearchState) -> ResearchState:
     evidence = list(evidence_map.values())
     decision = "ACCEPTED" if evidence else "REJECTED_LOW_RELEVANCE"
     log.info(
-        "RETRIEVAL: Query='%s' | Category='%s' | Retrieved document count=%d | Documents accepted after relevance filtering=%d | Relevance scores=%s | Final decision='%s' (Threshold=%.2f)",
+        "RETRIEVAL: Query='%s' | TargetScheme='%s' | Category='%s' | Retrieved document count=%d | Documents accepted=%d | Decision='%s'",
         q_main,
+        target_sid or "None",
         cat,
         raw_retrieved_count,
         len(evidence),
-        all_scores[:6],
         decision,
-        RELEVANCE_THRESHOLD,
     )
     return {"evidence": evidence}
 

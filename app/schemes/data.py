@@ -1,6 +1,7 @@
 """Official Central and State Government Scheme Seed Data.
 
 Strictly aligned with the user's structured schema:
+- Scheme ID
 - Scheme name
 - Hindi name
 - Category
@@ -8,12 +9,17 @@ Strictly aligned with the user's structured schema:
 - Eligibility
 - Benefits
 - Documents
+- Application Process
 - State/District
 - Status
+- Official Source URL
+- Authority
+- Guidelines Summary
 """
 
 OFFICIAL_SCHEMES_SEED = [
     {
+        "scheme_id": "PM-KISAN",
         "scheme_name": "Pradhan Mantri Kisan Samman Nidhi (PM-KISAN)",
         "hindi_name": "प्रधानमंत्री किसान सम्मान निधि (पीएम-किसान)",
         "category": "Agriculture & Farmer Welfare",
@@ -21,6 +27,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Landholding farmer families with cultivable land recorded in State Land Records. Excludes institutional landholders, income tax payers, serving/retired government or PSU employees (except Class IV/MTS), constitutional post holders, and registered professionals (doctors, engineers, CAs, lawyers).",
         "benefits": "₹6,000 per financial year per eligible farmer family, disbursed directly into Aadhaar-seeded bank accounts (DBT) in three equal installments of ₹2,000 each (April-July, August-November, December-March).",
         "documents": "1. Aadhaar Card\n2. Land Record of Rights (7/12 extract / Khatauni / RoR / Patta)\n3. Aadhaar-linked Bank Passbook (NPCI mapped)\n4. Active Mobile Number for OTP / e-KYC verification",
+        "application_process": "1. Visit official PM-KISAN portal (pmkisan.gov.in) or nearest CSC.\n2. Click 'New Farmer Registration' and enter Aadhaar number with state.\n3. Fill landholding survey details as per 7/12 extract / Khatauni and bank details.\n4. Complete mandatory Aadhaar OTP or biometric e-KYC.\n5. Status can be tracked using Aadhaar/Account number on the portal.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://pmkisan.gov.in",
@@ -28,6 +35,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "100% centrally funded Direct Benefit Transfer scheme aimed at supplementing financial requirements of landholding farmers for procuring agricultural inputs and domestic needs."
     },
     {
+        "scheme_id": "KCC",
         "scheme_name": "Kisan Credit Card (KCC) Scheme",
         "hindi_name": "किसान क्रेडिट कार्ड (केसीसी) योजना",
         "category": "Agricultural Credit & Finance",
@@ -35,6 +43,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "All farmers cultivating crops, tenant farmers/sharecroppers with cultivation proof, and animal husbandry/dairy/fishery farmers. Age between 18 and 75 years. Valid operational landholding or tenancy agreement.",
         "benefits": "Short-term production credit up to ₹3,00,000 at concessional 4% effective interest rate per annum (7% base rate minus 3% prompt repayment incentive). Collateral-free loan limit up to ₹1,60,000. 5-year validity with 10% annual escalation.",
         "documents": "1. Duly filled application form\n2. Aadhaar Card / Identity & Address Proof\n3. Land Record of Rights (7/12 extract / Khasra-Khatauni) or Lease Agreement\n4. Crop Sowing Declaration\n5. Passport size photographs",
+        "application_process": "1. Download or collect the one-page simplified KCC loan application form from any Commercial Bank, RRB, or DCCB branch, or apply via the PM-KISAN portal.\n2. Fill applicant details and specify landholding area and proposed crops.\n3. Attach copy of 7/12 land extract / Khasra-Khatauni, crop sowing declaration, and Aadhaar card.\n4. Submit to bank branch; banks are mandated to process and issue KCC within 14 working days.\n5. KCC credit limit is activated with an operational RuPay Debit Card.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://agricoop.nic.in/en/divisiontype/agricultural-credit",
@@ -42,6 +51,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Single-window institutional credit mechanism offering flexible withdrawal, crop loan insurance, and prompt repayment subvention."
     },
     {
+        "scheme_id": "PMFBY",
         "scheme_name": "Pradhan Mantri Fasal Bima Yojana (PMFBY)",
         "hindi_name": "प्रधानमंत्री फसल बीमा योजना (पीएमएफबीवाई)",
         "category": "Crop Insurance & Risk Mitigation",
@@ -49,6 +59,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "All farmers cultivating notified food grains, oilseeds, or annual horticultural crops. Sharecroppers and tenant cultivators with sowing certificates are eligible. Sowing must be completed within prescribed seasonal window.",
         "benefits": "Comprehensive risk insurance covering yield losses (pre-sowing to post-harvest). Farmer pays nominal premium: 2% for Kharif crops, 1.5% for Rabi crops, and 5% for annual commercial/horticultural crops. Balance subsidized 50:50 by Central and State Governments. Post-harvest localized losses covered up to 14 days with 72-hour intimation rule.",
         "documents": "1. Aadhaar Card\n2. Land Record (7/12 extract / RoR / Khatauni)\n3. Crop Sowing Certificate (Pik Pahani / Patwari certificate)\n4. Bank Passbook copy / Cancelled Cheque\n5. Tenancy declaration (for tenant farmers)",
+        "application_process": "1. Access the National Crop Insurance Portal (pmfby.gov.in) or visit nearest bank branch / CSC / District Agriculture Office.\n2. Select State, Crop Season (Kharif/Rabi), and Notified Crop.\n3. Upload 7/12 land record, crop sowing certificate (Pik Pahani), bank passbook, and Aadhaar.\n4. Pay nominal farmer share premium (2% Kharif / 1.5% Rabi) before seasonal cutoff date.\n5. In case of localized crop loss, notify within 72 hours via Crop Insurance App or toll-free 14447.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://pmfby.gov.in",
@@ -56,6 +67,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "National crop insurance program designed to stabilize farm income through technological assessment (drones, satellite imagery, CCEs) and quick claim settlement."
     },
     {
+        "scheme_id": "PM-KUSUM-B",
         "scheme_name": "PM-KUSUM Component B (Stand-alone Solar Agriculture Pumps)",
         "hindi_name": "पीएम-कुसुम योजना (घटक ब - सौर कृषि पंप)",
         "category": "Renewable Energy & Irrigation",
@@ -63,6 +75,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Farmers with agricultural land requiring irrigation without grid electricity, or seeking replacement of diesel pumps. Operational borewell or open well required.",
         "benefits": "Subsidized installation of standalone solar agriculture pumps up to 7.5 HP: 30% Central Financial Assistance (CFA) + 30% State Subsidy. Farmer contributes only 10% to 40% (bank loan available for up to 30%, meaning farmer pays as low as 10% cash upfront). In NE/hilly states, CFA is 50%.",
         "documents": "1. Aadhaar Card\n2. Land Record (7/12 extract / 8-A extract)\n3. Proof of water source (well/borewell certificate/affidavit)\n4. Bank Account Passbook\n5. Passport size photograph",
+        "application_process": "1. Register online on the State Nodal Agency solar portal (e.g. Mahavitaran / MEDA portal in Maharashtra or state MNRE agency).\n2. Select required stand-alone solar pump capacity (up to 7.5 HP) and pump type.\n3. Upload 7/12 land record, water source certificate (well/borewell affidavit), and Aadhaar.\n4. Deposit farmer contribution share (10% to 40% after 30% CFA + 30% State subsidy).\n5. Field inspection is conducted by empaneled vendor and pump installed with remote monitoring.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://pmkusum.mnre.gov.in",
@@ -70,6 +83,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Promotes de-dieselization of farm irrigation and provides reliable daytime water pumping using solar power."
     },
     {
+        "scheme_id": "NAMO-SHETAKARI",
         "scheme_name": "Namo Shetakari Mahasanmaan Nidhi Yojana",
         "hindi_name": "नमो शेतकरी महासन्मान निधि योजना",
         "category": "Agriculture & Farmer Welfare",
@@ -77,6 +91,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Farmers with operational landholding registered and approved on the Central PM-KISAN portal residing in Maharashtra with valid Aadhaar-seeded 7/12 land records.",
         "benefits": "Direct financial assistance of ₹6,000 per year from the Maharashtra State Government, disbursed in 3 installments of ₹2,000 each via DBT. Combined with PM-KISAN (₹6,000), Maharashtra farmers receive a total of ₹12,000 per year.",
         "documents": "1. PM-KISAN Registration Number / Aadhaar Card\n2. Maharashtra Digital 7/12 & 8-A Extract\n3. DBT-enabled Bank Account Passbook\n4. e-KYC verified mobile number",
+        "application_process": "1. Auto-enrolled for all verified beneficiaries of PM-KISAN in Maharashtra.\n2. Ensure Maharashtra 7/12 land record is linked with Aadhaar and PM-KISAN portal.\n3. Bank account must have active NPCI Aadhaar-seeding for DBT transfer.\n4. Installments of ₹2,000 (total ₹6,000/year) are credited simultaneously with central PM-KISAN cycles.\n5. Beneficiary status can be checked on krishi.maharashtra.gov.in or MahaDBT.",
         "state_district": "Maharashtra / All Districts",
         "status": "Active",
         "official_source_url": "https://krishi.maharashtra.gov.in",
@@ -84,6 +99,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "100% Maharashtra state-funded supplementary income support scheme designed to match and double the Central PM-KISAN payout for local agrarian households."
     },
     {
+        "scheme_id": "SHAASHWAT-SINCHAN",
         "scheme_name": "Mukhyamantri Shaashwat Sheti Sinchan Yojana (Sustainable Irrigation)",
         "hindi_name": "मुख्यमंत्री शाश्वत कृषि सिंचाई योजना",
         "category": "Micro Irrigation & Water Security",
@@ -91,6 +107,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Farmers possessing minimum 0.20 hectare cultivable land in recognized drought-prone or priority talukas of Maharashtra. Operational water source or rainfall catchment area required.",
         "benefits": "Direct subsidy of up to 75% to 80% for individual farm ponds (Shet Tale), plastic pond lining (500 micron sheet), drip micro-irrigation, and sprinkler systems to ensure water availability during dry spells.",
         "documents": "1. 7/12 Extract and 8-A Land Extract\n2. Aadhaar Card\n3. Bank Passbook copy (Aadhaar linked)\n4. Farm pond site plan and NOC (if joint land)\n5. Caste Certificate (if SC/ST for enhanced subsidy)",
+        "application_process": "1. Log in to the MahaDBT Farmer Schemes portal (mahadbt.maharashtra.gov.in).\n2. Select 'Special Agricultural Schemes' > 'Mukhyamantri Shaashwat Sheti Sinchan Yojana'.\n3. Choose component: Individual Farm Pond (Shet Tale), Plastic Lining, or Micro Irrigation.\n4. Upload 7/12 and 8-A land extracts, Aadhaar, bank passbook, and farm pond site plan.\n5. Scrutiny by Taluka Agriculture Officer (TAO), followed by pre-sanction, physical geotagging, and DBT subsidy release.",
         "state_district": "Maharashtra / All Districts",
         "status": "Active",
         "official_source_url": "https://mahadbt.maharashtra.gov.in",
@@ -98,6 +115,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Water resilience scheme providing farm ponds and micro-irrigation grants across Marathwada, Vidarbha, and Western Maharashtra."
     },
     {
+        "scheme_id": "MAHA-POST-MATRIC-SCHOLARSHIP",
         "scheme_name": "Maharashtra State Post-Matric Scholarship Scheme",
         "hindi_name": "महाराष्ट्र राज्य मैट्रिकोत्तर छात्रवृत्ति योजना",
         "category": "Education & Scholarships",
@@ -105,6 +123,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Permanent resident of Maharashtra with valid Domicile Certificate. Annual family income under ₹2,50,000 for SC/ST, and under ₹1,50,000 (100% scholarship) or under ₹8,00,000 (50% Freeship) for OBC/VJNT/EWS. Minimum 50% qualifying marks for professional courses.",
         "benefits": "100% Tuition Fee and Exam Fee waiver for SC and ST students. 50% to 100% Tuition Fee waiver for OBC, VJNT, and EWS students. Annual maintenance allowance ranging from ₹5,000 to ₹12,000 disbursed directly via DBT.",
         "documents": "1. Maharashtra Domicile Certificate (issued by SDO/Tehsildar)\n2. Annual Family Income Certificate (issued by Tehsildar)\n3. Caste Certificate and Caste Validity Certificate\n4. Previous Year Marksheet\n5. CAP Allotment Letter & College Admission Fee Receipt\n6. Aadhaar-seeded Bank Passbook",
+        "application_process": "1. Register as a new applicant on the MahaDBT portal (mahadbt.maharashtra.gov.in) using Aadhaar authentication.\n2. Complete profile with family income, domicile, and caste validity certificates.\n3. Select college course, CAP allotment number, and upload previous marksheet and fee receipt.\n4. Submit online; college verification followed by Department scrutiny.\n5. Scholarship tuition fee and maintenance allowance credited directly via Aadhaar-linked DBT.",
         "state_district": "Maharashtra / All Districts",
         "status": "Active",
         "official_source_url": "https://mahadbt.maharashtra.gov.in",
@@ -112,6 +131,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Unified online scholarship program on MahaDBT for socio-economically backward communities in higher education."
     },
     {
+        "scheme_id": "SMAM",
         "scheme_name": "Sub-Mission on Agricultural Mechanization (SMAM)",
         "hindi_name": "कृषि यंत्रीकरण उप-अभियान (एसएमएएम)",
         "category": "Farm Mechanization & Equipment",
@@ -119,6 +139,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Farmers with valid land records. Priority given to small/marginal farmers, women farmers, and SC/ST categories.",
         "benefits": "40% to 50% financial assistance for purchase of agricultural machinery (tractors, power tillers, rotavators, laser land levelers, multi-crop threshers). Up to ₹10-25 lakh grant for setting up Custom Hiring Centres (CHCs) to provide affordable rentals.",
         "documents": "1. Aadhaar Card\n2. 7/12 extract / Land Record of Rights\n3. Bank Passbook\n4. Quotation from authorized equipment dealer\n5. Caste Certificate (for women / SC / ST higher subsidy rates)",
+        "application_process": "1. Register on the central DBT Agrimachinery portal (agrimachinery.nic.in) or MahaDBT Mechanization portal.\n2. Select desired agricultural equipment from approved manufacturer and model list.\n3. Upload 7/12 land record, Aadhaar card, bank passbook, and dealer quotation.\n4. Lottery/priority draw determines selection, after which pre-sanction letter is issued.\n5. Purchase machinery from authorized dealer, undergo physical verification/inspection, and receive DBT subsidy.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://agrimachinery.nic.in",
@@ -126,6 +147,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Promotes modern farm mechanization to reduce labor costs and increase agricultural productivity for smallholders."
     },
     {
+        "scheme_id": "SOIL-HEALTH-CARD",
         "scheme_name": "Soil Health Card Scheme",
         "hindi_name": "मृदा स्वास्थ्य कार्ड योजना",
         "category": "Soil Health & Nutrient Management",
@@ -133,6 +155,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Open to all farmers owning or cultivating operational farmland in any State or Union Territory.",
         "benefits": "Free soil testing and customized Soil Health Card issued every 2-3 years analyzing 12 essential nutrients (N, P, K, S, Zn, Fe, Cu, Mn, Bo, pH, EC, OC) with crop-specific fertilizer and dosage guidance to reduce input costs and preserve soil fertility.",
         "documents": "1. Farmer Aadhaar Card\n2. Khasra / Survey Number / 7/12 Land Record\n3. Active Mobile Number for digital SMS delivery",
+        "application_process": "1. Contact local Agriculture Assistant (Krishi Sahayak) or visit nearest Krishi Vigyan Kendra (KVK) / Soil Testing Laboratory.\n2. Soil samples are collected from grid-designated farmlands (2.5 ha irrigated, 10 ha rainfed).\n3. Laboratory analyzes 12 macro, secondary, and micronutrient parameters.\n4. Printed Soil Health Card delivered to farmer with crop-specific fertilizer recommendations.\n5. Digital copy downloadable using Khasra/survey number from soilhealth.dac.gov.in.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://soilhealth.dac.gov.in",
@@ -140,6 +163,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Science-grounded soil nutrient management initiative to avoid chemical over-fertilization and optimize crop yields."
     },
     {
+        "scheme_id": "PM-JAY",
         "scheme_name": "Ayushman Bharat Pradhan Mantri Jan Arogya Yojana (PM-JAY)",
         "hindi_name": "आयुष्मान भारत प्रधानमंत्री जन आरोग्य योजना (पीएम-जय)",
         "category": "Health & Healthcare",
@@ -147,6 +171,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Families identified through deprivation criteria in SECC 2011 database, active NFSA ration card holders, and all citizens aged 70 years and above irrespective of economic status.",
         "benefits": "Cashless health coverage of up to ₹5,00,000 per family per year for secondary and tertiary care hospitalization across 27,000+ empaneled public and private hospitals nationwide. Includes pre- and post-hospitalization expenses.",
         "documents": "1. Aadhaar Card\n2. Ration Card / Family Identification Proof\n3. Mobile Number (OTP authentication)",
+        "application_process": "1. Verify entitlement on mera.pmjay.gov.in or call toll-free helpline 14555.\n2. Visit any empaneled public hospital, private hospital, or nearest CSC with Aadhaar and Ration Card.\n3. Pradhan Mantri Arogya Mitra (PMAM) verifies identity and biometrics on the portal.\n4. Ayushman Card (Golden Card) is issued instantly for cashless hospitalization up to ₹5,00,000/year.\n5. For senior citizens aged 70+, apply for Ayushman Vay Vandana card on beneficiary.nha.gov.in or Ayushman App.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://nha.gov.in",
@@ -154,6 +179,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "World's largest government-funded healthcare entitlement program providing universal tertiary medical protection."
     },
     {
+        "scheme_id": "PMAY-G",
         "scheme_name": "Pradhan Mantri Awas Yojana - Gramin (PMAY-G)",
         "hindi_name": "प्रधानमंत्री आवास योजना - ग्रामीण (पीएमएवाई-जी)",
         "category": "Housing & Rural Development",
@@ -161,6 +187,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Families identified via SECC 2011 deprivation list and Awaas+ survey without a pucca house in any part of India.",
         "benefits": "Direct financial grant of ₹1,20,000 in plain areas and ₹1,30,000 in hilly/difficult/IAP areas for pucca house construction (minimum 25 sq. m with hygienic cooking space). Additional 90-95 days of unskilled MGNREGA labor wages and ₹12,000 for toilet construction via Swachh Bharat Mission.",
         "documents": "1. Aadhaar Card of all family members\n2. Bank Account Passbook (DBT enabled)\n3. MGNREGA Job Card Number\n4. Land ownership document / Gram Panchayat allotment certificate\n5. Mobile Number",
+        "application_process": "1. Eligible households identified through SECC 2011 deprivation criteria and prioritized by Gram Sabha via Awaas+ list.\n2. Verification of land ownership and pucca house absence conducted by Village Development Officer (VDO/Gram Sevak).\n3. Geo-tagged photographs of existing kutcha house uploaded through AwaasApp.\n4. Administrative sanction issued and financial grant released in installments linked to construction stages (plinth, lintel, roof).\n5. Additional MGNREGA 90-95 mandays wage and SBM toilet grant integrated automatically.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://pmayg.nic.in",
@@ -168,6 +195,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Flagship rural housing scheme aimed at providing shelter and dignified living for homeless rural households."
     },
     {
+        "scheme_id": "MH-WOM-01",
         "scheme_name": "Mukhyamantri Majhi Ladki Bahin Yojana (MH-WOM-01)",
         "hindi_name": "मुख्यमंत्री माझी लाड़की बहिन योजना",
         "category": "Women Welfare & Social Security",
@@ -175,6 +203,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Permanent woman resident of Maharashtra aged between 21 and 65 years. Annual family income must not exceed ₹2,50,000. Family must not own a 4-wheeler (excluding tractors) and must not have regular income-tax payers or regular government/PSU employees.",
         "benefits": "Direct financial assistance of ₹1,500 per month (₹18,000 annually) transferred directly into the woman beneficiary's Aadhaar-linked bank account (DBT).",
         "documents": "1. Aadhaar Card\n2. Maharashtra Domicile Certificate or 15-year old Ration Card / Voter ID / School Leaving Certificate\n3. Yellow or Orange Ration Card / Tehsildar Income Certificate (under ₹2.5 lakh)\n4. Aadhaar-seeded Bank Account Passbook\n5. Self-declaration (Hamipatra)",
+        "application_process": "1. Eligible women can apply online via the Nari Shakti Doot mobile application or ladakibahin.maharashtra.gov.in web portal.\n2. Offline applications can be submitted at local Anganwadi centres, Gram Panchayat offices, Ward offices, Setu Suvidha Kendras, or Aaple Sarkar Seva Kendras.\n3. Submit Aadhaar Card, Maharashtra Domicile Certificate (or 15-year Ration Card/Voter ID), Income Proof (under ₹2.5 lakh), and Self-declaration (Hamipatra).\n4. Complete Aadhaar e-KYC (OTP or biometric authentication).\n5. Monthly financial benefit of ₹1,500 transferred directly into the beneficiary's Aadhaar-linked bank account (DBT).",
         "state_district": "Maharashtra / All Districts",
         "status": "Active",
         "official_source_url": "https://ladakibahin.maharashtra.gov.in",
@@ -182,6 +211,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Direct financial empowerment scheme designed to foster economic independence, nutritional health, and self-reliance among women in Maharashtra."
     },
     {
+        "scheme_id": "MH-WOM-02",
         "scheme_name": "Lek Ladki Yojana (MH-WOM-02)",
         "hindi_name": "लेक लाडकी योजना",
         "category": "Girl Child Welfare & Education",
@@ -189,6 +219,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Permanent resident of Maharashtra. Valid Yellow or Orange Ration Card. Girl child born on or after April 1, 2023. Covers up to two daughters per family (family planning sterilization certificate mandatory for second child).",
         "benefits": "Financial milestone grants totaling ₹1,01,000:\n- ₹5,000 at birth\n- ₹6,000 on Class 1 admission\n- ₹7,000 on Class 6 admission\n- ₹8,000 on Class 11 admission\n- ₹75,000 upon reaching 18 years of age (unmarried).",
         "documents": "1. Girl Child Birth Certificate\n2. Yellow/Orange Ration Card\n3. Parents' & Child's Aadhaar Cards\n4. Domicile Certificate of parent\n5. Bank Passbook in girl's name\n6. School Enrollment / Bonafide Certificate\n7. Family Planning Certificate (for 2nd child)",
+        "application_process": "1. Parents apply through their local Anganwadi Sevika or Child Development Project Officer (CDPO) in Gram Panchayat / Municipal Ward.\n2. Submit official Birth Certificate of girl child, Yellow/Orange Ration Card, parents' Aadhaar cards, and Domicile Certificate.\n3. Milestone claims submitted along with school enrollment / bonafide certificates at Class 1, 6, and 11.\n4. For 2nd girl child, submit family planning sterilization certificate from authorized Medical Officer.\n5. Final ₹75,000 claim submitted upon girl completing 18 years of age (unmarried) with educational continuation proof.",
         "state_district": "Maharashtra / All Districts",
         "status": "Active",
         "official_source_url": "https://womenchild.maharashtra.gov.in",
@@ -196,6 +227,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Milestone-based financial incentives to combat female foeticide, promote education, and empower girl children in Maharashtra."
     },
     {
+        "scheme_id": "MH-WOM-03",
         "scheme_name": "Pradhan Mantri Matru Vandana Yojana - PMMVY (MH-WOM-03)",
         "hindi_name": "प्रधानमंत्री मातृ वंदना योजना (पीएमएमवीवाई)",
         "category": "Maternity & Child Health",
@@ -203,6 +235,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Pregnant women aged 19+ belonging to disadvantaged categories (SC/ST, Divyangjan, BPL/EWS, MGNREGA job card, Kisan Samman Nidhi, e-Shram, income under ₹8 Lakh). Excludes regular government/PSU employees.",
         "benefits": "Cash incentive via DBT:\n- First Child: ₹5,000 in two installments (₹3,000 on early registration + ANC; ₹2,000 after birth registration and primary immunization cycle).\n- Second Child: ₹6,000 in a single installment upon birth of a girl child.",
         "documents": "1. Mother & Father Aadhaar Cards\n2. Mother and Child Protection (MCP) Card\n3. Aadhaar-linked Bank Passbook\n4. ANC check-up record\n5. Child Birth & Immunization Certificate",
+        "application_process": "1. Register at nearest Anganwadi Centre (AWC) or approved government healthcare facility, or apply online on pmmvy.wcd.gov.in within prescribed gestation window.\n2. Submit duly filled Form 1A along with Mother and Father Aadhaar cards, MCP Card with LMP and ANC records, and mother's bank passbook.\n3. First installment of ₹3,000 released upon early pregnancy registration and at least one ANC.\n4. Second installment of ₹2,000 released after birth registration and child receiving primary immunization cycle.\n5. For 2nd girl child, single grant of ₹6,000 released upon birth registration and complete primary vaccinations.",
         "state_district": "Central & Maharashtra / All Districts",
         "status": "Active",
         "official_source_url": "https://pmmvy.wcd.gov.in",
@@ -210,6 +243,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Direct Benefit Transfer maternity grant providing partial wage loss compensation and encouraging optimal infant nutrition and health seeking."
     },
     {
+        "scheme_id": "MH-WOM-04",
         "scheme_name": "One Stop Centre - Sakhi Centre (MH-WOM-04)",
         "hindi_name": "वन स्टॉप सेंटर (सखी केंद्र)",
         "category": "Women Safety & Crisis Intervention",
@@ -217,6 +251,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Any woman facing domestic violence, sexual assault, harassment, trafficking, or emotional abuse requiring emergency protection.",
         "benefits": "Integrated 24/7 emergency services under one roof:\n- Emergency rescue and police assistance\n- Medical treatment & forensic examination\n- Psycho-social counseling & mental health support\n- Free legal aid via DLSA\n- Safe temporary shelter for up to 5 days.",
         "documents": "No mandatory documents required for immediate emergency intake and rescue. Identity proof requested when available.",
+        "application_process": "1. Walk in directly to the nearest One Stop Centre (Sakhi Centre) located at District / Civil Hospitals across all districts in Maharashtra.\n2. Women in distress can also access OSC through Women Helpline 181, Police Emergency 112, or hospital referrals.\n3. Immediate emergency medical assistance, trauma counseling, and safe shelter (up to 5 days) provided with zero paperwork.\n4. Free legal aid, police assistance (zero FIR), and psycho-social counseling facilitated by case workers on site.\n5. Long-term rehabilitation coordinated with Swadhar Greh / Shakti Sadan if needed.",
         "state_district": "Maharashtra & Central / All District Hospitals",
         "status": "Active",
         "official_source_url": "https://wcd.nic.in/schemes/one-stop-centre-scheme",
@@ -224,6 +259,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "24/7 crisis intervention center established in all districts across Maharashtra under Mission Shakti - Sambal."
     },
     {
+        "scheme_id": "MH-WOM-05",
         "scheme_name": "Women Helpline 181 (MH-WOM-05)",
         "hindi_name": "महिला हेल्पलाइन (181)",
         "category": "Women Safety & Emergency Response",
@@ -231,6 +267,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Available to all women in distress, facing violence, or requiring guidance on legal and welfare entitlements.",
         "benefits": "24/7 toll-free emergency phone response, distress dispatch, integration with Police 112 / ERSS, ambulance linkage, and connection to One Stop Centres and shelter homes.",
         "documents": "Zero documentation needed. Toll-free dial 181 from any mobile or landline phone.",
+        "application_process": "1. Dial toll-free 181 from any mobile or landline anywhere in Maharashtra or India (24 hours a day, 7 days a week).\n2. Call handled by trained female counselors in Marathi, Hindi, or English.\n3. For life-threatening emergencies, immediate dispatch coordinated with Police 112 / ERSS and 108 Ambulance.\n4. Non-emergency calls provided psychological counseling, legal guidance, and linkage to One Stop Centres or welfare schemes.\n5. Follow-up and case tracking maintained until safe resolution.",
         "state_district": "Central & Maharashtra / Pan-India",
         "status": "Active",
         "official_source_url": "https://wcd.nic.in/schemes/women-helpline-scheme",
@@ -238,6 +275,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "24/7 toll-free emergency telephonic helpline integrated with Police 112 and Sakhi One Stop Centres."
     },
     {
+        "scheme_id": "MH-WOM-06",
         "scheme_name": "Nari Adalat (MH-WOM-06)",
         "hindi_name": "नारी अदालत (महिला ग्राम न्यायालय)",
         "category": "Grievance Redressal & Alternate Dispute Resolution",
@@ -245,6 +283,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Women residing in participating Gram Panchayats seeking amicable mediation.",
         "benefits": "Informal alternate dispute resolution (ADR) through 7 to 9 Nyaya Sakhis (peer women mediators) for marital, family, and social disputes without litigation costs or court delays.",
         "documents": "Verbal or simple written application submitted to village Nyaya Sakhis.",
+        "application_process": "1. Approach Nyaya Sakhis (peer women mediators) appointed in participating Gram Panchayats.\n2. Submit simple written or oral complaint regarding marital, domestic, or social dispute.\n3. Nyaya Sakhis issue notice to both parties for informal hearing at village community hall.\n4. Confidential mediation and peer counseling conducted to resolve dispute amicably without court costs or police records.\n5. Agreement signed by both parties; cases involving severe criminal violence are formally referred to OSC/Police.",
         "state_district": "Gram Panchayat / Block Level Implementation",
         "status": "Active",
         "official_source_url": "https://wcd.nic.in/schemes/mission-shakti",
@@ -252,6 +291,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Village-level alternative dispute resolution forum under Mission Shakti - Sambal."
     },
     {
+        "scheme_id": "MH-WOM-07",
         "scheme_name": "Ujjawala Scheme (MH-WOM-07)",
         "hindi_name": "उज्ज्वला योजना (महिला तस्करी निवारण एवं पुनर्वास)",
         "category": "Anti-Trafficking & Rehabilitation",
@@ -259,6 +299,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Victims rescued from trafficking or women in moral danger without family support.",
         "benefits": "Comprehensive 5-stage assistance: Prevention, Rescue coordination, Institutional Rehabilitation (food, safe shelter, clinical care, counseling, vocational training), Reintegration with livelihood support, and safe Repatriation.",
         "documents": "Police rescue memo / FIR, Child Welfare Committee (CWC) order, or Magistrate order.",
+        "application_process": "1. Rescued victims or vulnerable women are referred through Police, Child Welfare Committee (CWC), Magistrate orders, or NGOs.\n2. Intake and emergency medical examination conducted immediately at designated Protective Shelter Home.\n3. Case worker develops Individual Care Plan covering shelter, food, trauma counseling, and vocational training.\n4. Legal support provided for trial testimony and victim compensation claims.\n5. Reintegration package and safe repatriation to native state/district coordinated with local authorities.",
         "state_district": "Central & Maharashtra / Shelter Homes",
         "status": "Active",
         "official_source_url": "https://wcd.nic.in/schemes/ujjawala-scheme-details",
@@ -266,6 +307,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Comprehensive anti-trafficking scheme for rescue, medical care, counseling, and socio-economic rehabilitation."
     },
     {
+        "scheme_id": "MH-WOM-08",
         "scheme_name": "Shakti Sadan (MH-WOM-08)",
         "hindi_name": "शक्ति सदन (एकीकृत आश्रय एवं पुनर्वास गृह)",
         "category": "Shelter & Institutional Rehabilitation",
@@ -273,6 +315,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Women in difficult circumstances requiring institutional shelter and livelihood rehabilitation.",
         "benefits": "Free residential boarding, lodging, clothing, medical care, trauma counseling, legal aid, and vocational skill training for up to 3 years (up to 5 years for women aged 55+). Supports dependent children up to 18 (girls) and 12 (boys).",
         "documents": "Protection Officer intake report, Police referral, DLSA recommendation, or self-admission declaration.",
+        "application_process": "1. Direct walk-in, or referral by Protection Officer (DV Act), Police, DLSA, or Sakhi One Stop Centre.\n2. Intake assessment conducted by Superintendent of Shakti Sadan / Swadhar home.\n3. Free residential boarding, clothing, medical care, and counseling provided for up to 3 years.\n4. Mandatory enrollment in vocational / skill development courses (MAVIM / Skill India) to prepare for economic self-sufficiency.\n5. Assisted transition to independent living or micro-enterprise setup upon discharge.",
         "state_district": "Central & Maharashtra / District Shelter Homes",
         "status": "Active",
         "official_source_url": "https://wcd.nic.in/schemes/swadhar-greh-scheme-details",
@@ -280,6 +323,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Integrated institutional shelter and rehabilitation home converging Swadhar Greh and Ujjawala under Mission Shakti."
     },
     {
+        "scheme_id": "MH-WOM-09",
         "scheme_name": "Hub for Empowerment of Women - HEW (MH-WOM-09)",
         "hindi_name": "महिला सक्षमीकरण केंद्र (हब फॉर एम्पावरमेंट ऑफ विमेन)",
         "category": "Empowerment & Single-Window Convergence",
@@ -287,6 +331,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Open to all women seeking scheme enrollment, digital literacy, and skill development.",
         "benefits": "Single-window technical and operational convergence center at State, District, and Block levels linking women to Direct Benefit Transfers, bank loans (Mudra/Stand-Up India), higher education scholarships, and healthcare entitlements.",
         "documents": "Aadhaar Card, Bank passbook, and scheme-specific documents.",
+        "application_process": "1. Visit the District Hub for Empowerment of Women (DHEW) office located at the District Collectorate / Zilla Parishad or Block resource centre.\n2. Dedicated resource staff guide women through eligibility criteria of various Central and State welfare schemes.\n3. Facilitate online application submission, Aadhaar linkage, and bank account opening.\n4. Organize village-level outreach camps, digital literacy workshops, and health awareness drives.\n5. Grievances regarding scheme delays or rejection tracked and resolved with concerned line departments.",
         "state_district": "Maharashtra / State, District & Block Centers",
         "status": "Active",
         "official_source_url": "https://wcd.nic.in/schemes/mission-shakti",
@@ -294,6 +339,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Dedicated convergence and technical facilitation unit under Mission Shakti - Samarthya."
     },
     {
+        "scheme_id": "MH-WOM-10",
         "scheme_name": "Mahila Arthik Vikas Mahamandal - MAVIM (MH-WOM-10)",
         "hindi_name": "महिला आर्थिक विकास महामंडळ (माविम) - बचत गट उपक्रम",
         "category": "Livelihood & Self Help Groups (SHGs)",
@@ -301,6 +347,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Women residing in Maharashtra joining registered MAVIM Bachat Gat.",
         "benefits": "Microfinance credit linkages, entrepreneurship incubation, agro-processing skill training, business mentorship, and marketing support for SHG manufactured products.",
         "documents": "1. Member Aadhaar Card\n2. Bachat Gat Registration Certificate\n3. Group Resolution\n4. Bank Passbook of SHG",
+        "application_process": "1. Women form or join a Self Help Group (Bachat Gat) of 10 to 20 members in their village or urban ward under MAVIM guidance.\n2. Group opens joint bank account and initiates regular monthly thrift savings for 6 months.\n3. Community Managed Resource Centre (CMRC) and MAVIM Sahayogini assess group grading and link with commercial banks for credit.\n4. Members participate in micro-enterprise training (food processing, handicrafts, goat rearing, tailoring).\n5. Avail low-interest working capital loans and market access through MAVIM exhibition bazaars and institutional buyers.",
         "state_district": "Maharashtra / All 36 Districts",
         "status": "Active",
         "official_source_url": "https://mavimindia.org",
@@ -308,6 +355,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "State nodal agency promoting economic independence and micro-enterprises through women self-help groups."
     },
     {
+        "scheme_id": "MH-WOM-11",
         "scheme_name": "Saksham Anganwadi and Poshan 2.0 (MH-WOM-11)",
         "hindi_name": "सक्षम अंगणवाडी व पोषण २.०",
         "category": "Nutrition & Early Childhood Development",
@@ -315,6 +363,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "All children aged 0-6 and pregnant/lactating women in Anganwadi service areas.",
         "benefits": "Supplementary Nutrition Program (Take Home Ration - THR and hot cooked meals), growth monitoring via Poshan Tracker, early childhood pre-school education (ECCE), upgraded smart Anganwadi infrastructure (RO water, smart LEDs, Poshan Vatikas), and health referrals.",
         "documents": "1. Parents' Aadhaar Cards\n2. Child Birth Certificate / Aadhaar\n3. Poshan Tracker Registration",
+        "application_process": "1. Expectant mothers and mothers of children (0-6 years) visit their neighborhood Anganwadi Centre.\n2. Anganwadi Worker (AWW) registers mother and child on the Poshan Tracker digital mobile application.\n3. Regular monthly growth monitoring (height, weight) conducted and nutrition status tracked (green/yellow/red).\n4. Receive monthly Take Home Ration (THR) or daily hot cooked meals, IFA tablets, and pre-school education kits.\n5. Severe Acute Malnutrition (SAM) children referred to Nutritional Rehabilitation Centres (NRC) at Sub-district hospitals.",
         "state_district": "Maharashtra & Central / All Anganwadis",
         "status": "Active",
         "official_source_url": "https://poshantracker.in",
@@ -322,6 +371,7 @@ OFFICIAL_SCHEMES_SEED = [
         "guidelines_summary": "Flagship national nutrition initiative upgrading Anganwadi centres for holistic child and maternal nutrition."
     },
     {
+        "scheme_id": "PMMY",
         "scheme_name": "Pradhan Mantri MUDRA Yojana (PMMY)",
         "hindi_name": "प्रधानमंत्री मुद्रा योजना (पीएमएमवाई)",
         "category": "Entrepreneurship & MSME Credit",
@@ -329,6 +379,7 @@ OFFICIAL_SCHEMES_SEED = [
         "eligibility": "Any Indian citizen aged 18+ with a viable business plan for non-farm income generating activities in manufacturing, trading, or service sectors. Clean credit history with no prior defaults with any financial institution.",
         "benefits": "Collateral-free institutional loans across three tiers with zero processing fees for Shishu:\n1. Shishu (शिशु): Loans up to ₹50,000 for early-stage micro-enterprises.\n2. Kishore (किशोर): Loans above ₹50,000 and up to ₹5,00,000 for equipment, machinery, and working capital.\n3. Tarun (तरुण): Loans above ₹5,00,000 and up to ₹10,00,000 (and extended up to ₹20,00,000 under Tarun Plus for previous successful borrowers).\nNo collateral security or third-party guarantee required (100% covered under Credit Guarantee Fund for Micro Units - CGFMU). Working capital limit managed via MUDRA RuPay Debit Card.",
         "documents": "1. Identity Proof: Aadhaar Card / Voter ID / PAN Card / Driving Licence\n2. Address Proof: Aadhaar Card / Electricity Bill / Telephone Bill\n3. Business Proof: Udyam Registration Certificate / Trade License / Shop & Establishment Certificate\n4. Project Report & Asset Quotation: Itemized machinery quotation and project cost details (for Kishore & Tarun)\n5. Bank Statements: Last 6 months bank statement\n6. Passport size photographs (2 copies)\n7. Category Certificate (SC/ST/OBC/Minority) if applicable",
+        "application_process": "1. Formulate a business proposal for non-farm income generating activity (manufacturing, trading, service, or allied agriculture).\n2. Apply online through the Udyami Mitra portal (udyamimitra.in) or visit any commercial bank, RRB, Small Finance Bank, or MFI branch.\n3. Submit standard MUDRA application form with identity proof (Aadhaar/PAN), address proof, business establishment certificate (Udyam), and machinery quotation.\n4. Select loan category: Shishu (up to ₹50,000), Kishore (₹50,000 to ₹5,00,000), or Tarun (₹5,00,000 to ₹10,00,000).\n5. No collateral or third-party guarantee required. Bank sanctions loan, disburses term loan, and issues MUDRA RuPay Debit Card for working capital limit.",
         "state_district": "Central / All India",
         "status": "Active",
         "official_source_url": "https://www.mudra.org.in",

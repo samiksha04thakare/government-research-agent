@@ -93,6 +93,10 @@ export const UI_TRANSLATIONS = {
     filterEntrepreneurship: "Entrepreneurship",
     filterWomen: "Women",
     filterOther: "Other",
+    datasetSectionLabel: "Dataset Section",
+    allSectionsPill: "All Dataset Sections",
+    viewBySection: "Browse by Official Dataset Section",
+    officialCompendium: "Official Dataset Compendium",
     viewDetailsLink: "View Details →",
     backToSchemes: "← Government Schemes",
 
@@ -317,6 +321,10 @@ export const UI_TRANSLATIONS = {
     filterEntrepreneurship: "उद्यमिता",
     filterWomen: "महिला",
     filterOther: "अन्य",
+    datasetSectionLabel: "डेटासेट सेक्शन",
+    allSectionsPill: "सभी डेटासेट सेक्शन",
+    viewBySection: "आधिकारिक डेटासेट सेक्शन के अनुसार देखें",
+    officialCompendium: "आधिकारिक डेटासेट कंपेंडियम",
     viewDetailsLink: "विवरण देखें →",
     backToSchemes: "← सभी योजनाएं",
 
@@ -541,6 +549,10 @@ export const UI_TRANSLATIONS = {
     filterEntrepreneurship: "उद्योजकता",
     filterWomen: "महिला",
     filterOther: "इतर",
+    datasetSectionLabel: "डेटासेट कलम",
+    allSectionsPill: "सर्व डेटासेट कलम",
+    viewBySection: "अधिकृत डेटासेट कलमानुसार योजना पहा",
+    officialCompendium: "अधिकृत डेटासेट कंपेंडियम",
     viewDetailsLink: "सविस्तर माहिती →",
     backToSchemes: "← सर्व योजना",
 

@@ -13,16 +13,29 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Open Government Data (data.gov.in) API Key
+# Open Government Data (data.gov.in) & API Setu credentials
 DATA_GOV_API_KEY = os.getenv("DATA_GOV_API_KEY", "").strip()
+API_SETU_CLIENT_ID = os.getenv("API_SETU_CLIENT_ID", "").strip()
+API_SETU_API_KEY = os.getenv("API_SETU_API_KEY", "").strip()
+
+# Strict authorization guard: scraping myScheme without written authorization is prohibited
+MYSCHEME_SCRAPING_AUTHORIZED = os.getenv("MYSCHEME_SCRAPING_AUTHORIZED", "false").lower() in ("true", "1")
 
 # Source Types
 SOURCE_TYPE_API = "api"
 SOURCE_TYPE_WEBSITE = "website"
 SOURCE_TYPE_PDF = "pdf"
+SOURCE_TYPE_DATASET = "dataset"
+SOURCE_TYPE_PERMITTED = "permitted"
 
 # Supported Source Types Set
-SUPPORTED_SOURCE_TYPES = {SOURCE_TYPE_API, SOURCE_TYPE_WEBSITE, SOURCE_TYPE_PDF}
+SUPPORTED_SOURCE_TYPES = {
+    SOURCE_TYPE_API,
+    SOURCE_TYPE_WEBSITE,
+    SOURCE_TYPE_PDF,
+    SOURCE_TYPE_DATASET,
+    SOURCE_TYPE_PERMITTED,
+}
 
 # Step 5 initial verified categories strictly supported
 # (jobs, health, tax, passport, etc. are intentionally excluded until official data is indexed)
@@ -33,15 +46,18 @@ SUPPORTED_CATEGORIES = [
     "pest_management",
     "fertilizers",
     "farmer_questions",
+    "education_scholarship",
+    "credit_enterprise",
+    "women_child",
 ]
 
 # Official government domains approved for collection
 OFFICIAL_GOVERNMENT_DOMAINS = [
     "data.gov.in",
     "api.data.gov.in",
+    "apisetu.gov.in",
     "india.gov.in",
     "services.india.gov.in",
-    "myscheme.gov.in",
     "pmkisan.gov.in",
     "agricoop.nic.in",
     "cibrc.gov.in",
@@ -50,6 +66,11 @@ OFFICIAL_GOVERNMENT_DOMAINS = [
     "icar.org.in",
     "indiapost.gov.in",
     "krishi.maharashtra.gov.in",
+    "dbt.mahapocra.gov.in",
+    "mahapocra.gov.in",
+    "mahadbt.maharashtra.gov.in",
+    "womenchild.maharashtra.gov.in",
+    "msrtc.maharashtra.gov.in",
     "gov.in",
     "nic.in",
 ]
@@ -57,6 +78,9 @@ OFFICIAL_GOVERNMENT_DOMAINS = [
 # HTTP collection defaults
 DEFAULT_USER_AGENT = "GovResearchAgent/0.1 (+https://india.gov.in; official educational research agent)"
 DEFAULT_REQUEST_TIMEOUT = 20.0
+DEFAULT_RATE_LIMIT_PER_MIN = 30
+MAX_WEBSITE_CHARS = 15000
+MAX_PDF_DOWNLOAD_BYTES = 25 * 1024 * 1024  # 25 MB safety limit
 MAX_WEBSITE_CHARS = 15000
 MAX_PDF_DOWNLOAD_BYTES = 25 * 1024 * 1024  # 25 MB safety limit
 
@@ -87,3 +111,15 @@ def is_official_government_url(url: str) -> bool:
         return False
     except Exception:
         return False
+
+
+def is_scraping_prohibited(url: str) -> bool:
+    """Enforce authorization check: scraping myScheme without written authorization is prohibited.
+    Access through authorized API (API Setu) or permitted official sources is required.
+    """
+    if not url:
+        return False
+    url_l = url.lower()
+    if "myscheme.gov.in" in url_l:
+        return not MYSCHEME_SCRAPING_AUTHORIZED
+    return False

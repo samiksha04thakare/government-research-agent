@@ -449,12 +449,17 @@ def format_farmer_scheme_answer(
     eligibility = scheme.get("eligibility", "N/A")
     benefits = scheme.get("benefits", "N/A")
     documents = scheme.get("documents", "Aadhaar Card, Bank Passbook")
+    application_process = scheme.get("application_process") or scheme.get("guidelines_summary", "")
     state_district = scheme.get("state_district", "Central / All India")
     status = scheme.get("status", "Active")
     source_url = scheme.get("official_source_url", "")
     authority = scheme.get("authority", "")
 
+    # Determine whether scheme is land/agriculture based to avoid displaying 7/12 for women/scholarship schemes
+    is_agri_land = any(k in (category + " " + documents + " " + s_name).lower() for k in ["7/12", "khasra", "khatauni", "agriculture", "farmer", "crop", "land record", "शेतकरी", "जमीन"])
+
     if language == "hi":
+        proc_text = application_process if application_process else f"आधिकारिक आवेदन प्रक्रिया एवं विस्तृत दिशानिर्देश आधिकारिक पोर्टल ({source_url or 'myscheme.gov.in'}) अथवा {authority or 'संबंधित विभाग'} पर उपलब्ध हैं।"
         sections = [
             f"## 📌 {h_name} ({s_name}) [{cid}]\n\n"
             f"**प्रश्न:** {question}\n\n"
@@ -469,14 +474,22 @@ def format_farmer_scheme_answer(
             f"### 📄 आवश्यक दस्तावेज़ (Required Documents) [{cid}]\n"
             f"{documents}",
 
+            f"### 📝 आवेदन प्रक्रिया (Application Procedure) [{cid}]\n"
+            f"{proc_text}",
+
             f"### 🔗 आधिकारिक सरकारी स्रोत एवं पोर्टल (Official Source) [{cid}]\n"
-            f"- **आधिकारिक पोर्टल:** [{source_url}]({source_url})\n"
-            f"- **नोडल मंत्रालय/विभाग:** {authority}"
+            f"- **आधिकारिक पोर्टल:** [{source_url or 'https://www.myscheme.gov.in'}]({source_url or 'https://www.myscheme.gov.in'})\n"
+            f"- **नोडल मंत्रालय/विभाग:** {authority or 'Government Authority'}"
         ]
-        practical_steps.append(f"आधिकारिक पोर्टल {source_url} पर जाकर अपनी पात्रता व आवेदन स्थिति सत्यापित करें।")
-        practical_steps.append("आवश्यक दस्तावेजों (आधार कार्ड, 7/12 खतौनी, बैंक पासबुक) की स्व-प्रमाणित प्रतियां तैयार रखें।")
+        if source_url:
+            practical_steps.append(f"आधिकारिक पोर्टल {source_url} पर जाकर अपनी पात्रता व आवेदन स्थिति सत्यापित करें।")
+        if is_agri_land:
+            practical_steps.append("आवश्यक दस्तावेजों (आधार कार्ड, 7/12 खतौनी, बैंक पासबुक) की स्व-प्रमाणित प्रतियां तैयार रखें।")
+        else:
+            practical_steps.append("आवश्यक दस्तावेजों (आधार कार्ड, बैंक पासबुक, पहचान प्रमाण) की स्व-प्रमाणित प्रतियां तैयार रखें।")
 
     elif language == "mr":
+        proc_text = application_process if application_process else f"अधिकृत अर्ज प्रक्रिया व सविस्तर मार्गदर्शक तत्त्वे अधिकृत पोर्टलवर ({source_url or 'myscheme.gov.in'}) किंवा {authority or 'संबंधित विभाग'} कार्यालयात उपलब्ध आहेत."
         sections = [
             f"## 📌 {h_name} ({s_name}) [{cid}]\n\n"
             f"**प्रश्न:** {question}\n\n"
@@ -491,14 +504,22 @@ def format_farmer_scheme_answer(
             f"### 📄 आवश्यक कागदपत्रे [{cid}]\n"
             f"{documents}",
 
+            f"### 📝 अर्ज प्रक्रिया (Application Procedure) [{cid}]\n"
+            f"{proc_text}",
+
             f"### 🔗 अधिकृत शासकीय स्रोत व पोर्टल [{cid}]\n"
-            f"- **अधिकृत पोर्टल:** [{source_url}]({source_url})\n"
-            f"- **नोडल विभाग:** {authority}"
+            f"- **अधिकृत पोर्टल:** [{source_url or 'https://www.myscheme.gov.in'}]({source_url or 'https://www.myscheme.gov.in'})\n"
+            f"- **नोडल विभाग:** {authority or 'Government Authority'}"
         ]
-        practical_steps.append(f"अधिकृत पोर्टल {source_url} वर जाऊन अर्जाची पडताळणी करा.")
-        practical_steps.append("आधार कार्ड आणि 7/12 उताऱ्यासह जवळच्या सेवा केंद्राशी संपर्क साधा.")
+        if source_url:
+            practical_steps.append(f"अधिकृत पोर्टल {source_url} वर जाऊन अर्जाची पडताळणी करा.")
+        if is_agri_land:
+            practical_steps.append("आधार कार्ड आणि 7/12 उताऱ्यासह जवळच्या सेवा केंद्राशी संपर्क साधा.")
+        else:
+            practical_steps.append("आधार कार्ड, बँक पासबुक व आवश्यक प्रमाणपत्रांसह संबंधित कार्यालयात संपर्क साधा.")
 
     else:
+        proc_text = application_process if application_process else f"Official application guidelines and procedures are administered through the official portal ({source_url or 'myscheme.gov.in'}) or designated nodal department ({authority or 'Government Authority'})."
         sections = [
             f"## 📌 {s_name} [{cid}]\n\n"
             f"**Hindi Name:** {h_name}\n\n"
@@ -513,12 +534,19 @@ def format_farmer_scheme_answer(
             f"### 📄 Documents Required [{cid}]\n"
             f"{documents}",
 
+            f"### 📝 Application Procedure [{cid}]\n"
+            f"{proc_text}",
+
             f"### 🔗 Official Government Source [{cid}]\n"
-            f"- **Official Portal:** [{source_url}]({source_url})\n"
-            f"- **Administrative Authority:** {authority}"
+            f"- **Official Portal:** [{source_url or 'https://www.myscheme.gov.in'}]({source_url or 'https://www.myscheme.gov.in'})\n"
+            f"- **Administrative Authority:** {authority or 'Government Authority'}"
         ]
-        practical_steps.append(f"Visit the official portal at {source_url} to verify eligibility or submit an application.")
-        practical_steps.append("Prepare required documents: Aadhaar card, Land Record of Rights (7/12 extract / Khatauni), and Aadhaar-seeded Bank Passbook.")
+        if source_url:
+            practical_steps.append(f"Visit the official portal at {source_url} to verify eligibility or submit an application.")
+        if is_agri_land:
+            practical_steps.append("Prepare required documents: Aadhaar card, Land Record of Rights (7/12 extract / Khatauni), and Aadhaar-seeded Bank Passbook.")
+        else:
+            practical_steps.append("Prepare required documents: Aadhaar card, Identity proof, and Aadhaar-seeded Bank Passbook.")
 
     clarifying_q = get_clarifying_question(question, "government_schemes", language)
     return "\n\n".join(sections), practical_steps, clarifying_q, False

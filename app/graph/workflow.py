@@ -50,5 +50,8 @@ def build_graph():
 graph = build_graph()
 
 
-def run_research(question: str, language: str = "auto") -> ResearchState:
-    return graph.invoke({"question": question, "language": language}, config={"recursion_limit": 25})
+def run_research(question: str, language: str = "auto", scheme_id: str | None = None) -> ResearchState:
+    payload = {"question": question, "language": language}
+    if scheme_id:
+        payload["scheme_id"] = scheme_id
+    return graph.invoke(payload, config={"recursion_limit": 25})

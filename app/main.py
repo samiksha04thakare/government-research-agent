@@ -26,9 +26,10 @@ async def lifespan(app: FastAPI):
     init_db()
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     with SessionLocal() as db:
+        from app.schemes.pipeline import seed_official_schemes, sync_all_schemes_to_vectorstore
         if db.query(Scheme).count() == 0:
-            from app.schemes.pipeline import seed_official_schemes
             seed_official_schemes(db=db)
+        sync_all_schemes_to_vectorstore(db=db)
         if db.query(Document).filter(Document.indexed.is_(True)).count() == 0:
             from app.rag.bootstrap import bootstrap_baseline_documents
             bootstrap_baseline_documents(db=db)
@@ -56,9 +57,9 @@ from pydantic import BaseModel, Field, field_validator
 class ResearchRequest(BaseModel):
     question: str = Field(min_length=3, max_length=1000)
     language: str = Field(default="en", description="Response language: 'en', 'hi', 'mr', or 'auto'")
+    scheme_id: str | None = Field(default=None, description="Optional scheme ID to scope research exclusively to that scheme")
 
     @field_validator("language", mode="before")
-    @classmethod
     def sanitize_language(cls, v):
         if not v or not isinstance(v, str):
             return "en"
@@ -66,6 +67,15 @@ class ResearchRequest(BaseModel):
         if val in ("en", "hi", "mr", "auto"):
             return val
         return "en"
+
+    @field_validator("scheme_id", mode="before")
+    def sanitize_scheme_id(cls, v):
+        if v is None:
+            return None
+        if isinstance(v, str):
+            v_clean = v.strip()
+            return v_clean if v_clean else None
+        return str(v)
 
 
 def has_llm_key():
@@ -260,19 +270,62 @@ def list_raw_budget_schemes():
         return json.load(f)
 
 
-def local_grounded_research(question: str, language: str = "auto") -> dict:
+def local_grounded_research(question: str, language: str = "auto", scheme_id: str | None = None) -> dict:
     from app.agents.classifier import OUT_OF_SCOPE_RESPONSE, classify
     from app.rag.router import NO_DOCUMENTS_RESPONSE, get_route
     from app.utils.language import resolve_language, UI_STRINGS
-    from app.agents.farmer_explainer import format_farmer_kcc_answer, format_farmer_general_answer
+    from app.agents.farmer_explainer import format_farmer_kcc_answer, format_farmer_general_answer, format_farmer_scheme_answer
 
     target_lang, detected_lang = resolve_language(language, question)
+
+    scoped_scheme = None
+    if scheme_id:
+        from app.schemes.pipeline import get_scheme_by_id_or_code
+        with SessionLocal() as db:
+            s_obj = get_scheme_by_id_or_code(scheme_id, db=db)
+            if s_obj:
+                scoped_scheme = s_obj.to_dict()
+
+    from app.schemes.pipeline import find_explicit_scheme_in_query, find_matching_scheme_for_query
+    explicit_scheme = find_explicit_scheme_in_query(question)
+    explicit_dict = explicit_scheme.to_dict() if explicit_scheme else None
+
+    # Handle cross-scheme question when scoped to a specific scheme
+    switch_notice = ""
+    active_scheme = scoped_scheme
+    if scoped_scheme:
+        if explicit_dict:
+            s_cid = scoped_scheme.get("scheme_id") or str(scoped_scheme.get("id"))
+            m_cid = explicit_dict.get("scheme_id") or str(explicit_dict.get("id"))
+            if s_cid != m_cid:
+                # User is explicitly asking about another scheme (Requirement 6)
+                active_scheme = explicit_dict
+                if target_lang == "mr":
+                    switch_notice = f"> ℹ️ **सूचना:** आपण सध्या **{scoped_scheme.get('scheme_name')}** पाहत आहात, परंतु आपला प्रश्न **{explicit_dict.get('scheme_name')}** बद्दल विचारला गेला आहे. खाली **{explicit_dict.get('scheme_name')}** ची अधिकृत माहिती दिली आहे:\n\n"
+                elif target_lang == "hi":
+                    switch_notice = f"> ℹ️ **सूचना:** आप वर्तमान में **{scoped_scheme.get('scheme_name')}** देख रहे हैं, लेकिन आपका प्रश्न **{explicit_dict.get('scheme_name')}** के संबंध में है। नीचे **{explicit_dict.get('scheme_name')}** की सत्यापित जानकारी दी गई है:\n\n"
+                else:
+                    switch_notice = f"> ℹ️ **Notice:** You are currently viewing **{scoped_scheme.get('scheme_name')}**, but your question is about **{explicit_dict.get('scheme_name')}**. Below is verified information for **{explicit_dict.get('scheme_name')}**:\n\n"
+        else:
+            # Question does not explicitly name another scheme; preserve scoped scheme isolation
+            active_scheme = scoped_scheme
+    else:
+        # General chat: use explicitly mentioned scheme, or heuristic query matching
+        if explicit_dict:
+            active_scheme = explicit_dict
+        else:
+            matched_scheme = find_matching_scheme_for_query(question)
+            active_scheme = matched_scheme.to_dict() if matched_scheme else None
 
     classification = classify(question)
     cat = classification.get("category", "out_of_scope")
     scope = classification.get("scope", "out_of_scope")
 
-    if scope == "out_of_scope":
+    if active_scheme:
+        scope = "in_scope"
+        cat = active_scheme.get("category", cat)
+
+    if scope == "out_of_scope" and not active_scheme:
         out_msg = OUT_OF_SCOPE_RESPONSE
         if target_lang == "mr":
             out_msg = "हा प्रश्न एआय शासकीय संशोधन प्रतिनिधीच्या कार्यक्षेत्राबाहेर आहे. कृपया शासन योजना किंवा शेतीविषयक प्रश्न विचारावा."
@@ -294,29 +347,6 @@ def local_grounded_research(question: str, language: str = "auto") -> dict:
             "retrieved_chunks": [],
         }
 
-    route = get_route(cat)
-    if not route.get("has_documents", True):
-        no_doc_msg = NO_DOCUMENTS_RESPONSE
-        if target_lang == "mr":
-            no_doc_msg = f"या श्रेणीसाठी ({cat}) सध्या कोणतीही अधिकृत शासकीय मार्गदर्शक तत्त्वे किंवा दस्तऐवज अनुक्रमित नाहीत."
-        elif target_lang == "hi":
-            no_doc_msg = f"इस श्रेणी ({cat}) के लिए वर्तमान में कोई आधिकारिक सरकारी दिशानिर्देश या दस्तावेज अनुक्रमित नहीं हैं।"
-        return {
-            "status": "no_documents_for_category",
-            "category": cat,
-            "scope": scope,
-            "language": target_lang,
-            "detected_language": detected_lang,
-            "final_answer": no_doc_msg,
-            "citations": [],
-            "practical_steps": [],
-            "clarifying_question": None,
-            "missing_evidence_warning": True,
-            "conflicts": [],
-            "unsupported": [],
-            "retrieved_chunks": [],
-        }
-
     from app.config import RELEVANCE_THRESHOLD
     from app.tools.document_search import vector_search
     from app.utils.citations import (
@@ -326,188 +356,194 @@ def local_grounded_research(question: str, language: str = "auto") -> dict:
         reconcile_citations_with_answer,
     )
 
-    # Filtered ChromaDB retrieval based on category route
-    filters = route.get("filter")
-    raw_results = vector_search(question, k=8, filters=filters)
-
     q_lower = question.lower()
     is_kcc = (
-        any(k in q_lower for k in ["kisan credit card", "kcc", "crop loan", "किसान क्रेडिट कार्ड", "केसीसी", "पीक कर्ज"])
-        or ("credit" in q_lower and "farmer" in q_lower)
+        not active_scheme
+        and (
+            any(k in q_lower for k in ["kisan credit card", "kcc", "crop loan", "किसान क्रेडिट कार्ड", "केसीसी", "पीक कर्ज"])
+            or ("credit" in q_lower and "farmer" in q_lower)
+        )
     )
 
-    from app.schemes.pipeline import find_matching_scheme_for_query
-    matched_scheme = find_matching_scheme_for_query(question)
-    matched_dict = matched_scheme.to_dict() if matched_scheme else None
-
-    aspect_queries = []
-    if matched_scheme:
-        aspect_queries.append(f"{matched_scheme.scheme_name} eligibility criteria benefits installments DBT Aadhaar documents required")
-        aspect_queries.append(f"{matched_scheme.scheme_name} official guidelines procedures")
-
-    if is_kcc:
-        aspect_queries.extend([
-            "Kisan Credit Card KCC eligibility criteria owner cultivator tenant farmer scale of finance dltc",
-            "Kisan Credit Card KCC interest subvention 7% 4% prompt repayment incentive PRI collateral 160000",
-            "Kisan Credit Card KCC application procedure documents required land records 7/12 RoR Aadhaar passbook",
-            "Kisan Credit Card KCC helpline kisan call centre 1800-180-1551 taluka agriculture officer grievance",
-            "किसान क्रेडिट कार्ड KCC आवेदन प्रक्रिया आवश्यक दस्तावेज 7/12 खतौनी आधार पासबुक",
-            "किसान क्रेडिट कार्ड KCC हेल्पलाइन किसान कॉल सेंटर 1800-180-1551 कृषि अधिकारी",
-            "किसान क्रेडिट कार्ड KCC अर्ज प्रक्रिया कागदपत्रे 7/12 उतारा आधार बँक पासबुक",
-            "किसान क्रेडिट कार्ड KCC हेल्पलाईन किसान कॉल सेंटर 1800-180-1551 तालुका कृषी अधिकारी",
-        ])
-
-    # PMFBY / Crop Insurance
-    if any(k in q_lower for k in ["pmfby", "fasal bima", "crop insurance", "पीक विमा", "फसल बीमा", "विमा हप्ता", "प्रीमियम"]):
-        aspect_queries.extend([
-            "Pradhan Mantri Fasal Bima Yojana PMFBY crop insurance premium rates Kharif 2% Rabi 1.5% commercial 5%",
-            "PMFBY post harvest localized calamities crop insurance compensation claim coverage stages",
-        ])
-
-    # Land Records / 7/12 / Tenant farmers
-    if any(k in q_lower for k in ["7/12", "ror", "record of rights", "bhulekh", "भूलेख", "उतारा", "खतौनी", "बटाईदार", "काश्तकार", "भाडेकरू", "सातबारा", "tenant"]):
-        aspect_queries.extend([
-            "Record of Rights RoR 7/12 extract digital Bhulekh state portal land verification",
-            "Tenant farmers self declaration form oral lessees agricultural credit verification",
-            "Documents required farmer verification Aadhaar mobile active bank passbook DBT",
-        ])
-
-    # Grievance / Kisan Call Centre
-    if any(k in q_lower for k in ["helpline", "call centre", "कॉल सेंटर", "हेल्पलाइन", "हेल्पलाईन", "1800-180-1551", "तक्रार", "शिकायत"]):
-        aspect_queries.extend([
-            "Kisan Call Centre 1800-180-1551 24/7 22 regional languages grievance redressal taluka agriculture officer",
-        ])
-
-    # Pest Management (Pink Bollworm, Fall Armyworm, IPM)
-    if any(k in q_lower for k in ["bollworm", "बोंडअळी", "बॉलवर्म", "armyworm", "लष्करी", "आर्मीवर्म", "कीड", "कीट", "ipm", "neem", "निंबोळी", "pheromone", "सापळे", "ट्रैप"]):
-        aspect_queries.extend([
-            "pink bollworm cotton ETL 8 moths per trap pheromone trap NSKE 5% neem seed kernel extract",
-            "Fall Armyworm maize Spodoptera frugiperda IPM pheromone traps 5 per acre push pull strategy",
-        ])
-
-    # Fertilizers / Soil Health Card / Neem Coated Urea
-    if any(k in q_lower for k in ["soil health", "मृदा", "माती", "urea", "युरिया", "यूरिया", "खत", "उर्वरक", "neem coated", "निम कोटेड", "npk"]):
-        aspect_queries.extend([
-            "Soil Health Card 12 parameters macro secondary micronutrient physical testing",
-            "Neem Coated Urea nitrification inhibitor 10% 15% slow release nitrogen use efficiency",
-        ])
-
-    # Crop Problems / Yellowing / Heat Stress
-    if any(k in q_lower for k in ["yellowing", "chlorosis", "पिवळ", "पीला", "heat stress", "उष्णता", "तणाव", "nitrogen", "नत्र"]):
-        aspect_queries.extend([
-            "crop leaf yellowing Nitrogen deficiency older leaves waterlogging Iron chlorosis younger leaves",
-            "wheat terminal heat stress grain filling light irrigation potassium nitrate spray",
-        ])
-
-    # PM-KUSUM Solar Pumps
-    if any(k in q_lower for k in ["kusum", "कुसुम", "solar pump", "सोलर पंप", "सौर"]):
-        aspect_queries.extend([
-            "PM-KUSUM Component B stand-alone solar agriculture pumps 7.5 HP CFA 30% state subsidy 30%",
-        ])
-
-    # SMAM Farm Machinery
-    if any(k in q_lower for k in ["smam", "mechanization", "यांत्रिकीकरण", "machinery", "ट्रॅक्टर", "यंत्र"]):
-        aspect_queries.extend([
-            "Sub-Mission on Agricultural Mechanization SMAM farm machinery 40% 50% subsidy women small farmers Custom Hiring Centres",
-        ])
-
-    # Maharashtra Agriculture AI / BDS Outlay
-    if any(k in q_lower for k in ["artificial intelligence", "ai policy", "कृत्रिम बुद्धिमत्ता", "1101100034", "outlay", "bds"]):
-        aspect_queries.extend([
-            "Maharashtra Agriculture Artificial Intelligence Policy 2025-2029 Scheme Code 1101100034 10000 Lakh",
-        ])
-
-    if aspect_queries:
-        seen_items: dict[tuple, dict] = {
-            (r.get("metadata", {}).get("content_hash"), r.get("metadata", {}).get("chunk_id", r.get("text", "")[:60])): r
-            for r in raw_results
-        }
-        for aq in aspect_queries:
+    # Retrieval: If scoped to an active scheme, STRICTLY filter ChromaDB to that scheme_id!
+    if active_scheme and active_scheme.get("scheme_id"):
+        filters = {"scheme_id": active_scheme["scheme_id"]}
+        raw_results = vector_search(question, k=8, filters=filters)
+        scheme_n = active_scheme.get("scheme_name", "")
+        for aq in [
+            f"{scheme_n} eligibility criteria benefits installments DBT Aadhaar documents required",
+            f"{scheme_n} application procedure guidelines official portal",
+        ]:
             for item in vector_search(aq, k=4, filters=filters):
-                key = (item.get("metadata", {}).get("content_hash"), item.get("metadata", {}).get("chunk_id", item.get("text", "")[:60]))
-                if key in seen_items:
-                    if item.get("similarity_score", 0.0) > seen_items[key].get("similarity_score", 0.0):
-                        seen_items[key]["similarity_score"] = item["similarity_score"]
-                else:
-                    seen_items[key] = item
-        raw_results = list(seen_items.values())
+                raw_results.append(item)
+    else:
+        route = get_route(cat)
+        if not route.get("has_documents", True):
+            no_doc_msg = NO_DOCUMENTS_RESPONSE
+            if target_lang == "mr":
+                no_doc_msg = f"या श्रेणीसाठी ({cat}) सध्या कोणतीही अधिकृत शासकीय मार्गदर्शक तत्त्वे किंवा दस्तऐवज अनुक्रमित नाहीत."
+            elif target_lang == "hi":
+                no_doc_msg = f"इस श्रेणी ({cat}) के लिए वर्तमान में कोई आधिकारिक सरकारी दिशानिर्देश या दस्तावेज अनुक्रमित नहीं हैं।"
+            return {
+                "status": "no_documents_for_category",
+                "category": cat,
+                "scope": scope,
+                "language": target_lang,
+                "detected_language": detected_lang,
+                "final_answer": no_doc_msg,
+                "citations": [],
+                "practical_steps": [],
+                "clarifying_question": None,
+                "missing_evidence_warning": True,
+                "conflicts": [],
+                "unsupported": [],
+                "retrieved_chunks": [],
+            }
+
+        filters = route.get("filter")
+        raw_results = vector_search(question, k=8, filters=filters)
+
+        aspect_queries = []
+        if active_scheme:
+            aspect_queries.append(f"{active_scheme['scheme_name']} eligibility criteria benefits installments DBT Aadhaar documents required")
+            aspect_queries.append(f"{active_scheme['scheme_name']} official guidelines procedures")
+
+        if is_kcc:
+            aspect_queries.extend([
+                "Kisan Credit Card KCC eligibility criteria owner cultivator tenant farmer scale of finance dltc",
+                "Kisan Credit Card KCC interest subvention 7% 4% prompt repayment incentive PRI collateral 160000",
+                "Kisan Credit Card KCC application procedure documents required land records 7/12 RoR Aadhaar passbook",
+                "Kisan Credit Card KCC helpline kisan call centre 1800-180-1551 taluka agriculture officer grievance",
+            ])
+
+        # PMFBY / Crop Insurance
+        if any(k in q_lower for k in ["pmfby", "fasal bima", "crop insurance", "पीक विमा", "फसल बीमा"]):
+            aspect_queries.extend([
+                "Pradhan Mantri Fasal Bima Yojana PMFBY crop insurance premium rates Kharif 2% Rabi 1.5% commercial 5%",
+                "PMFBY post harvest localized calamities crop insurance compensation claim coverage stages",
+            ])
+
+        # Land Records / 7/12
+        if any(k in q_lower for k in ["7/12", "ror", "record of rights", "bhulekh", "भूलेख", "उतारा", "सातबारा", "tenant"]):
+            aspect_queries.extend([
+                "Record of Rights RoR 7/12 extract digital Bhulekh state portal land verification",
+                "Tenant farmers self declaration form oral lessees agricultural credit verification",
+            ])
+
+        # Fertilizers / Soil Health Card
+        if any(k in q_lower for k in ["soil health", "मृदा", "माती", "urea", "युरिया", "यूरिया"]):
+            aspect_queries.extend([
+                "Soil Health Card 12 parameters macro secondary micronutrient physical testing",
+                "Neem Coated Urea nitrification inhibitor 10% 15% slow release nitrogen use efficiency",
+            ])
+
+        # PM-KUSUM Solar Pumps
+        if any(k in q_lower for k in ["kusum", "कुसुम", "solar pump", "सोलर पंप"]):
+            aspect_queries.extend([
+                "PM-KUSUM Component B stand-alone solar agriculture pumps 7.5 HP CFA 30% state subsidy 30%",
+            ])
+
+        # SMAM Farm Machinery
+        if any(k in q_lower for k in ["smam", "mechanization", "यांत्रिकीकरण", "machinery"]):
+            aspect_queries.extend([
+                "Sub-Mission on Agricultural Mechanization SMAM farm machinery 40% 50% subsidy women small farmers Custom Hiring Centres",
+            ])
+
+        if aspect_queries:
+            for aq in aspect_queries:
+                for item in vector_search(aq, k=4, filters=filters):
+                    raw_results.append(item)
+
+    # Deduplicate results by chunk_id/content_hash
+    seen_items: dict[tuple, dict] = {}
+    for r in raw_results:
+        key = (r.get("metadata", {}).get("content_hash"), r.get("metadata", {}).get("chunk_id", r.get("text", "")[:60]))
+        if key in seen_items:
+            if r.get("similarity_score", 0.0) > seen_items[key].get("similarity_score", 0.0):
+                seen_items[key] = r
+        else:
+            seen_items[key] = r
+    raw_results = list(seen_items.values())
 
     scores = [r.get("similarity_score", 0.0) for r in raw_results]
-
-    # Filter by strict configurable relevance threshold
     relevant_results = [r for r in raw_results if r.get("similarity_score", 0.0) >= RELEVANCE_THRESHOLD]
 
-    decision = "ACCEPTED" if relevant_results else "REJECTED_LOW_RELEVANCE"
     log.info(
-        "RETRIEVAL: Query='%s' | Category='%s' | Lang='%s' | Retrieved document count=%d | Documents accepted after relevance filtering=%d | Relevance scores=%s | Final decision='%s' (Threshold=%.2f)",
+        "RETRIEVAL: Query='%s' | ScopedScheme='%s' | Cat='%s' | Lang='%s' | Raw count=%d | Accepted=%d",
         question,
+        active_scheme.get("scheme_id") if active_scheme else None,
         cat,
         target_lang,
         len(raw_results),
         len(relevant_results),
-        scores,
-        decision,
-        RELEVANCE_THRESHOLD,
     )
 
-    if not relevant_results:
-        insuf_msg = "No sufficiently relevant official information was found in the indexed government sources for this question."
-        if target_lang == "mr":
-            insuf_msg = "या प्रश्नासाठी अनुक्रमित सरकारी दस्तऐवजांमध्ये पुरेशी सुसंगत अधिकृत माहिती आढळली नाही. कृपया स्थानिक कृषी कार्यालयाशी संपर्क साधावा."
-        elif target_lang == "hi":
-            insuf_msg = "इस प्रश्न के लिए अनुक्रमित सरकारी स्रोतों में पर्याप्त प्रासंगिक आधिकारिक जानकारी नहीं मिली। कृपया अपने स्थानीय कृषि कार्यालय से संपर्क करें।"
-        return {
-            "status": "insufficient_evidence",
-            "category": cat,
-            "scope": scope,
-            "language": target_lang,
-            "detected_language": detected_lang,
-            "final_answer": insuf_msg,
-            "citations": [],
-            "practical_steps": [],
-            "clarifying_question": None,
-            "missing_evidence_warning": True,
-            "conflicts": [],
-            "unsupported": [],
-            "retrieved_chunks": [],
-        }
-
-    # Step 7 Citation Audit: Inspect actual content of retrieved documents to determine whether they support claims (Requirements 5 & 6)
+    # Filter supported evidence
     supported_results, rejected_items = filter_supported_evidence(question, relevant_results, category=cat)
+
     if not supported_results:
-        log.warning(
-            "CONTENT VERIFICATION REJECTED: Retrieved %d documents passed threshold but 0 contain supporting content for query '%s'. Rejection reasons: %s",
-            len(relevant_results),
-            question,
-            [r.get("rejection_reason") for r in rejected_items],
-        )
-        insuf_msg = "No sufficiently relevant official information was found in the indexed government sources for this question."
-        if target_lang == "mr":
-            insuf_msg = "या प्रश्नासाठी अनुक्रमित सरकारी दस्तऐवजांमध्ये पुरेशी सुसंगत अधिकृत माहिती आढळली नाही. कृपया स्थानिक कृषी कार्यालयाशी संपर्क साधावा."
-        elif target_lang == "hi":
-            insuf_msg = "इस प्रश्न के लिए अनुक्रमित सरकारी स्रोतों में पर्याप्त प्रासंगिक आधिकारिक जानकारी नहीं मिली। कृपया अपने स्थानीय कृषि कार्यालय से संपर्क करें।"
-        return {
-            "status": "insufficient_evidence",
-            "category": cat,
-            "scope": scope,
-            "language": target_lang,
-            "detected_language": detected_lang,
-            "final_answer": insuf_msg,
-            "citations": [],
-            "practical_steps": [],
-            "clarifying_question": None,
-            "missing_evidence_warning": True,
-            "conflicts": [],
-            "unsupported": [],
-            "retrieved_chunks": [],
-        }
+        if active_scheme:
+            # Ground directly in the active scheme's verified structured data without cross-scheme hallucination
+            answer_body, practical_steps, clarifying_q, missing_docs_flag = format_farmer_scheme_answer(
+                question, active_scheme, [], language=target_lang
+            )
+            citations = []
+            if active_scheme.get("official_source_url"):
+                citations = [{
+                    "citation_id": 1,
+                    "marker": "[1]",
+                    "source": active_scheme.get("scheme_name", "Official Portal"),
+                    "page": 1,
+                    "department": active_scheme.get("authority", "Government Department"),
+                    "year": "2025-26",
+                    "document_type": "Official Scheme Portal",
+                    "url": active_scheme.get("official_source_url"),
+                    "snippet": active_scheme.get("description", "")[:200],
+                }]
+            final_answer = switch_notice + answer_body + format_citations_markdown(citations, language=target_lang)
+            return {
+                "status": "completed",
+                "category": cat,
+                "scope": scope,
+                "language": target_lang,
+                "detected_language": detected_lang,
+                "final_answer": final_answer,
+                "citations": citations,
+                "matched_scheme": active_scheme,
+                "practical_steps": practical_steps,
+                "clarifying_question": clarifying_q,
+                "missing_evidence_warning": True,
+                "conflicts": [],
+                "unsupported": [],
+                "retrieved_chunks": [],
+            }
+        else:
+            insuf_msg = "No sufficiently relevant official information was found in the indexed government sources for this question."
+            if target_lang == "mr":
+                insuf_msg = "या प्रश्नासाठी अनुक्रमित सरकारी दस्तऐवजांमध्ये पुरेशी सुसंगत अधिकृत माहिती आढळली नाही. कृपया स्थानिक शासकीय कार्यालयाशी संपर्क साधावा."
+            elif target_lang == "hi":
+                insuf_msg = "इस प्रश्न के लिए अनुक्रमित सरकारी स्रोतों में पर्याप्त प्रासंगिक आधिकारिक जानकारी नहीं मिली। कृपया अपने स्थानीय सरकारी कार्यालय से संपर्क करें।"
+            return {
+                "status": "insufficient_evidence",
+                "category": cat,
+                "scope": scope,
+                "language": target_lang,
+                "detected_language": detected_lang,
+                "final_answer": insuf_msg,
+                "citations": [],
+                "practical_steps": [],
+                "clarifying_question": None,
+                "missing_evidence_warning": True,
+                "conflicts": [],
+                "unsupported": [],
+                "retrieved_chunks": [],
+            }
 
     citations = build_citations(supported_results)
 
-    if matched_scheme and not is_kcc:
-        from app.agents.farmer_explainer import format_farmer_scheme_answer
+    if active_scheme:
         answer_body, practical_steps, clarifying_q, missing_docs_flag = format_farmer_scheme_answer(
-            question, matched_dict, supported_results, language=target_lang
+            question, active_scheme, supported_results, language=target_lang
         )
     elif is_kcc:
         answer_body, practical_steps, clarifying_q, missing_docs_flag = format_farmer_kcc_answer(
@@ -518,9 +554,8 @@ def local_grounded_research(question: str, language: str = "auto") -> dict:
             question, supported_results, category=cat, language=target_lang
         )
 
-    # Reconcile citation markers with citation list (Requirement 2)
     reconciled_answer, reconciled_citations = reconcile_citations_with_answer(answer_body, citations)
-    final_answer = reconciled_answer + format_citations_markdown(reconciled_citations, language=target_lang)
+    final_answer = switch_notice + reconciled_answer + format_citations_markdown(reconciled_citations, language=target_lang)
 
     retrieved_chunks = []
     for idx, item in enumerate(supported_results, start=1):
@@ -544,7 +579,7 @@ def local_grounded_research(question: str, language: str = "auto") -> dict:
         "detected_language": detected_lang,
         "final_answer": final_answer,
         "citations": reconciled_citations,
-        "matched_scheme": matched_dict,
+        "matched_scheme": active_scheme or matched_dict,
         "practical_steps": practical_steps,
         "clarifying_question": clarifying_q,
         "missing_evidence_warning": missing_docs_flag,
@@ -560,21 +595,28 @@ def research(req: ResearchRequest):
     from app.utils.language import resolve_language
     target_lang, detected_lang = resolve_language(req.language, q)
 
+    scheme_id = req.scheme_id
+
     if has_llm_key():
         from app.graph.workflow import run_research
         try:
-            state = run_research(q, language=target_lang)
+            state = run_research(q, language=target_lang, scheme_id=scheme_id)
         except Exception as exc:
             log.exception("LLM research failed, falling back to vector search: %s", exc)
-            state = local_grounded_research(q, language=target_lang)
+            state = local_grounded_research(q, language=target_lang, scheme_id=scheme_id)
     else:
         # Grounded local vector search when no external API key is set
-        state = local_grounded_research(q, language=target_lang)
+        state = local_grounded_research(q, language=target_lang, scheme_id=scheme_id)
 
     matched_scheme = state.get("matched_scheme")
-    if not matched_scheme:
-        from app.schemes.pipeline import find_matching_scheme_for_query
-        m = find_matching_scheme_for_query(q)
+    if not matched_scheme and scheme_id:
+        from app.schemes.pipeline import get_scheme_by_id_or_code
+        with SessionLocal() as db:
+            s_obj = get_scheme_by_id_or_code(scheme_id, db=db)
+            matched_scheme = s_obj.to_dict() if s_obj else None
+    elif not matched_scheme:
+        from app.schemes.pipeline import find_explicit_scheme_in_query, find_matching_scheme_for_query
+        m = find_explicit_scheme_in_query(q) or find_matching_scheme_for_query(q)
         matched_scheme = m.to_dict() if m else None
 
     with SessionLocal() as db:
@@ -608,9 +650,12 @@ def research(req: ResearchRequest):
 
 
 class SchemeCreateRequest(BaseModel):
+    scheme_id: str | None = None
     scheme_name: str = Field(min_length=2)
     hindi_name: str = Field(min_length=2)
     category: str = Field(default="General")
+    department: str = Field(default="")
+    level: str = Field(default="Central / State")
     beneficiary: str = Field(default="Eligible Citizens")
     eligibility: str = Field(default="N/A")
     benefits: str = Field(default="N/A")
@@ -618,7 +663,10 @@ class SchemeCreateRequest(BaseModel):
     state_district: str = Field(default="Central / All India")
     status: str = Field(default="Active")
     official_source_url: str = Field(default="")
+    application_url: str = Field(default="")
     authority: str = Field(default="")
+    verification_status: str = Field(default="Verified")
+    is_discontinued: bool = Field(default=False)
 
 
 class SchemeExtractionRequest(BaseModel):
@@ -629,6 +677,43 @@ class SchemeExtractionRequest(BaseModel):
     source_url: str = ""
 
 
+@app.get("/schemes/sections")
+def list_scheme_sections():
+    from app.schemes.pipeline import get_dataset_sections_summary
+    return get_dataset_sections_summary()
+
+@app.get("/api/schemes")
+def get_api_schemes(limit: int = 50, q: str = "", category: str = "all"):
+    from sqlalchemy import or_
+    with SessionLocal() as db:
+        query = db.query(Scheme)
+        if q:
+            query = query.filter(
+                or_(
+                    Scheme.scheme_name.ilike(f"%{q}%"),
+                    Scheme.hindi_name.ilike(f"%{q}%"),
+                    Scheme.category.ilike(f"%{q}%"),
+                )
+            )
+        if category and category != "all":
+            query = query.filter(Scheme.category.ilike(f"%{category}%"))
+        schemes = query.limit(limit).all()
+        return {
+            "schemes": [
+                {
+                    "id": s.id,
+                    "name": s.scheme_name,
+                    "category": s.category,
+                    "hindi_name": s.hindi_name,
+                    "beneficiary": s.beneficiary,
+                    "benefits": s.benefits,
+                    "official_source_url": s.official_source_url,
+                }
+                for s in schemes
+            ]
+        }
+
+
 @app.get("/schemes")
 def list_schemes(
     response: Response,
@@ -636,6 +721,8 @@ def list_schemes(
     category: str = "all",
     state: str = "all",
     status: str = "all",
+    section_group: str = "all",
+    section: str = "all",
     limit: int = 50,
     offset: int = 0,
     page: int | None = None,
@@ -651,6 +738,8 @@ def list_schemes(
             category=None if category == "all" else category,
             state=None if state == "all" else state,
             status=None if status == "all" else status,
+            section_group=None if section_group == "all" else section_group,
+            section=None if section == "all" else section,
             page=p_num,
             page_size=p_size,
             return_total=True,
@@ -674,6 +763,8 @@ def list_schemes(
             category=None if category == "all" else category,
             state=None if state == "all" else state,
             status=None if status == "all" else status,
+            section_group=None if section_group == "all" else section_group,
+            section=None if section == "all" else section,
             limit=limit,
             offset=offset,
             return_total=True,
@@ -683,20 +774,21 @@ def list_schemes(
         return [s.to_dict() for s in schemes]
 
 
-@app.get("/schemes/{sid:int}")
-def get_scheme(sid: int):
+@app.get("/schemes/{sid}")
+def get_scheme(sid: str):
+    from app.schemes.pipeline import get_scheme_by_id_or_code
     with SessionLocal() as db:
-        scheme = db.get(Scheme, sid)
+        scheme = get_scheme_by_id_or_code(sid, db=db)
         if not scheme:
-            raise HTTPException(404, "Scheme not found")
+            raise HTTPException(404, f"Scheme '{sid}' not found")
         return scheme.to_dict()
 
 
 @app.post("/schemes", dependencies=[Depends(require_admin)])
 def create_scheme(req: SchemeCreateRequest):
-    from app.schemes.pipeline import ingest_scheme_to_db
-    created = ingest_scheme_to_db(req.model_dump())
-    return created.to_dict()
+    from app.schemes.updater import detect_and_upsert_scheme
+    res = detect_and_upsert_scheme(req.model_dump())
+    return res["scheme"].to_dict()
 
 
 @app.post("/schemes/seed", dependencies=[Depends(require_admin)])
@@ -776,6 +868,76 @@ def index_documents_endpoint():
             indexed += 1
         db.commit()
     return {"documents_indexed": indexed, "chunks_added": chunks}
+
+
+class SyncTriggerRequest(BaseModel):
+    sources: list[str] | None = None
+    dry_run: bool = False
+
+
+@app.post("/api/sync/run")
+@app.post("/sync/run")
+def trigger_sync_pipeline(req: SyncTriggerRequest = None):
+    """Trigger the automatic government scheme synchronization pipeline immediately."""
+    from app.schemes.updater import sync_all_registered_sources
+    source_filter = req.sources if req else None
+    return sync_all_registered_sources(source_names=source_filter)
+
+
+@app.get("/api/sync/status")
+@app.get("/sync/status")
+def get_sync_status():
+    """Get active sync status, last execution results, and scheme count summaries."""
+    from app.schemes.updater import get_sync_pipeline_status
+    return get_sync_pipeline_status()
+
+
+@app.get("/api/sync/logs")
+@app.get("/sync/logs")
+def get_sync_logs(limit: int = 50, offset: int = 0):
+    """Get execution logs and failure details for source synchronization runs."""
+    from app.database.db import SyncLog
+    with SessionLocal() as db:
+        total = db.query(SyncLog).count()
+        logs = (
+            db.query(SyncLog)
+            .order_by(SyncLog.started_at.desc())
+            .offset(offset)
+            .limit(limit)
+            .all()
+        )
+        return {
+            "total": total,
+            "items": [l.to_dict() for l in logs],
+        }
+
+
+@app.post("/api/sync/retry")
+@app.post("/sync/retry")
+def retry_failed_sync():
+    """Retry any failed sources from the most recent synchronization runs."""
+    from app.schemes.updater import retry_failed_sources
+    return retry_failed_sources()
+
+
+@app.get("/schemes/{sid}/history")
+@app.get("/api/schemes/{sid}/history")
+def get_scheme_history_endpoint(sid: str):
+    """Retrieve full revision history, content hash changes, and diffs for a specific scheme."""
+    from app.schemes.pipeline import get_scheme_by_id_or_code
+    from app.database.db import SchemeHistory
+    with SessionLocal() as db:
+        scheme = get_scheme_by_id_or_code(sid, db=db)
+        if not scheme:
+            raise HTTPException(404, f"Scheme '{sid}' not found")
+        canonical_id = scheme.scheme_id
+        history = (
+            db.query(SchemeHistory)
+            .filter(SchemeHistory.scheme_id == canonical_id)
+            .order_by(SchemeHistory.recorded_at.desc())
+            .all()
+        )
+        return [h.to_dict() for h in history]
 
 
 @app.get("/sources/registry")
@@ -865,15 +1027,41 @@ async def ingest_scraped_data(request: Request):
 
 
 
-# Mount frontend static distribution if built
+# Static asset handling with dist/public fallback, caching headers, and SVG fallback
 frontend_dist = Path("frontend/dist")
-if frontend_dist.exists():
-    app.mount("/assets", StaticFiles(directory=str(frontend_dist / "assets")), name="assets")
+frontend_public = Path("frontend/public")
 
+
+@app.get("/assets/{asset_path:path}")
+async def serve_asset(asset_path: str):
+    headers = {"Cache-Control": "public, max-age=86400"}
+    # 1. Check frontend/dist/assets
+    dist_file = frontend_dist / "assets" / asset_path
+    if dist_file.is_file():
+        return FileResponse(dist_file, headers=headers)
+
+    # 2. Check frontend/public/assets fallback
+    pub_file = frontend_public / "assets" / asset_path
+    if pub_file.is_file():
+        return FileResponse(pub_file, headers=headers)
+
+    # 3. Clean SVG image fallback for missing/broken image requests
+    if any(asset_path.lower().endswith(ext) for ext in [".jpg", ".jpeg", ".png", ".webp", ".svg", ".gif"]):
+        fallback_file = frontend_public / "assets" / "scheme_fallback.svg"
+        if not fallback_file.is_file():
+            fallback_file = frontend_dist / "assets" / "scheme_fallback.svg"
+        if fallback_file.is_file():
+            return FileResponse(fallback_file, media_type="image/svg+xml", headers={"Cache-Control": "public, max-age=3600"})
+
+    raise HTTPException(status_code=404, detail="Asset not found")
+
+
+if frontend_dist.exists():
     @app.get("/{full_path:path}")
     async def serve_frontend(full_path: str):
         file_path = frontend_dist / full_path
         if full_path and file_path.is_file():
             return FileResponse(file_path)
         return FileResponse(frontend_dist / "index.html")
+
 

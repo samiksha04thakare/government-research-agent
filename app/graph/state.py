@@ -24,4 +24,6 @@ class ResearchState(TypedDict, total=False):
     practical_steps: list[str]
     clarifying_question: str | None
     missing_evidence_warning: bool
+    scheme_id: str | None
+    target_scheme_id: str | None
     matched_scheme: dict[str, Any] | None  # Structured scheme record from PostgreSQL/SQL

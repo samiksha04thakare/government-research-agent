@@ -89,20 +89,41 @@ class GovernmentDataScheduler:
         run_ts = _now_iso()
         log.info("GovernmentDataScheduler: Triggering single run at %s (dry_run=%s)", run_ts, is_dry)
 
-        result = ingest_all_registered_sources(
-            dry_run=is_dry,
-            category_filter=category_filter,
-            source_filter=source_filter,
-        )
+        # 1. Sync structured schemes from registered authorized sources
+        scheme_result = {}
+        try:
+            from app.schemes.updater import sync_all_registered_sources
+            scheme_result = sync_all_registered_sources()
+        except Exception as s_err:
+            log.error("Error in scheduled scheme update pipeline: %s", s_err)
+            scheme_result = {"status": "FAILED", "error": str(s_err)}
+
+        # 2. Ingest document collections
+        doc_result = {}
+        try:
+            doc_result = ingest_all_registered_sources(
+                dry_run=is_dry,
+                category_filter=category_filter,
+                source_filter=source_filter,
+            )
+        except Exception as d_err:
+            log.error("Error in scheduled document ingestion: %s", d_err)
+            doc_result = {"status": "FAILED", "error": str(d_err)}
+
+        combined = {
+            "timestamp": run_ts,
+            "schemes": scheme_result,
+            "documents": doc_result,
+        }
 
         with self._lock:
             self._last_run_time = run_ts
-            self._last_result = result
+            self._last_result = combined
             self._run_count += 1
             next_dt = datetime.now(timezone.utc) + timedelta(seconds=self._interval_seconds)
             self._next_run_time = next_dt.isoformat()
 
-        return result
+        return combined
 
     def _worker_loop(self, run_immediately: bool = False):
         """Internal background loop running until stop event is signaled."""

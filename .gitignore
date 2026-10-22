@@ -14,11 +14,16 @@ venv/
 ENV/
 
 # Database & Vector stores
-research.db
+government_research.db
 *.sqlite3
 *.bin
 vectorstore/
 vectorstore_*/
+
+# Scratch & Test Artifacts
+test_*.jpg
+scratch_*.jpg
+data/query_response.json
 
 # Data files
 data/raw/*.pdf

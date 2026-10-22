@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { SUPPORTED_LANGUAGES, UI_TRANSLATIONS, DOMAIN_CATEGORIES_BY_LANG } from "./i18n";
@@ -58,13 +58,13 @@ function splitTextIntoSentences(text, maxLen = 140) {
   return chunks.length ? chunks : [cleaned.slice(0, maxLen)];
 }
 
-// Helper for scheme category photo mappings matching design mockup
+// Helper for scheme category photo mappings matching design mockup with high resolution imagery
 function getSchemeCategoryPhoto(category) {
   const cat = (category || "").toLowerCase();
   if (cat.includes("agri") || cat.includes("farmer") || cat.includes("kisan") || cat.includes("crop") || cat.includes("soil") || cat.includes("pest") || cat.includes("fertilizer") || cat.includes("wheat") || cat.includes("rice")) {
     return {
       photo: "/assets/scheme_cat_farmer.jpg",
-      fallback: "/assets/card_farmer.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
       icon: "🌾",
       themeClass: "card-theme-farmer",
       color: "#166534",
@@ -74,7 +74,7 @@ function getSchemeCategoryPhoto(category) {
   if (cat.includes("edu") || cat.includes("scholar") || cat.includes("छात्रवृत्ति") || cat.includes("matric") || cat.includes("student") || cat.includes("university")) {
     return {
       photo: "/assets/scheme_cat_scholarship.jpg",
-      fallback: "/assets/card_scholarship.jpg",
+      fallback: "/assets/scheme_cat_scholarship.jpg",
       icon: "🎓",
       themeClass: "card-theme-scholarship",
       color: "#1d4ed8",
@@ -84,7 +84,7 @@ function getSchemeCategoryPhoto(category) {
   if (cat.includes("credit") || cat.includes("msme") || cat.includes("mudra") || cat.includes("loan") || cat.includes("entrepreneur") || cat.includes("उद्योग") || cat.includes("stand-up") || cat.includes("pmegp") || cat.includes("startup")) {
     return {
       photo: "/assets/scheme_cat_entrepreneur.jpg",
-      fallback: "/assets/card_entrepreneur.jpg",
+      fallback: "/assets/scheme_cat_entrepreneur.jpg",
       icon: "💼",
       themeClass: "card-theme-entrepreneurship",
       color: "#c2410c",
@@ -94,7 +94,7 @@ function getSchemeCategoryPhoto(category) {
   if (cat.includes("women") || cat.includes("child") || cat.includes("mahila") || cat.includes("girl") || cat.includes("महिला") || cat.includes("wcd") || cat.includes("ujjwala") || cat.includes("matritva") || cat.includes("ladki")) {
     return {
       photo: "/assets/scheme_cat_women.jpg",
-      fallback: "/assets/card_women.jpg",
+      fallback: "/assets/scheme_cat_women.jpg",
       icon: "👩",
       themeClass: "card-theme-women",
       color: "#be185d",
@@ -103,12 +103,808 @@ function getSchemeCategoryPhoto(category) {
   }
   return {
     photo: "/assets/scheme_cat_other.jpg",
-    fallback: "/assets/card_other.jpg",
+    fallback: "/assets/scheme_cat_other.jpg",
     icon: "🏛️",
     themeClass: "card-theme-other",
     color: "#6d28d9",
     label: "सामाजिक सुरक्षा व लोक कल्याण (Social Security & Welfare)",
   };
+}
+
+// 26 Official Maharashtra & Central Scheme Cards from the Visual Compendium Poster
+export const MAHARASHTRA_SCHEME_CARDS = [
+  // Row 1 - Agriculture & Farmer Welfare
+  {
+    id: "pocra",
+    nameEn: "POCRA (Climate Resilient Agriculture)",
+    nameMr: "नानाजी देशमुख कृषी संजीवनी (पोकरा)",
+    benefit: "Climate-resilient agriculture, water management & farm development",
+    category: "Agriculture",
+    icon: "🌱",
+    badge: "PoCRA DBT",
+    cardImg: "/assets/card_pocra.jpg",
+    photoImg: "/assets/scheme_mahapocra_farmers_dbt.jpg",
+    query: "पोकरा (PoCRA) योजनेअंतर्गत ठिबक सिंचन, शेततळे आणि अनुदानाचे नियम काय आहेत?",
+    schemeId: "MAHAPOCRA-FARMERS-DBT",
+  },
+  {
+    id: "namo_shetkari",
+    nameEn: "Namo Shetkari Mahasanman Nidhi",
+    nameMr: "नमो शेतकरी महासन्मान निधी योजना",
+    benefit: "Financial assistance to eligible farmers of Maharashtra (₹6,000/yr)",
+    category: "Agriculture",
+    icon: "🌾",
+    badge: "₹6,000/वर्ष",
+    cardImg: "/assets/card_namo_shetkari.jpg",
+    photoImg: "/assets/scheme_namo_shetkari.jpg",
+    query: "महाराष्ट्र नमो शेतकरी महासन्मान निधी योजनेचे निकष आणि हप्ते कसे मिळतात?",
+    schemeId: "NAMO-SHETAKARI",
+  },
+  {
+    id: "pm_kisan",
+    nameEn: "PM-KISAN Samman Nidhi",
+    nameMr: "पीएम-किसान सन्मान निधी",
+    benefit: "Direct income support of ₹6,000 annually to small & marginal farmers",
+    category: "Agriculture",
+    icon: "🚜",
+    badge: "PM-KISAN",
+    cardImg: "/assets/card_pm_kisan.jpg",
+    photoImg: "/assets/scheme_farmer_banner.jpg",
+    query: "पीएम-किसान योजनेचे ई-केवायसी आणि पात्रता निकष काय आहेत?",
+    schemeId: "PM-KISAN",
+  },
+  {
+    id: "pmfby",
+    nameEn: "Pradhan Mantri Fasal Bima Yojana",
+    nameMr: "पंतप्रधान पीक विमा योजना (१ रुपयात)",
+    benefit: "Crop insurance protection for farmers' financial security",
+    category: "Agriculture",
+    icon: "🛡️",
+    badge: "₹1 पीक विमा",
+    cardImg: "/assets/card_pmfby.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "महाराष्ट्रात १ रुपयात पीक विमा योजना कशी लागू आहे?",
+    schemeId: "PMFBY",
+  },
+  {
+    id: "soil_health_card",
+    nameEn: "Soil Health Card Scheme",
+    nameMr: "मृदा आरोग्य पत्रिका योजना",
+    benefit: "Healthy soil analysis, optimized fertilizers, better crop yield",
+    category: "Agriculture",
+    icon: "🧪",
+    badge: "Soil Card",
+    cardImg: "/assets/card_soil_health_card.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "मृदा आरोग्य पत्रिका कशी मिळवावी आणि माती परीक्षण कसे करावे?",
+    schemeId: "SOIL-HEALTH-CARD",
+  },
+
+  // Row 2 - Education, Women & Entrepreneurship
+  {
+    id: "scholarship",
+    nameEn: "MahaDBT Scholarship Schemes",
+    nameMr: "महाडीबीटी शिष्यवृत्ती योजना",
+    benefit: "Financial support for higher education, post-matric & professional courses",
+    category: "Education",
+    icon: "🎓",
+    badge: "शिष्यवृत्ती",
+    cardImg: "/assets/card_scholarship.jpg",
+    photoImg: "/assets/scheme_cat_scholarship.jpg",
+    query: "महाराष्ट्र महाडीबीटी पोस्ट-मॅट्रिक शिष्यवृत्तीचे नियम व कागदपत्रे काय आहेत?",
+    schemeId: "MAHA-POST-MATRIC-SCHOLARSHIP",
+  },
+  {
+    id: "mahila_kalyan",
+    nameEn: "Majhi Ladki Bahin / Mahila Kalyan",
+    nameMr: "मुख्यमंत्री माझी लाडकी बहीण योजना",
+    benefit: "Direct cash transfer of ₹1,500/month for women's financial independence",
+    category: "Women",
+    icon: "👩",
+    badge: "₹1,500/महिना",
+    cardImg: "/assets/card_mahila_kalyan.jpg",
+    photoImg: "/assets/scheme_cat_women.jpg",
+    query: "मुख्यमंत्री माझी लाडकी बहीण योजनेची पात्रता आणि कागदपत्रे काय आहेत?",
+    schemeId: "MH-WOM-01",
+  },
+  {
+    id: "msrtc_bus",
+    nameEn: "MSRTC 50% Concession (Mahila Sanman)",
+    nameMr: "एसटी बस महिला सन्मान योजना (५०% सवलत)",
+    benefit: "50% discount on bus fares across all Maharashtra State Transport buses",
+    category: "Women",
+    icon: "🚌",
+    badge: "MSRTC 50%",
+    cardImg: "/assets/scheme_msrtc_bus_women.jpg",
+    photoImg: "/assets/scheme_msrtc_bus_women.jpg",
+    query: "एसटी बस महिला सन्मान योजनेत ५० टक्के तिकीट सवलतीसाठी काय नियम आहेत?",
+    schemeId: "MSRTC-50%-CONCESSION-ON-BUS-FARE",
+  },
+  {
+    id: "lakhpati_didi",
+    nameEn: "Lakhpati Didi Yojana",
+    nameMr: "लखपती दीदी योजना",
+    benefit: "Empowering rural SHG women to earn annual sustainable income of ₹1 Lakh+",
+    category: "Women",
+    icon: "💰",
+    badge: "₹1 लाख उत्पन्न",
+    cardImg: "/assets/card_lakhpati_didi.jpg",
+    photoImg: "/assets/scheme_cat_women.jpg",
+    query: "लखपती दीदी योजनेअंतर्गत बचत गटांना कर्ज व कौशल्य प्रशिक्षण कसे मिळते?",
+    schemeId: "MH-WOM-10",
+  },
+  {
+    id: "udyogini",
+    nameEn: "Mukhyamantri Udyogini Yojana",
+    nameMr: "महाराष्ट्र मुख्यमंत्री उद्योगिनी योजना",
+    benefit: "Financial assistance & subsidized loans for women micro-entrepreneurs",
+    category: "Credit",
+    icon: "🧵",
+    badge: "महिला उद्योग",
+    cardImg: "/assets/card_udyogini.jpg",
+    photoImg: "/assets/scheme_cat_entrepreneur.jpg",
+    query: "महिलांसाठी उद्योगिनी योजना आणि व्यवसाय अनुदानाचे नियम काय आहेत?",
+    schemeId: "MH-WOM-09",
+  },
+  {
+    id: "startup_india",
+    nameEn: "Startup & Stand-Up India",
+    nameMr: "स्टार्टअप इंडिया / स्टँड-अप इंडिया",
+    benefit: "Support for startups, bank loans for SC/ST and women entrepreneurs",
+    category: "Credit",
+    icon: "🚀",
+    badge: "उद्यमिता कर्ज",
+    cardImg: "/assets/card_startup_india.jpg",
+    photoImg: "/assets/scheme_cat_entrepreneur.jpg",
+    query: "स्टँड-अप इंडिया योजनेत १० लाख ते १ कोटी रुपयांचे कर्ज कसे मिळते?",
+    schemeId: "STAND-UP-INDIA",
+  },
+
+  // Row 3 - Health, Housing & Rural Welfare
+  {
+    id: "ayushman_bharat",
+    nameEn: "Ayushman Bharat / Mahatma Phule Jan Arogya",
+    nameMr: "आयुष्मान भारत व महात्मा फुले जन आरोग्य",
+    benefit: "Cashless health insurance coverage up to ₹5 Lakh per family per year",
+    category: "Other",
+    icon: "🏥",
+    badge: "₹5 लाख मोफत",
+    cardImg: "/assets/card_ayushman_bharat.jpg",
+    photoImg: "/assets/scheme_ayushman_bharat.jpg",
+    query: "आयुष्मान भारत आणि महात्मा ज्योतिराव फुले जन आरोग्य योजनेचे मोफत उपचार नियम काय आहेत?",
+    schemeId: "PM-JAY",
+  },
+  {
+    id: "pm_awas",
+    nameEn: "Pradhan Mantri Awas Yojana (PMAY)",
+    nameMr: "प्रधानमंत्री आवास योजना (घरकुल)",
+    benefit: "Financial subsidy for pukka house construction for rural & urban homeless",
+    category: "Other",
+    icon: "🏡",
+    badge: "PMAY घरकुल",
+    cardImg: "/assets/card_pm_awas.jpg",
+    photoImg: "/assets/scheme_pm_awas_yojana.jpg",
+    query: "प्रधानमंत्री आवास योजना ग्रामीण (PMAY-G) अंतर्गत घरकुल अनुदान किती मिळते?",
+    schemeId: "PMAY-G",
+  },
+  {
+    id: "mgnrega",
+    nameEn: "MGNREGA Rural Employment",
+    nameMr: "महात्मा गांधी ग्रामीण रोजगार हमी (मनरेगा)",
+    benefit: "Guaranteed 100 days of wage employment per year to rural households",
+    category: "Other",
+    icon: "👷",
+    badge: "१०० दिवस काम",
+    cardImg: "/assets/card_mgnrega.jpg",
+    photoImg: "/assets/scheme_cat_other.jpg",
+    query: "मनरेगा (MGNREGA) जॉब कार्ड कसे काढावे आणि मजुरी दर किती आहे?",
+    schemeId: "MGNREGA",
+  },
+  {
+    id: "pm_ujjwala",
+    nameEn: "Pradhan Mantri Ujjwala Yojana",
+    nameMr: "प्रधानमंत्री उज्ज्वला योजना (LPG गॅस)",
+    benefit: "Free clean domestic LPG connection for women of BPL households",
+    category: "Women",
+    icon: "🔥",
+    badge: "मोफत गॅस",
+    cardImg: "/assets/card_pm_ujjwala.jpg",
+    photoImg: "/assets/scheme_pm_ujjwala.jpg",
+    query: "प्रधानमंत्री उज्ज्वला योजनेअंतर्गत मोफत गॅस कनेक्शनची पात्रता काय आहे?",
+    schemeId: "MH-WOM-07",
+  },
+  {
+    id: "digital_india",
+    nameEn: "Digital India Services (Aaple Sarkar)",
+    nameMr: "आपले सरकार / डिजिटल इंडिया सेवा",
+    benefit: "Online certificates, 7/12 extract, caste & income certificates from home",
+    category: "Other",
+    icon: "📱",
+    badge: "Digital India",
+    cardImg: "/assets/card_digital_india.jpg",
+    photoImg: "/assets/scheme_cat_other.jpg",
+    query: "आपले सरकार पोर्टलवर उत्पन्न दाखला आणि रहिवासी प्रमाणपत्र कसे काढावे?",
+    schemeId: "DIGITAL-INDIA",
+  },
+
+  // Row 4 - Maternal Health, Skills & Social Security
+  {
+    id: "pm_matru_vandana",
+    nameEn: "PM Matru Vandana Yojana (PMMVY)",
+    nameMr: "प्रधानमंत्री मातृ वंदना योजना",
+    benefit: "Financial assistance of ₹5,000 directly for pregnant & lactating mothers",
+    category: "Women",
+    icon: "🤱",
+    badge: "₹5,000 मातृत्व",
+    cardImg: "/assets/card_pm_matru_vandana.jpg",
+    photoImg: "/assets/scheme_cat_women.jpg",
+    query: "प्रधानमंत्री मातृ वंदना योजनेचे पैसे कधी आणि कसे मिळतात?",
+    schemeId: "MH-WOM-03",
+  },
+  {
+    id: "janani_suraksha",
+    nameEn: "Janani Suraksha Yojana",
+    nameMr: "जननी सुरक्षा योजना",
+    benefit: "Institutional delivery incentive and neonatal care in government health centres",
+    category: "Women",
+    icon: "👶",
+    badge: "सुरक्षित प्रसूती",
+    cardImg: "/assets/card_janani_suraksha.jpg",
+    photoImg: "/assets/scheme_cat_women.jpg",
+    query: "जननी सुरक्षा योजनेत शासकीय रुग्णालयातील प्रसूती अनुदान किती आहे?",
+    schemeId: "JANANI-SURAKSHA",
+  },
+  {
+    id: "pmkvy",
+    nameEn: "PM Kaushal Vikas Yojana (PMKVY)",
+    nameMr: "प्रधानमंत्री कौशल्य विकास योजना",
+    benefit: "Free industry-relevant skill training, assessment and certification with placement",
+    category: "Education",
+    icon: "⚙️",
+    badge: "कौशल्य प्रशिक्षण",
+    cardImg: "/assets/card_pmkvy.jpg",
+    photoImg: "/assets/scheme_cat_scholarship.jpg",
+    query: "पीएमकेव्हीवाय (PMKVY) मोफत कौशल्य प्रशिक्षण केंद्र कसे शोधावे?",
+    schemeId: "PMKVY",
+  },
+  {
+    id: "nrlm",
+    nameEn: "NRLM Umeed Abhiyan",
+    nameMr: "दीनदयाळ अंत्योदय योजना (महाराष्ट्र उमेद)",
+    benefit: "Community livelihood enhancement and revolving fund for women SHGs",
+    category: "Other",
+    icon: "🤝",
+    badge: "उमेद SHG",
+    cardImg: "/assets/card_nrlm.jpg",
+    photoImg: "/assets/scheme_cat_other.jpg",
+    query: "महाराष्ट्र उमेद अभियानांतर्गत महिला बचत गटांना मिळणारे अनुदान काय आहे?",
+    schemeId: "NRLM-UMEED",
+  },
+  {
+    id: "atal_pension",
+    nameEn: "Atal Pension Yojana (APY)",
+    nameMr: "अटल पेन्शन योजना",
+    benefit: "Guaranteed monthly lifelong pension of ₹1,000 to ₹5,000 post 60 years",
+    category: "Other",
+    icon: "👵",
+    badge: "मासिक पेन्शन",
+    cardImg: "/assets/card_atal_pension.jpg",
+    photoImg: "/assets/scheme_cat_other.jpg",
+    query: "अटल पेन्शन योजनेमध्ये मासिक हप्ता आणि ६० वर्षानंतर पेन्शन किती मिळेल?",
+    schemeId: "ATAL-PENSION",
+  },
+
+  // Row 5 - Allied Agriculture, Livestock & Fisheries
+  {
+    id: "kcc",
+    nameEn: "Kisan Credit Card (KCC)",
+    nameMr: "किसान क्रेडिट कार्ड योजना",
+    benefit: "Short-term subsidized credit at 4% effective interest for farm crops",
+    category: "Agriculture",
+    icon: "💳",
+    badge: "KCC Credit",
+    cardImg: "/assets/card_kcc.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "किसान क्रेडिट कार्ड (KCC) कसे काढावे आणि कर्ज मर्यादा काय असते?",
+    schemeId: "KCC",
+  },
+  {
+    id: "fisheries",
+    nameEn: "Fisheries & Aquaculture Scheme",
+    nameMr: "मत्स्य व्यवसाय व जलकृषी विकास योजना",
+    benefit: "Subsidies for fish ponds, biofloc, cage culture, and motorized boats",
+    category: "Agriculture",
+    icon: "🐟",
+    badge: "मत्स्य व्यवसाय",
+    cardImg: "/assets/card_fisheries.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "शेततळ्यात मत्स्यपालन आणि मत्स्य व्यवसाय अनुदानाचे नियम काय आहेत?",
+    schemeId: "FISHERIES-AQUA",
+  },
+  {
+    id: "sericulture",
+    nameEn: "Sericulture Scheme (Silk Production)",
+    nameMr: "रेशीम उद्योग व तुती लागवड योजना",
+    benefit: "Government grants for mulberry plantation, rearing houses & silkworm farming",
+    category: "Agriculture",
+    icon: "🐛",
+    badge: "रेशीम उद्योग",
+    cardImg: "/assets/card_sericulture.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "महाराष्ट्रात तुती लागवड आणि सिल्क/रेशीम उद्योगासाठी मिळणारे शासकीय अनुदान काय आहे?",
+    schemeId: "SERICULTURE-MH",
+  },
+  {
+    id: "horticulture",
+    nameEn: "National Horticulture Mission",
+    nameMr: "एकात्मिक फलोत्पादन विकास अभियान",
+    benefit: "Subsidies for fruit orchards, polyhouses, shade nets & cold storages",
+    category: "Agriculture",
+    icon: "🍎",
+    badge: "फलोत्पादन",
+    cardImg: "/assets/card_horticulture.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "भाजीपाला व फळबाग लागवडीसाठी राष्ट्रीय फलोत्पादन अभियान अनुदान कसे मिळते?",
+    schemeId: "HORTICULTURE-MISSION",
+  },
+  {
+    id: "animal_husbandry",
+    nameEn: "Animal Husbandry & Dairy Scheme",
+    nameMr: "पशुसंवर्धन व दुग्धव्यवसाय योजना",
+    benefit: "Subsidies for milch cows/buffaloes, goat farming, and fodder development",
+    category: "Agriculture",
+    icon: "🐄",
+    badge: "पशुसंवर्धन",
+    cardImg: "/assets/card_animal_husbandry.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "गाई-म्हशी खरेदी आणि शेळीपालनासाठी पशुसंवर्धन विभागाचे अनुदान कसे मिळते?",
+    schemeId: "ANIMAL-HUSBANDRY",
+  },
+  {
+    id: "matsya_sampada",
+    nameEn: "PM Matsya Sampada Yojana (PMMSY)",
+    nameMr: "प्रधानमंत्री मत्स्य संपदा योजना",
+    benefit: "Comprehensive development of marine and inland fisheries value chain",
+    category: "Agriculture",
+    icon: "🐠",
+    badge: "मत्स्य संपदा",
+    cardImg: "/assets/card_matsya_sampada.jpg",
+    photoImg: "/assets/scheme_cat_farmer.jpg",
+    query: "प्रधानमंत्री मत्स्य संपदा योजना (PMMSY) अंतर्गत मिळणारे अर्थसहाय्य काय आहे?",
+    schemeId: "PMMSY",
+  },
+];
+
+// Comprehensive scheme visual resolver supporting all individual schemes & categories
+export function getSchemeVisual(scheme) {
+  if (!scheme) {
+    return {
+      photo: "/assets/scheme_cat_other.jpg",
+      card: "/assets/card_other.jpg",
+      fallback: "/assets/card_other.jpg",
+      icon: "🏛️",
+      badge: "शासकीय योजना",
+      label: "सामाजिक सुरक्षा व लोक कल्याण (Social Security & Welfare)",
+      themeClass: "card-theme-other",
+      color: "#6d28d9",
+    };
+  }
+
+  const sId = (scheme.scheme_id || scheme.id || "").toLowerCase();
+  const nameEn = (scheme.scheme_name || "").toLowerCase();
+  const nameHi = (scheme.hindi_name || "").toLowerCase();
+  const cat = (scheme.category || "").toLowerCase();
+  const desc = ((scheme.eligibility || "") + " " + (scheme.benefits || "") + " " + (scheme.dataset_section || "")).toLowerCase();
+  const fullText = `${sId} ${nameEn} ${nameHi} ${cat} ${desc}`;
+
+  // 1. PoCRA / Nana Ji Deshmukh Krishi Sanjeevani (MahaPoCRA)
+  if (fullText.includes("pocra") || fullText.includes("पोकरा") || fullText.includes("संजीवनी") || fullText.includes("climate resilient") || fullText.includes("mahapocra")) {
+    return {
+      photo: "/assets/scheme_mahapocra_farmers_dbt.jpg",
+      card: "/assets/card_pocra.jpg",
+      fallback: "/assets/scheme_mahapocra_farmers_dbt.jpg",
+      icon: "🌱",
+      badge: "PoCRA DBT",
+      label: "नानाजी देशमुख कृषी संजीवनी (PoCRA)",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 2. MSRTC 50% Concession on Bus Fare (Mahila Sanman Yojana)
+  if (fullText.includes("msrtc") || fullText.includes("st bus") || fullText.includes("एसटी") || fullText.includes("हाफ तिकीट") || fullText.includes("50% concession") || fullText.includes("mahila sanman")) {
+    return {
+      photo: "/assets/scheme_msrtc_bus_women.jpg",
+      card: "/assets/card_mahila_kalyan.jpg",
+      fallback: "/assets/scheme_msrtc_bus_women.jpg",
+      icon: "🚌",
+      badge: "MSRTC 50%",
+      label: "MSRTC महिला सन्मान योजना (५०% सवलत)",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+    };
+  }
+
+  // 3. Namo Shetkari Mahasanman Nidhi Yojana
+  if (fullText.includes("namo shetkari") || fullText.includes("shetkari mahasanman") || fullText.includes("नमो शेतकरी") || fullText.includes("shetakari")) {
+    return {
+      photo: "/assets/scheme_namo_shetkari.jpg",
+      card: "/assets/card_namo_shetkari.jpg",
+      fallback: "/assets/scheme_namo_shetkari.jpg",
+      icon: "🌾",
+      badge: "₹6,000/वर्ष",
+      label: "नमो शेतकरी महासन्मान निधी योजना",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 4. PM-KISAN Samman Nidhi
+  if (fullText.includes("pm-kisan") || fullText.includes("pm kisan") || fullText.includes("किसान सम्मान") || fullText.includes("kisan samman")) {
+    return {
+      photo: "/assets/scheme_farmer_banner.jpg",
+      card: "/assets/card_pm_kisan.jpg",
+      fallback: "/assets/scheme_farmer_banner.jpg",
+      icon: "🚜",
+      badge: "PM-KISAN",
+      label: "PM-KISAN सन्मान निधी",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 5. Pradhan Mantri Fasal Bima Yojana (PMFBY)
+  if (fullText.includes("pmfby") || fullText.includes("fasal bima") || fullText.includes("फसल बीमा") || fullText.includes("पीक विमा")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_pmfby.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "🛡️",
+      badge: "₹1 पीक विमा",
+      label: "प्रधानमंत्री पीक विमा योजना (PMFBY)",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 6. Soil Health Card Scheme
+  if (fullText.includes("soil health") || fullText.includes("soil-health") || fullText.includes("मृदा आरोग्य") || fullText.includes("माती परीक्षण")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_soil_health_card.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "🧪",
+      badge: "Soil Card",
+      label: "मृदा आरोग्य पत्रिका योजना",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 7. PM-KUSUM (Solar Pumps)
+  if (fullText.includes("kusum") || fullText.includes("कुसूम") || fullText.includes("solar pump") || fullText.includes("सौर कृषी पंप")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_pm_kusum.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "☀️",
+      badge: "Solar Pump",
+      label: "PM-KUSUM सौर कृषी पंप योजना",
+      themeClass: "card-theme-farmer",
+      color: "#d97706",
+    };
+  }
+
+  // 8. Kisan Credit Card (KCC)
+  if (fullText.includes("kcc") || fullText.includes("kisan credit card") || fullText.includes("किसान क्रेडिट कार्ड")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_kcc.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "💳",
+      badge: "KCC Credit",
+      label: "किसान क्रेडिट कार्ड (KCC)",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 9. Ayushman Bharat (PM-JAY / Jan Arogya)
+  if (fullText.includes("ayushman") || fullText.includes("pm-jay") || fullText.includes("pmjay") || fullText.includes("jan arogya") || fullText.includes("आयुष्मान") || fullText.includes("जन आरोग्य") || fullText.includes("jyotirao phule")) {
+    return {
+      photo: "/assets/scheme_ayushman_bharat.jpg",
+      card: "/assets/card_ayushman_bharat.jpg",
+      fallback: "/assets/scheme_ayushman_bharat.jpg",
+      icon: "🏥",
+      badge: "₹5 लाख मोफत",
+      label: "आयुष्मान भारत / महात्मा फुले जन आरोग्य योजना",
+      themeClass: "card-theme-other",
+      color: "#0284c7",
+    };
+  }
+
+  // 10. Pradhan Mantri Awas Yojana (PMAY)
+  if (fullText.includes("awas") || fullText.includes("pmay") || fullText.includes("आवास") || fullText.includes("घरकुल") || fullText.includes("housing")) {
+    return {
+      photo: "/assets/scheme_pm_awas_yojana.jpg",
+      card: "/assets/card_pm_awas.jpg",
+      fallback: "/assets/scheme_pm_awas_yojana.jpg",
+      icon: "🏡",
+      badge: "PMAY घरकुल",
+      label: "प्रधानमंत्री आवास योजना (PMAY)",
+      themeClass: "card-theme-other",
+      color: "#0d9488",
+    };
+  }
+
+  // 11. Pradhan Mantri Ujjwala Yojana
+  if (fullText.includes("ujjwala") || fullText.includes("उज्ज्वला") || fullText.includes("lpg") || fullText.includes("गॅस कनेक्शन")) {
+    return {
+      photo: "/assets/scheme_pm_ujjwala.jpg",
+      card: "/assets/card_pm_ujjwala.jpg",
+      fallback: "/assets/scheme_pm_ujjwala.jpg",
+      icon: "🔥",
+      badge: "मोफत गॅस",
+      label: "प्रधानमंत्री उज्ज्वला योजना (LPG)",
+      themeClass: "card-theme-women",
+      color: "#e11d48",
+    };
+  }
+
+  // 12. Ladki Bahin / Lek Ladki / Mahila Kalyan
+  if (fullText.includes("ladki bahin") || fullText.includes("लाडकी बहीण") || fullText.includes("lek ladki") || fullText.includes("mh-wom-01") || fullText.includes("mh-wom-02")) {
+    return {
+      photo: "/assets/scheme_cat_women.jpg",
+      card: "/assets/card_mahila_kalyan.jpg",
+      fallback: "/assets/scheme_cat_women.jpg",
+      icon: "👩",
+      badge: "₹1,500/महिना",
+      label: "मुख्यमंत्री माझी लाडकी बहीण योजना",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+    };
+  }
+
+  // 13. Lakhpati Didi Yojana
+  if (fullText.includes("lakhpati didi") || fullText.includes("लखपती दीदी")) {
+    return {
+      photo: "/assets/scheme_cat_women.jpg",
+      card: "/assets/card_lakhpati_didi.jpg",
+      fallback: "/assets/scheme_cat_women.jpg",
+      icon: "💰",
+      badge: "लखपती दीदी",
+      label: "लखपती दीदी योजना",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+    };
+  }
+
+  // 14. Maharashtra Mukhyamantri Udyogini Yojana
+  if (fullText.includes("udyogini") || fullText.includes("उद्योगिनी")) {
+    return {
+      photo: "/assets/scheme_cat_entrepreneur.jpg",
+      card: "/assets/card_udyogini.jpg",
+      fallback: "/assets/scheme_cat_entrepreneur.jpg",
+      icon: "🧵",
+      badge: "महिला उद्योग",
+      label: "महाराष्ट्र मुख्यमंत्री उद्योगिनी योजना",
+      themeClass: "card-theme-entrepreneurship",
+      color: "#c2410c",
+    };
+  }
+
+  // 15. Startup India / Stand-Up India / PMEGP / CGTMSE
+  if (fullText.includes("startup") || fullText.includes("stand-up") || fullText.includes("standup") || fullText.includes("स्टार्टअप") || fullText.includes("pmegp") || fullText.includes("cgtmse") || fullText.includes("mudra")) {
+    return {
+      photo: "/assets/scheme_cat_entrepreneur.jpg",
+      card: fullText.includes("pmegp") ? "/assets/card_pmegp.jpg" : fullText.includes("cgtmse") ? "/assets/card_cgtmse.jpg" : "/assets/card_startup_india.jpg",
+      fallback: "/assets/scheme_cat_entrepreneur.jpg",
+      icon: "🚀",
+      badge: "उद्यमिता कर्ज",
+      label: "स्टार्टअप इंडिया / स्टँड-अप इंडिया / PMEGP",
+      themeClass: "card-theme-entrepreneurship",
+      color: "#c2410c",
+    };
+  }
+
+  // 16. Scholarships & Higher Education (MahaDBT)
+  if (fullText.includes("scholarship") || fullText.includes("matric") || fullText.includes("छात्रवृत्ति") || fullText.includes("शिष्यवृत्ती") || fullText.includes("mahadbt") || fullText.includes("fellowship")) {
+    return {
+      photo: "/assets/scheme_cat_scholarship.jpg",
+      card: "/assets/card_scholarship.jpg",
+      fallback: "/assets/scheme_cat_scholarship.jpg",
+      icon: "🎓",
+      badge: "शिष्यवृत्ती",
+      label: "महाडीबीटी शिष्यवृत्ती योजना",
+      themeClass: "card-theme-scholarship",
+      color: "#1d4ed8",
+    };
+  }
+
+  // 17. MGNREGA / रोजगार हमी
+  if (fullText.includes("mgnrega") || fullText.includes("nrega") || fullText.includes("रोजगार हमी") || fullText.includes("मनरेगा")) {
+    return {
+      photo: "/assets/scheme_cat_other.jpg",
+      card: "/assets/card_mgnrega.jpg",
+      fallback: "/assets/scheme_cat_other.jpg",
+      icon: "👷",
+      badge: "१०० दिवस काम",
+      label: "महात्मा गांधी राष्ट्रीय ग्रामीण रोजगार हमी (मनरेगा)",
+      themeClass: "card-theme-other",
+      color: "#059669",
+    };
+  }
+
+  // 18. Digital India / Services
+  if (fullText.includes("digital india") || fullText.includes("डिजिटल इंडिया") || fullText.includes("mahaonline") || fullText.includes("aaple sarkar")) {
+    return {
+      photo: "/assets/scheme_cat_other.jpg",
+      card: "/assets/card_digital_india.jpg",
+      fallback: "/assets/scheme_cat_other.jpg",
+      icon: "📱",
+      badge: "Digital India",
+      label: "डिजिटल इंडिया नागरिक सेवा",
+      themeClass: "card-theme-other",
+      color: "#0284c7",
+    };
+  }
+
+  // 19. PM Matru Vandana Yojana (PMMVY)
+  if (fullText.includes("matru vandana") || fullText.includes("pmmvy") || fullText.includes("मातृ वंदना") || fullText.includes("mh-wom-03")) {
+    return {
+      photo: "/assets/scheme_cat_women.jpg",
+      card: "/assets/card_pm_matru_vandana.jpg",
+      fallback: "/assets/scheme_cat_women.jpg",
+      icon: "🤱",
+      badge: "₹5,000 मातृत्व",
+      label: "प्रधानमंत्री मातृ वंदना योजना (PMMVY)",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+    };
+  }
+
+  // 20. Janani Suraksha Yojana
+  if (fullText.includes("janani suraksha") || fullText.includes("जननी सुरक्षा")) {
+    return {
+      photo: "/assets/scheme_cat_women.jpg",
+      card: "/assets/card_janani_suraksha.jpg",
+      fallback: "/assets/scheme_cat_women.jpg",
+      icon: "👶",
+      badge: "सुरक्षित प्रसूती",
+      label: "जननी सुरक्षा योजना",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+    };
+  }
+
+  // 21. PMKVY / Kaushal Vikas
+  if (fullText.includes("kaushal vikas") || fullText.includes("pmkvy") || fullText.includes("skill") || fullText.includes("कौशल")) {
+    return {
+      photo: "/assets/scheme_cat_scholarship.jpg",
+      card: "/assets/card_pmkvy.jpg",
+      fallback: "/assets/scheme_cat_scholarship.jpg",
+      icon: "⚙️",
+      badge: "कौशल्य प्रशिक्षण",
+      label: "प्रधानमंत्री कौशल्य विकास योजना (PMKVY)",
+      themeClass: "card-theme-scholarship",
+      color: "#1d4ed8",
+    };
+  }
+
+  // 22. Deen Dayal Antyodaya / NRLM / Umeed
+  if (fullText.includes("nrlm") || fullText.includes("umeed") || fullText.includes("उमेद") || fullText.includes("antyodaya") || fullText.includes("self-help") || fullText.includes("बचत गट")) {
+    return {
+      photo: "/assets/scheme_cat_other.jpg",
+      card: "/assets/card_nrlm.jpg",
+      fallback: "/assets/scheme_cat_other.jpg",
+      icon: "🤝",
+      badge: "उमेद SHG",
+      label: "महाराष्ट्र उमेद अभियान (NRLM)",
+      themeClass: "card-theme-other",
+      color: "#059669",
+    };
+  }
+
+  // 23. Atal Pension Yojana (APY)
+  if (fullText.includes("atal pension") || fullText.includes("apy") || fullText.includes("अटल पेन्शन") || fullText.includes("pension") || fullText.includes("पेन्शन")) {
+    return {
+      photo: "/assets/scheme_cat_other.jpg",
+      card: "/assets/card_atal_pension.jpg",
+      fallback: "/assets/scheme_cat_other.jpg",
+      icon: "👵",
+      badge: "मासिक पेन्शन",
+      label: "अटल पेन्शन योजना (APY)",
+      themeClass: "card-theme-other",
+      color: "#6d28d9",
+    };
+  }
+
+  // 24. Fisheries & Aquaculture / Matsya Sampada
+  if (fullText.includes("fisheries") || fullText.includes("aquaculture") || fullText.includes("matsya") || fullText.includes("मत्स्य")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_fisheries.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "🐟",
+      badge: "मत्स्य व्यवसाय",
+      label: "मत्स्य व्यवसाय व जलकृषी विकास",
+      themeClass: "card-theme-farmer",
+      color: "#0284c7",
+    };
+  }
+
+  // 25. Sericulture / Silk
+  if (fullText.includes("sericulture") || fullText.includes("रेशीम") || fullText.includes("तुती")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_sericulture.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "🐛",
+      badge: "रेशीम उद्योग",
+      label: "रेशीम उद्योग व तुती लागवड योजना",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 26. Horticulture / फलोत्पादन
+  if (fullText.includes("horticulture") || fullText.includes("फल") || fullText.includes("फलोत्पादन")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_horticulture.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "🍎",
+      badge: "फलोत्पादन",
+      label: "एकात्मिक फलोत्पादन विकास अभियान",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 27. Animal Husbandry & Dairy / पशुसंवर्धन
+  if (fullText.includes("animal husbandry") || fullText.includes("dairy") || fullText.includes("पशुसंवर्धन") || fullText.includes("दुग्ध") || fullText.includes("gokul")) {
+    return {
+      photo: "/assets/scheme_cat_farmer.jpg",
+      card: "/assets/card_animal_husbandry.jpg",
+      fallback: "/assets/scheme_cat_farmer.jpg",
+      icon: "🐄",
+      badge: "पशुसंवर्धन",
+      label: "पशुसंवर्धन व दुग्ध व्यवसाय विकास",
+      themeClass: "card-theme-farmer",
+      color: "#166534",
+    };
+  }
+
+  // 28. Jal Jeevan Mission
+  if (fullText.includes("jal jeevan") || fullText.includes("जल जीवन") || fullText.includes("हर घर जल")) {
+    return {
+      photo: "/assets/scheme_cat_other.jpg",
+      card: "/assets/card_jal_jeevan.jpg",
+      fallback: "/assets/scheme_cat_other.jpg",
+      icon: "💧",
+      badge: "हर घर जल",
+      label: "जल जीवन मिशन",
+      themeClass: "card-theme-other",
+      color: "#0284c7",
+    };
+  }
+
+  // 29. Beti Bachao Beti Padhao
+  if (fullText.includes("beti bachao") || fullText.includes("बेटी बचाओ")) {
+    return {
+      photo: "/assets/scheme_cat_women.jpg",
+      card: "/assets/card_beti_bachao.jpg",
+      fallback: "/assets/scheme_cat_women.jpg",
+      icon: "👧",
+      badge: "बेटी बचाओ",
+      label: "बेटी बचाओ बेटी पढ़ाओ",
+      themeClass: "card-theme-women",
+      color: "#be185d",
+    };
+  }
+
+  // Fallback to broad category
+  return getSchemeCategoryPhoto(scheme.category);
 }
 
 export default function App() {
@@ -151,8 +947,25 @@ export default function App() {
   const [structuredSchemes, setStructuredSchemes] = useState([]);
   const [schemeSearch, setSchemeSearch] = useState("");
   const [schemeCategoryFilter, setSchemeCategoryFilter] = useState("all");
+  const [datasetSections, setDatasetSections] = useState([]);
+  const [selectedSectionGroup, setSelectedSectionGroup] = useState("all");
   const [selectedScheme, setSelectedScheme] = useState(null);
+  const [schemeLoading, setSchemeLoading] = useState(false);
+  const [schemeError, setSchemeError] = useState(null);
   const [schemeSubTab, setSchemeSubTab] = useState("overview");
+  const schemeFetchSeqRef = useRef(0);
+
+  // Automatic Scheme Update Pipeline State
+  const [syncStatus, setSyncStatus] = useState(null);
+  const [isSyncing, setIsSyncing] = useState(false);
+  const [showSyncModal, setShowSyncModal] = useState(false);
+  const [syncLogs, setSyncLogs] = useState([]);
+  const [syncLogsLoading, setSyncLogsLoading] = useState(false);
+  const [retryingSync, setRetryingSync] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [schemeHistoryList, setSchemeHistoryList] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [historyTargetScheme, setHistoryTargetScheme] = useState(null);
 
   // Documents Management State
   const [documentsList, setDocumentsList] = useState([]);
@@ -215,13 +1028,93 @@ export default function App() {
     fetchHealth();
     fetchHistory();
     fetchStructuredSchemes();
+    fetchDatasetSections();
     fetchDocuments();
     fetchSourcesRegistry();
+    fetchSyncStatus();
     return () => {
       stopTts();
       stopVoiceInput();
     };
   }, []);
+
+  async function fetchSyncStatus() {
+    try {
+      const res = await fetch(`${API}/api/sync/status`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data) setSyncStatus(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch sync status:", err);
+    }
+  }
+
+  async function handleTriggerSync() {
+    setIsSyncing(true);
+    try {
+      const res = await fetch(`${API}/api/sync/run`, { method: "POST" });
+      if (res.ok) {
+        await fetchStructuredSchemes();
+        await fetchSyncStatus();
+      }
+    } catch (err) {
+      console.error("Failed to run sync pipeline:", err);
+    } finally {
+      setIsSyncing(false);
+    }
+  }
+
+  async function fetchSyncLogs() {
+    setSyncLogsLoading(true);
+    try {
+      const res = await fetch(`${API}/api/sync/logs?limit=50`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data && data.items) setSyncLogs(data.items);
+      }
+    } catch (err) {
+      console.error("Failed to fetch sync logs:", err);
+    } finally {
+      setSyncLogsLoading(false);
+    }
+  }
+
+  async function handleRetrySync() {
+    setRetryingSync(true);
+    try {
+      const res = await fetch(`${API}/api/sync/retry`, { method: "POST" });
+      if (res.ok) {
+        await fetchStructuredSchemes();
+        await fetchSyncStatus();
+        await fetchSyncLogs();
+      }
+    } catch (err) {
+      console.error("Failed to retry sync:", err);
+    } finally {
+      setRetryingSync(false);
+    }
+  }
+
+  async function openSchemeHistory(scheme) {
+    if (!scheme) return;
+    const targetId = scheme.scheme_id || scheme.id;
+    setHistoryTargetScheme(scheme);
+    setShowHistoryModal(true);
+    setHistoryLoading(true);
+    setSchemeHistoryList([]);
+    try {
+      const res = await fetch(`${API}/api/schemes/${encodeURIComponent(targetId)}/history`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data && Array.isArray(data)) setSchemeHistoryList(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch scheme history:", err);
+    } finally {
+      setHistoryLoading(false);
+    }
+  }
 
   async function fetchHealth() {
     try {
@@ -243,9 +1136,21 @@ export default function App() {
     } catch {}
   }
 
+  async function fetchDatasetSections() {
+    try {
+      const res = await fetch(`${API}/schemes/sections`);
+      if (res.ok) {
+        const data = await safeParseJson(res);
+        if (data && Array.isArray(data)) setDatasetSections(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch dataset sections:", err);
+    }
+  }
+
   async function fetchStructuredSchemes() {
     try {
-      const res = await fetch(`${API}/schemes`);
+      const res = await fetch(`${API}/schemes?limit=2500`);
       if (res.ok) {
         const data = await safeParseJson(res);
         if (data) {
@@ -266,6 +1171,251 @@ export default function App() {
       console.error("Failed to fetch schemes:", err);
     }
   }
+
+  async function openSchemeDetails(schemeOrId) {
+    const rawId = typeof schemeOrId === "object" ? (schemeOrId.scheme_id || schemeOrId.id) : schemeOrId;
+    if (!rawId) return;
+
+    const currentSeq = ++schemeFetchSeqRef.current;
+
+    // Immediately clear stale state and show loading
+    setSelectedScheme(null);
+    setSchemeError(null);
+    setSchemeLoading(true);
+    setActiveTab("scheme-details");
+    setSchemeSubTab("overview");
+
+    try {
+      const res = await fetch(`${API}/schemes/${encodeURIComponent(rawId)}`);
+      if (currentSeq !== schemeFetchSeqRef.current) return;
+
+      if (!res.ok) {
+        if (res.status === 404) {
+          throw new Error(
+            selectedLang === "mr"
+              ? "शासकीय योजना प्रणालीत सापडली नाही (४०४)."
+              : selectedLang === "hi"
+              ? "सरकारी योजना डेटाबेस में नहीं मिली (404)।"
+              : "Government scheme not found in the database (404)."
+          );
+        }
+        throw new Error(`Failed to load scheme details (${res.status})`);
+      }
+
+      const data = await safeParseJson(res);
+      if (currentSeq !== schemeFetchSeqRef.current) return;
+      if (!data) throw new Error("Invalid scheme data received from server.");
+
+      setSelectedScheme(data);
+    } catch (err) {
+      if (currentSeq === schemeFetchSeqRef.current) {
+        setSchemeError(err.message || "Failed to load scheme details");
+      }
+    } finally {
+      if (currentSeq === schemeFetchSeqRef.current) {
+        setSchemeLoading(false);
+      }
+    }
+  }
+
+  const featuredDbSchemes = useMemo(() => {
+    const flagshipIds = [
+      "MAHAPOCRA-FARMERS-DBT",
+      "NAMO-SHETAKARI",
+      "PM-KISAN",
+      "PMFBY",
+      "MH-WOM-01",
+      "MUDRA-SHISHU",
+    ];
+    if (!structuredSchemes || structuredSchemes.length === 0) {
+      return [
+        {
+          id: 1,
+          scheme_id: "MAHAPOCRA-FARMERS-DBT",
+          scheme_name: "MahaPoCRA - Farmers DBT",
+          hindi_name: "नानाजी देशमुख कृषी संजीवनी प्रकल्प - शेतकरी डीबीटी (PoCRA Farmers DBT)",
+          category: "Agriculture",
+          dataset_section: "State Agriculture Scheme (BDS Active)",
+          status: "Active",
+          state_district: "Maharashtra (15 Districts)",
+          benefits: "Direct benefit transfer (DBT) financial assistance and subsidies for climate-resilient farming, drip & sprinkler irrigation, farm ponds, shade net houses, and horticulture plantations.",
+        },
+        {
+          id: 2,
+          scheme_id: "NAMO-SHETAKARI",
+          scheme_name: "Namo Shetakari Mahasanmaan Nidhi Yojana",
+          hindi_name: "नमो शेतकरी महासन्मान निधी योजना",
+          category: "Agriculture",
+          dataset_section: "BDS Flagship: Namo Shetakari Mahasanmaan Nidhi",
+          status: "Active",
+          state_district: "Maharashtra",
+          benefits: "Direct financial assistance of ₹6,000 per year from the Maharashtra State Government, disbursed in three equal installments directly into farmers' Aadhaar-linked bank accounts.",
+        },
+        {
+          id: 3,
+          scheme_id: "PM-KISAN",
+          scheme_name: "Pradhan Mantri Kisan Samman Nidhi",
+          hindi_name: "Pradhan Mantri Kisan Samman Nidhi",
+          category: "Agriculture",
+          dataset_section: "Central Flagship: Direct Income Support",
+          status: "Active",
+          state_district: "All India / Maharashtra",
+          benefits: "Financial benefit of ₹6000 per annum per family payable in three equal installments of ₹2000 each, transferred directly into bank accounts of land-holding farmer families.",
+        },
+      ];
+    }
+    const map = new Map(structuredSchemes.map((s) => [s.scheme_id, s]));
+    const matched = [];
+    for (const fid of flagshipIds) {
+      if (map.has(fid)) matched.push(map.get(fid));
+    }
+    if (matched.length < 3) {
+      for (const s of structuredSchemes) {
+        if (!matched.some((m) => (m.scheme_id || m.id) === (s.scheme_id || s.id))) {
+          const t = ((s.scheme_id || "") + " " + (s.scheme_name || "") + " " + (s.hindi_name || "")).toLowerCase();
+          if (t.includes("pocra") || t.includes("namo shet") || t.includes("kisan samman")) {
+            matched.push(s);
+          }
+        }
+        if (matched.length >= 6) break;
+      }
+    }
+    for (const s of structuredSchemes) {
+      if (!matched.some((m) => (m.scheme_id || m.id) === (s.scheme_id || s.id))) {
+        matched.push(s);
+      }
+      if (matched.length >= 6) break;
+    }
+    return matched;
+  }, [structuredSchemes]);
+
+  const renderSchemeCard = (s) => {
+    const visual = getSchemeVisual(s);
+    return (
+      <div
+        key={s.id || s.scheme_id}
+        className="scheme-card-item"
+        style={{ cursor: "pointer" }}
+        onClick={() => openSchemeDetails(s.scheme_id || s.id)}
+      >
+        <div>
+          <div className="scheme-card-thumbnail-wrap">
+            <img
+              src={visual.photo}
+              alt={s.hindi_name || s.scheme_name}
+              className="scheme-card-thumbnail-img"
+              loading="lazy"
+              decoding="async"
+              onError={(e) => {
+                if (e.target.dataset.fallbackTried === "primary") {
+                  e.target.dataset.fallbackTried = "secondary";
+                  e.target.src = "/assets/scheme_fallback.svg";
+                } else if (!e.target.dataset.fallbackTried) {
+                  e.target.dataset.fallbackTried = "primary";
+                  e.target.src = visual.fallback || "/assets/scheme_fallback.svg";
+                }
+              }}
+            />
+          </div>
+
+          <div className="scheme-card-top-icon-bar">
+            <div className="scheme-card-badge-icon">
+              {visual.icon}
+            </div>
+            <div style={{ display: "flex", gap: "5px", alignItems: "center", flexWrap: "wrap" }}>
+              {s.is_discontinued ? (
+                <span
+                  style={{
+                    background: "rgba(239, 68, 68, 0.15)",
+                    color: "#ef4444",
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    padding: "2px 7px",
+                    borderRadius: "10px",
+                    fontSize: "0.68rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  ⚠️ Discontinued
+                </span>
+              ) : (
+                <span
+                  style={{
+                    background: s.verification_status === "Pending Review" ? "rgba(245, 158, 11, 0.15)" : "var(--emerald-bg)",
+                    color: s.verification_status === "Pending Review" ? "#d97706" : "var(--emerald-text)",
+                    padding: "2px 7px",
+                    borderRadius: "10px",
+                    fontSize: "0.68rem",
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  {s.verification_status === "Pending Review" ? "⏳ Review Pending" : `● ${visual.badge || s.status || "Active"}`}
+                </span>
+              )}
+              {s.verification_status === "Verified" && !s.is_discontinued && (
+                <span
+                  title="Verified with official government sources"
+                  style={{
+                    background: "rgba(59, 130, 246, 0.12)",
+                    color: "#2563eb",
+                    border: "1px solid rgba(59, 130, 246, 0.25)",
+                    padding: "2px 6px",
+                    borderRadius: "10px",
+                    fontSize: "0.66rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  🛡️ Verified
+                </span>
+              )}
+            </div>
+          </div>
+
+          {s.dataset_section && (
+            <div className="scheme-card-dataset-section-tag" title={s.dataset_section}>
+              📑 {s.dataset_section}
+            </div>
+          )}
+
+          <h3 className="scheme-card-title-hi">{s.hindi_name}</h3>
+          <p className="scheme-card-title-en">{s.scheme_name}</p>
+          {s.department && (
+            <p style={{ margin: "2px 0 6px 0", fontSize: "0.74rem", color: "var(--text-dim)", fontWeight: 600 }}>
+              🏛️ {s.department}
+            </p>
+          )}
+          <p className="scheme-card-benefits-snippet">
+            <strong>💰 लाभ:</strong> {s.benefits ? s.benefits.slice(0, 110) + "..." : "सरकारी सहायता उपलब्ध"}
+          </p>
+        </div>
+
+        <div className="scheme-card-footer-action">
+          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+            <span style={{ fontSize: "0.74rem", color: "var(--text-dim)", fontWeight: 600 }}>
+              📍 {s.state_district}
+            </span>
+            {s.last_verified && (
+              <span style={{ fontSize: "0.68rem", color: "var(--text-muted)" }}>
+                🛡️ Verified: {s.last_verified.slice(0, 10)}
+              </span>
+            )}
+          </div>
+          <button
+            type="button"
+            className="scheme-card-details-link"
+            onClick={(e) => {
+              e.stopPropagation();
+              openSchemeDetails(s.scheme_id || s.id);
+            }}
+          >
+            <span>{t.viewDetailsLink || "विवरण देखें →"}</span>
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   async function fetchDocuments() {
     try {
@@ -440,12 +1590,17 @@ export default function App() {
   }
 
   // Core Ask AI function
-  async function ask(e, customQuery, langOverride) {
+  async function ask(e, customQuery, langOverride, schemeIdOverride) {
     if (e) e.preventDefault();
     const q = (customQuery !== undefined ? customQuery : question).trim();
     if (q.length < 3) return;
 
     const targetLang = langOverride || selectedLang || "hi";
+    const targetSchemeId =
+      schemeIdOverride !== undefined
+        ? schemeIdOverride
+        : (activeTab === "scheme-details" && selectedScheme ? (selectedScheme.scheme_id || selectedScheme.id) : null);
+
     setLoading(true);
     setError("");
     setResult(null);
@@ -454,17 +1609,22 @@ export default function App() {
     setActiveTab("ask-ai");
 
     try {
+      const payload = { question: q, language: targetLang };
+      if (targetSchemeId) {
+        payload.scheme_id = String(targetSchemeId);
+      }
+
       const res = await fetch(`${API}/research`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question: q, language: targetLang }),
+        body: JSON.stringify(payload),
       });
 
       const data = await safeParseJson(res);
       if (!res.ok) throw new Error(data?.detail || `Request failed with status ${res.status}`);
       if (!data) throw new Error("Server returned an invalid non-JSON response.");
 
-      setResult({ ...data, question: q, language: data.language || targetLang });
+      setResult({ ...data, question: q, language: data.language || targetLang, scoped_scheme_id: targetSchemeId });
       fetchHistory();
       fetchHealth();
     } catch (err) {
@@ -707,8 +1867,12 @@ export default function App() {
         <div>
           {/* Logo & Brand Header */}
           <div className="dash-sidebar-header">
-            <div className="dash-brand-emblem-wrap">
-              <span>🏛️</span>
+            <div className="dash-brand-emblem-wrap" title="State Emblem of India">
+              <img
+                src="/assets/national_emblem_light.png"
+                alt="State Emblem of India"
+                className="dash-brand-emblem-img"
+              />
             </div>
             <div className="dash-brand-text">
               <span className="dash-brand-title">AI Government</span>
@@ -802,12 +1966,18 @@ export default function App() {
           </ul>
         </div>
 
-        {/* Bottom Satyameva Jayate Emblem Watermark */}
-        <div className="dash-sidebar-footer">
-          <svg className="satyameva-emblem-svg" viewBox="0 0 100 100" fill="currentColor">
-            <circle cx="50" cy="50" r="42" fill="none" stroke="currentColor" strokeWidth="3" opacity="0.35" />
-            <path d="M50 20 L58 40 L80 40 L62 52 L68 74 L50 62 L32 74 L38 52 L20 40 L42 40 Z" opacity="0.5" />
-          </svg>
+        {/* Bottom Satyameva Jayate Official State Emblem */}
+        <div className="dash-sidebar-footer" title="State Emblem of India | सत्यमेव जयते">
+          <div className="satyameva-emblem-wrap">
+            <img
+              src="/assets/national_emblem_light.png"
+              alt="State Emblem of India - सत्यमेव जयते"
+              className="satyameva-emblem-img"
+              width="54"
+              height="80"
+              loading="lazy"
+            />
+          </div>
           <span className="satyameva-caption">सत्यमेव जयते</span>
         </div>
       </aside>
@@ -884,6 +2054,8 @@ export default function App() {
                     src="/assets/dashboard_hero_monument.jpg"
                     alt="India Monument Illustration"
                     className="dash-monument-illustration"
+                    loading="eager"
+                    decoding="async"
                     onError={(e) => {
                       // Graceful fallback if image path needs fallback
                       e.target.style.display = "none";
@@ -1112,6 +2284,8 @@ export default function App() {
                 </div>
               </div>
 
+
+
               {/* Stats Metrics Row (4 Cards - Pixel-Matched to Screenshot) */}
               <div className="dash-stats-grid">
                 <div className="dash-stat-box" onClick={() => setActiveTab("schemes")} style={{ cursor: "pointer" }}>
@@ -1219,6 +2393,41 @@ export default function App() {
                   </div>
                 </div>
 
+                {/* Active Scheme Scope Indicator */}
+                {result?.scoped_scheme_id && (
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: "10px",
+                      background: "var(--bg-card)",
+                      border: "1.5px solid var(--accent)",
+                      borderRadius: "var(--radius-md)",
+                      padding: "8px 14px",
+                      fontSize: "0.84rem",
+                      color: "var(--text-main)",
+                    }}
+                  >
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                      <span>🎯</span>
+                      <span>
+                        {selectedLang === "mr" ? "योजना-विशिष्ट संशोधन:" : selectedLang === "hi" ? "योजना-विशिष्ट अनुसंधान:" : "Scheme-Specific Research:"}{" "}
+                        <strong>{result.matched_scheme?.hindi_name || result.matched_scheme?.scheme_name || result.scoped_scheme_id}</strong>
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      style={{ fontSize: "0.76rem", padding: "3px 10px", border: "1px solid var(--panel-border)" }}
+                      onClick={() => ask(null, result.question, selectedLang, null)}
+                      title="Search across all government schemes"
+                    >
+                      {selectedLang === "mr" ? "सर्व योजनांमध्ये शोधा ✕" : selectedLang === "hi" ? "सभी योजनाओं में खोजें ✕" : "Search all schemes ✕"}
+                    </button>
+                  </div>
+                )}
+
                 {/* User Message Bubble */}
                 {question && (
                   <div className="askai-user-message-bubble">
@@ -1260,45 +2469,94 @@ export default function App() {
                 )}
 
                 {/* Structured Scheme Breakdown Card (if matched from DB) */}
-                {result?.matched_scheme && (
-                  <div
-                    style={{
-                      background: "var(--bg-card)",
-                      border: "1.5px solid var(--accent)",
-                      borderRadius: "var(--radius-lg)",
-                      padding: "20px",
-                      boxShadow: "var(--shadow-md)",
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
-                      <div>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                          <span style={{ fontSize: "1.3rem" }}>🏛️</span>
-                          <h3 style={{ margin: 0, fontSize: "1.2rem", color: "var(--text-main)", fontWeight: 700 }}>
-                            {result.matched_scheme.hindi_name}
-                          </h3>
-                        </div>
-                        <div style={{ fontSize: "0.86rem", color: "var(--text-muted)", marginTop: "3px" }}>
-                          {result.matched_scheme.scheme_name}
+                {result?.matched_scheme && (() => {
+                  const visual = getSchemeVisual(result.matched_scheme);
+                  return (
+                    <div
+                      style={{
+                        background: "var(--bg-card)",
+                        border: "1.5px solid var(--accent)",
+                        borderRadius: "var(--radius-lg)",
+                        overflow: "hidden",
+                        boxShadow: "var(--shadow-md)",
+                      }}
+                    >
+                      <div style={{ position: "relative", height: "145px", overflow: "hidden", background: "radial-gradient(circle at center, #f8fafc 0%, #e2e8f0 100%)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        <img
+                          src={visual.photo}
+                          alt={result.matched_scheme.scheme_name}
+                          style={{ width: "100%", height: "100%", objectFit: "contain", objectPosition: "center center", imageRendering: "-webkit-optimize-contrast" }}
+                          loading="lazy"
+                          decoding="async"
+                          onError={(e) => {
+                            if (e.target.dataset.fallbackTried === "primary") {
+                              e.target.dataset.fallbackTried = "secondary";
+                              e.target.src = "/assets/scheme_fallback.svg";
+                            } else if (!e.target.dataset.fallbackTried) {
+                              e.target.dataset.fallbackTried = "primary";
+                              e.target.src = visual.fallback || "/assets/scheme_fallback.svg";
+                            }
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "10px",
+                            left: "14px",
+                            background: "rgba(15, 23, 42, 0.85)",
+                            backdropFilter: "blur(6px)",
+                            color: "#ffffff",
+                            padding: "4px 12px",
+                            borderRadius: "20px",
+                            fontSize: "0.78rem",
+                            fontWeight: 700,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                          }}
+                        >
+                          <span>{visual.icon}</span>
+                          <span>{visual.label}</span>
                         </div>
                       </div>
-                      <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.76rem", fontWeight: 700 }}>
-                        ● {result.matched_scheme.status || "Active"}
-                      </span>
-                    </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "12px", marginTop: "16px" }}>
-                      <div style={{ background: "var(--bg-secondary)", padding: "12px", borderRadius: "var(--radius-md)" }}>
-                        <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>🎯 {t.eligibilityLabel}</span>
-                        <p style={{ margin: "4px 0 0", fontSize: "0.86rem", color: "var(--text-main)" }}>{result.matched_scheme.eligibility}</p>
-                      </div>
-                      <div style={{ background: "var(--bg-secondary)", padding: "12px", borderRadius: "var(--radius-md)" }}>
-                        <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>💰 {t.benefitsLabel}</span>
-                        <p style={{ margin: "4px 0 0", fontSize: "0.86rem", color: "var(--text-main)" }}>{result.matched_scheme.benefits}</p>
+                      <div style={{ padding: "18px 20px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "10px" }}>
+                          <div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <span style={{ fontSize: "1.3rem" }}>{visual.icon}</span>
+                              <h3 style={{ margin: 0, fontSize: "1.2rem", color: "var(--text-main)", fontWeight: 700 }}>
+                                {result.matched_scheme.hindi_name}
+                              </h3>
+                            </div>
+                            <div style={{ fontSize: "0.86rem", color: "var(--text-muted)", marginTop: "3px" }}>
+                              {result.matched_scheme.scheme_name}
+                            </div>
+                          </div>
+                          <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                            <span style={{ background: "var(--accent-glow)", color: "var(--accent)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.76rem", fontWeight: 700 }}>
+                              {visual.badge}
+                            </span>
+                            <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.76rem", fontWeight: 700 }}>
+                              ● {result.matched_scheme.status || "Active"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "12px", marginTop: "16px" }}>
+                          <div style={{ background: "var(--bg-secondary)", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                            <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>🎯 {t.eligibilityLabel}</span>
+                            <p style={{ margin: "4px 0 0", fontSize: "0.86rem", color: "var(--text-main)" }}>{result.matched_scheme.eligibility}</p>
+                          </div>
+                          <div style={{ background: "var(--bg-secondary)", padding: "12px", borderRadius: "var(--radius-md)" }}>
+                            <span style={{ fontSize: "0.74rem", fontWeight: 700, color: "var(--text-dim)", textTransform: "uppercase" }}>💰 {t.benefitsLabel}</span>
+                            <p style={{ margin: "4px 0 0", fontSize: "0.86rem", color: "var(--text-main)" }}>{result.matched_scheme.benefits}</p>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  );
+                })()}
 
                 {/* AI Research Answer Card */}
                 {result?.answer && (
@@ -1553,7 +2811,27 @@ export default function App() {
                   </span>
                 </div>
 
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+                  <button
+                    type="button"
+                    className="sync-btn-sync-now"
+                    onClick={handleTriggerSync}
+                    disabled={isSyncing}
+                    title="Automatically check authorized sources for updates and new schemes"
+                  >
+                    <span>{isSyncing ? "⏳ Syncing..." : "🔄 Sync Now"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="sync-btn-logs"
+                    onClick={() => {
+                      fetchSyncLogs();
+                      setShowSyncModal(true);
+                    }}
+                    title="View sync logs, status, and failure history"
+                  >
+                    <span>📊 Pipeline Logs</span>
+                  </button>
                   <button
                     type="button"
                     className="btn-primary"
@@ -1562,6 +2840,49 @@ export default function App() {
                   >
                     ➕ Extract New Scheme
                   </button>
+                </div>
+              </div>
+
+              {/* Automatic Scheme Update Pipeline Status Banner */}
+              <div className="sync-status-banner">
+                <div className="sync-status-banner-left">
+                  <div className={`sync-status-badge ${isSyncing ? "running" : (syncStatus?.last_sync_status === "FAILED" ? "failed" : "active")}`}>
+                    <span>{isSyncing ? "🔄 Live Syncing Official Sources..." : "🟢 Auto-Update Pipeline Active"}</span>
+                  </div>
+                  <div className="sync-metrics-chips">
+                    <span className="sync-metric-chip" title="Last time official sources were checked">
+                      <span>🕒 Last Checked:</span>
+                      <strong>{syncStatus?.last_completed_at ? new Date(syncStatus.last_completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Recently"}</strong>
+                    </span>
+                    <span className="sync-metric-chip" title="Total structured schemes verified in system">
+                      <span>📑 Verified Schemes:</span>
+                      <strong>{structuredSchemes.length}</strong>
+                    </span>
+                    {syncStatus?.last_result?.schemes_created > 0 && (
+                      <span className="sync-metric-chip" style={{ color: "#10b981" }}>
+                        <span>🆕 New:</span>
+                        <strong>+{syncStatus.last_result.schemes_created}</strong>
+                      </span>
+                    )}
+                    {syncStatus?.last_result?.schemes_updated > 0 && (
+                      <span className="sync-metric-chip" style={{ color: "#0284c7" }}>
+                        <span>🔄 Updated:</span>
+                        <strong>{syncStatus.last_result.schemes_updated}</strong>
+                      </span>
+                    )}
+                    {syncStatus?.last_result?.failed_sources?.length > 0 && (
+                      <span className="sync-metric-chip" style={{ color: "#ef4444" }}>
+                        <span>⚠️ Failed Sources:</span>
+                        <strong>{syncStatus.last_result.failed_sources.length}</strong>
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="sync-status-banner-right">
+                  <span style={{ fontSize: "0.76rem", color: "var(--text-dim)" }}>
+                    🛡️ Verified Official Sources Only • No Private Scraping
+                  </span>
                 </div>
               </div>
 
@@ -1604,286 +2925,502 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Schemes Cards Grid */}
-              <div className="schemes-card-directory-grid">
-                {structuredSchemes
-                  .filter((s) => {
-                    const matchesSearch =
-                      !schemeSearch ||
-                      s.scheme_name.toLowerCase().includes(schemeSearch.toLowerCase()) ||
-                      s.hindi_name.toLowerCase().includes(schemeSearch.toLowerCase()) ||
-                      s.eligibility.toLowerCase().includes(schemeSearch.toLowerCase()) ||
-                      s.benefits.toLowerCase().includes(schemeSearch.toLowerCase());
+              {/* Section Navigation Scroll Bar */}
+              <div style={{ margin: "16px 0 12px 0" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "8px", flexWrap: "wrap", gap: "8px" }}>
+                  <span style={{ fontSize: "0.86rem", fontWeight: 700, color: "var(--accent)", display: "flex", alignItems: "center", gap: "6px" }}>
+                    📑 {t.viewBySection || "Browse by Official Dataset Section"}:
+                  </span>
+                  {selectedSectionGroup !== "all" && (
+                    <button
+                      type="button"
+                      style={{
+                        background: "var(--bg-secondary)",
+                        border: "1px solid var(--panel-border)",
+                        borderRadius: "8px",
+                        color: "var(--text-muted)",
+                        cursor: "pointer",
+                        fontSize: "0.78rem",
+                        fontWeight: 600,
+                        padding: "3px 10px",
+                      }}
+                      onClick={() => setSelectedSectionGroup("all")}
+                    >
+                      ✕ {t.filterAll || "Reset"}
+                    </button>
+                  )}
+                </div>
+                <div className="schemes-section-nav-scroll">
+                  <button
+                    type="button"
+                    className={`schemes-section-nav-pill ${selectedSectionGroup === "all" ? "active" : ""}`}
+                    onClick={() => setSelectedSectionGroup("all")}
+                  >
+                    <span>📑 {t.allSectionsPill || "All Dataset Sections"}</span>
+                    <span className="section-count-badge">{structuredSchemes.length}</span>
+                  </button>
+                  {datasetSections.map((sec) => (
+                    <button
+                      key={sec.group_id}
+                      type="button"
+                      className={`schemes-section-nav-pill ${selectedSectionGroup === sec.group_id ? "active" : ""}`}
+                      onClick={() => setSelectedSectionGroup(sec.group_id)}
+                    >
+                      <span>{sec.icon} {sec.group_name}</span>
+                      <span className="section-count-badge">{sec.count}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-                    const matchesCat =
-                      schemeCategoryFilter === "all" ||
-                      (schemeCategoryFilter === "Women"
-                        ? s.category.toLowerCase().includes("women") ||
+              {/* Schemes Cards Rendering */}
+              {(() => {
+                const filteredSchemes = structuredSchemes.filter((s) => {
+                  const matchesSearch =
+                    !schemeSearch ||
+                    (s.scheme_name && s.scheme_name.toLowerCase().includes(schemeSearch.toLowerCase())) ||
+                    (s.hindi_name && s.hindi_name.toLowerCase().includes(schemeSearch.toLowerCase())) ||
+                    (s.eligibility && s.eligibility.toLowerCase().includes(schemeSearch.toLowerCase())) ||
+                    (s.benefits && s.benefits.toLowerCase().includes(schemeSearch.toLowerCase())) ||
+                    (s.dataset_section && s.dataset_section.toLowerCase().includes(schemeSearch.toLowerCase()));
+
+                  const matchesCat =
+                    schemeCategoryFilter === "all" ||
+                    (schemeCategoryFilter === "Women"
+                      ? s.category && (s.category.toLowerCase().includes("women") ||
                           s.category.toLowerCase().includes("child") ||
-                          s.category.toLowerCase().includes("girl")
-                        : s.category.toLowerCase().includes(schemeCategoryFilter.toLowerCase()));
+                          s.category.toLowerCase().includes("girl"))
+                      : s.category && s.category.toLowerCase().includes(schemeCategoryFilter.toLowerCase()));
 
-                    return matchesSearch && matchesCat;
-                  })
-                  .map((s) => {
-                    const catInfo = getSchemeCategoryPhoto(s.category);
-                    return (
-                      <div key={s.id || s.scheme_id} className="scheme-card-item">
-                        <div>
-                          <div className="scheme-card-thumbnail-wrap">
-                            <img
-                              src={catInfo.photo}
-                              alt={s.hindi_name}
-                              className="scheme-card-thumbnail-img"
-                              onError={(e) => {
-                                e.target.src = catInfo.fallback;
-                              }}
-                            />
-                          </div>
+                  const matchesGroup =
+                    selectedSectionGroup === "all" || s.section_group === selectedSectionGroup;
 
-                          <div className="scheme-card-top-icon-bar">
-                            <div className="scheme-card-badge-icon">
-                              {catInfo.icon}
-                            </div>
-                            <span
-                              style={{
-                                background: "var(--emerald-bg)",
-                                color: "var(--emerald-text)",
-                                padding: "2px 8px",
-                                borderRadius: "10px",
-                                fontSize: "0.72rem",
-                                fontWeight: 700,
-                              }}
-                            >
-                              ● {s.status || "Active"}
-                            </span>
-                          </div>
+                  return matchesSearch && matchesCat && matchesGroup;
+                });
 
-                          <h3 className="scheme-card-title-hi">{s.hindi_name}</h3>
-                          <p className="scheme-card-title-en">{s.scheme_name}</p>
-                          <p className="scheme-card-benefits-snippet">
-                            <strong>💰 लाभ:</strong> {s.benefits ? s.benefits.slice(0, 110) + "..." : "सरकारी सहायता उपलब्ध"}
-                          </p>
-                        </div>
-
-                      <div className="scheme-card-footer-action">
-                        <span style={{ fontSize: "0.75rem", color: "var(--text-dim)", fontWeight: 600 }}>
-                          📍 {s.state_district}
-                        </span>
-                        <button
-                          type="button"
-                          className="scheme-card-details-link"
-                          onClick={() => {
-                            setSelectedScheme(s);
-                            setActiveTab("scheme-details");
-                          }}
-                        >
-                          <span>{t.viewDetailsLink || "विवरण देखें →"}</span>
-                        </button>
-                      </div>
+                if (filteredSchemes.length === 0) {
+                  return (
+                    <div className="notice-card" style={{ padding: "40px 20px", textAlign: "center", justifyContent: "center", margin: "20px 0" }}>
+                      <p style={{ margin: 0, color: "var(--text-muted)", fontSize: "1rem" }}>
+                        🔍 {t.noResultsFound || "कोई योजना नहीं मिली। कृपया फ़िल्टर बदलें।"}
+                      </p>
                     </div>
                   );
-                })}
-              </div>
+                }
+
+                // If user is NOT searching and has selected "all" section groups, render section-wise groups!
+                if (!schemeSearch && selectedSectionGroup === "all" && datasetSections.length > 0) {
+                  const renderedGroupIds = new Set();
+                  return (
+                    <div>
+                      {datasetSections.map((sec) => {
+                        const secSchemes = filteredSchemes.filter((s) => s.section_group === sec.group_id);
+                        if (secSchemes.length === 0) return null;
+                        renderedGroupIds.add(sec.group_id);
+                        return (
+                          <div key={sec.group_id} className="dataset-section-group-block">
+                            <div className="dataset-section-group-header">
+                              <div className="dataset-section-group-header-left">
+                                <div className="dataset-section-group-icon">{sec.icon}</div>
+                                <div>
+                                  <h3 className="dataset-section-group-title">{sec.group_name}</h3>
+                                  <p className="dataset-section-group-sub">
+                                    {sec.authority} {sec.source_file ? `• ${sec.source_file}` : ""}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="dataset-section-meta-tags">
+                                {sec.source_file && (
+                                  <span className="dataset-source-file-badge">📁 {sec.source_file}</span>
+                                )}
+                                <span className="dataset-section-count-chip">
+                                  {secSchemes.length} {t.schemesCountLabel || "Schemes"}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="schemes-card-directory-grid">
+                              {secSchemes.map((s) => renderSchemeCard(s))}
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {/* Fallback for schemes not in recognized groups */}
+                      {(() => {
+                        const remaining = filteredSchemes.filter((s) => !renderedGroupIds.has(s.section_group));
+                        if (remaining.length === 0) return null;
+                        return (
+                          <div className="dataset-section-group-block">
+                            <div className="dataset-section-group-header">
+                              <div className="dataset-section-group-header-left">
+                                <div className="dataset-section-group-icon">🏛️</div>
+                                <div>
+                                  <h3 className="dataset-section-group-title">Additional Government Schemes</h3>
+                                  <p className="dataset-section-group-sub">Central & State Portal Database</p>
+                                </div>
+                              </div>
+                              <span className="dataset-section-count-chip">
+                                {remaining.length} {t.schemesCountLabel || "Schemes"}
+                              </span>
+                            </div>
+                            <div className="schemes-card-directory-grid">
+                              {remaining.map((s) => renderSchemeCard(s))}
+                            </div>
+                          </div>
+                        );
+                      })()}
+                    </div>
+                  );
+                }
+
+                // Otherwise (searching or specific section group selected): single grid
+                return (
+                  <div className="schemes-card-directory-grid">
+                    {filteredSchemes.map((s) => renderSchemeCard(s))}
+                  </div>
+                );
+              })()}
             </div>
           )}
 
           {/* =========================================================================
               SCREEN 4: SCHEME DETAILS VIEW
               ========================================================================= */}
-          {activeTab === "scheme-details" && selectedScheme && (
+          {activeTab === "scheme-details" && (
             <div className="scheme-detail-screen">
-              <div className="scheme-detail-header-nav">
-                <button type="button" className="askai-back-btn" onClick={() => setActiveTab("schemes")}>
-                  {t.backToSchemes || "← सभी योजनाएं"}
-                </button>
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <span style={{ background: "var(--bg-secondary)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent)" }}>
-                    🏷️ {selectedScheme.category}
-                  </span>
-                  <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700 }}>
-                    ● {selectedScheme.status || "Active"}
+              {schemeLoading && (
+                <div className="notice-card" style={{ background: "var(--bg-secondary)", padding: "40px", justifyContent: "center", margin: "20px 0" }}>
+                  <span className="spinner" />
+                  <span style={{ fontWeight: 600, fontSize: "1.05rem" }}>
+                    {selectedLang === "mr" ? "योजनेची अधिकृत माहिती लोड होत आहे..." : selectedLang === "hi" ? "योजना का आधिकारिक विवरण लोड हो रहा है..." : "Loading verified scheme details..."}
                   </span>
                 </div>
-              </div>
+              )}
 
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
-                <div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
-                    <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.85rem", margin: 0, color: "var(--text-main)", fontWeight: 800 }}>
-                      {selectedScheme.hindi_name}
-                    </h1>
-                    <span className="scheme-badge-farmer">
-                      🌾 {selectedScheme.category?.includes("Agriculture") || selectedScheme.category?.includes("Farmer") ? "किसान" : selectedScheme.category}
-                    </span>
-                  </div>
-                  <p style={{ margin: "4px 0 0 0", fontSize: "0.94rem", color: "var(--text-muted)" }}>
-                    {selectedScheme.scheme_name} • 🏛️ {selectedScheme.authority}
-                  </p>
-                </div>
-
-                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
-                  <span style={{ background: "var(--bg-secondary)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent)" }}>
-                    📍 {selectedScheme.state_district}
-                  </span>
-                  <span style={{ background: "var(--emerald-bg)", color: "var(--emerald-text)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700 }}>
-                    ● {selectedScheme.status || "Active"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Dynamic Scheme Category Banner with Photos */}
-              {(() => {
-                const catInfo = getSchemeCategoryPhoto(selectedScheme.category);
-                return (
-                  <div className="scheme-banner-container">
-                    <img
-                      src={catInfo.photo}
-                      alt={selectedScheme.scheme_name}
-                      className="scheme-detail-hero-banner"
-                      onError={(e) => {
-                        e.target.src = catInfo.fallback || "/assets/scheme_farmer_banner.jpg";
+              {schemeError && !schemeLoading && (
+                <div className="notice-card error" style={{ padding: "24px", margin: "20px 0" }}>
+                  <div className="notice-icon">⚠️</div>
+                  <div className="notice-body">
+                    <h3 style={{ margin: "0 0 8px 0" }}>{selectedLang === "mr" ? "योजना आढळली नाही" : selectedLang === "hi" ? "योजना नहीं मिली" : "Scheme Not Found"}</h3>
+                    <p>{schemeError}</p>
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={() => {
+                        setActiveTab("schemes");
+                        setSelectedScheme(null);
+                        setSchemeError(null);
                       }}
-                    />
-                    <div className="scheme-banner-badge-overlay">
-                      <span>{catInfo.icon}</span>
-                      <span>{selectedScheme.hindi_name} • {catInfo.label}</span>
+                      style={{ marginTop: "12px" }}
+                    >
+                      {t.backToSchemes || "← सभी योजनाएं"}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {!schemeLoading && !schemeError && selectedScheme && (
+                <>
+                  <div className="scheme-detail-header-nav">
+                    <button type="button" className="askai-back-btn" onClick={() => setActiveTab("schemes")}>
+                      {t.backToSchemes || "← सभी योजनाएं"}
+                    </button>
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+                      {selectedScheme.scheme_id && (
+                        <span style={{ background: "var(--bg-secondary)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.78rem", fontWeight: 700, color: "var(--text-muted)", fontFamily: "monospace" }}>
+                          ID: {selectedScheme.scheme_id}
+                        </span>
+                      )}
+                      <span style={{ background: "var(--bg-secondary)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent)" }}>
+                        🏷️ {selectedScheme.category}
+                      </span>
+                      {selectedScheme.dataset_section && (
+                        <span style={{ background: "rgba(2, 132, 199, 0.12)", color: "var(--accent)", border: "1px solid rgba(2, 132, 199, 0.25)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.78rem", fontWeight: 700 }}>
+                          📑 {selectedScheme.dataset_section}
+                        </span>
+                      )}
+                      <span
+                        style={{
+                          background: selectedScheme.is_discontinued ? "rgba(239, 68, 68, 0.15)" : (selectedScheme.verification_status === "Pending Review" ? "rgba(245, 158, 11, 0.15)" : "var(--emerald-bg)"),
+                          color: selectedScheme.is_discontinued ? "#ef4444" : (selectedScheme.verification_status === "Pending Review" ? "#d97706" : "var(--emerald-text)"),
+                          padding: "4px 10px",
+                          borderRadius: "12px",
+                          fontSize: "0.8rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        ● {selectedScheme.is_discontinued ? "Discontinued" : (selectedScheme.status || "Active")}
+                      </span>
+                      <span
+                        style={{
+                          background: "rgba(59, 130, 246, 0.12)",
+                          color: "#2563eb",
+                          padding: "4px 10px",
+                          borderRadius: "12px",
+                          fontSize: "0.78rem",
+                          fontWeight: 700,
+                        }}
+                      >
+                        {selectedScheme.verification_status === "Pending Review" ? "⏳ Pending Review" : "🛡️ Verified Scheme"}
+                      </span>
+                      <button
+                        type="button"
+                        className="btn-secondary"
+                        style={{ padding: "4px 10px", fontSize: "0.76rem" }}
+                        onClick={() => openSchemeHistory(selectedScheme)}
+                        title="Inspect change history, content diffs, and revisions"
+                      >
+                        📜 Revision History
+                      </button>
                     </div>
                   </div>
-                );
-              })()}
 
-              {/* Sub-tabs Navigation Bar */}
-              <div className="scheme-tabs-nav-bar">
-                {[
-                  { id: "overview", label: t.tabOverview || "परिचय" },
-                  { id: "eligibility", label: t.tabEligibility || "पात्रता" },
-                  { id: "benefits", label: t.tabBenefits || "लाभ" },
-                  { id: "documents", label: t.tabDocuments || "आवश्यक दस्तावेज़" },
-                  { id: "process", label: t.tabProcess || "आवेदन प्रक्रिया" },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    className={`scheme-tab-header-btn ${schemeSubTab === tab.id ? "active" : ""}`}
-                    onClick={() => setSchemeSubTab(tab.id)}
-                  >
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "12px", marginBottom: "16px" }}>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+                        <h1 style={{ fontFamily: "var(--font-heading)", fontSize: "1.85rem", margin: 0, color: "var(--text-main)", fontWeight: 800 }}>
+                          {selectedScheme.hindi_name}
+                        </h1>
+                        <span className="scheme-badge-farmer">
+                          {selectedScheme.category?.includes("Agriculture") || selectedScheme.category?.includes("Farmer") ? "🌾 किसान" : selectedScheme.category?.includes("Women") ? "👩 महिला" : selectedScheme.category}
+                        </span>
+                      </div>
+                      <p style={{ margin: "4px 0 0 0", fontSize: "0.94rem", color: "var(--text-muted)" }}>
+                        {selectedScheme.scheme_name} • 🏛️ {selectedScheme.department || selectedScheme.authority}
+                      </p>
+                    </div>
 
-              {/* Tab Content Display - Clean 2-Column Mockup Layout */}
-              <div className="scheme-details-content-grid">
-                {schemeSubTab === "overview" && (
-                  <>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      <div className="scheme-detail-info-card">
-                        <span className="scheme-detail-card-title">📖 {t.schemeDescTitle || "योजना का विवरण"}</span>
-                        <p className="scheme-detail-card-text">
-                          {selectedScheme.guidelines_summary || selectedScheme.scheme_name}
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" }}>
+                      <span style={{ background: "var(--bg-secondary)", padding: "4px 12px", borderRadius: "12px", fontSize: "0.8rem", fontWeight: 700, color: "var(--accent)" }}>
+                        📍 {selectedScheme.state_district}
+                      </span>
+                      {selectedScheme.last_verified && (
+                        <span style={{ background: "var(--bg-secondary)", border: "1px solid var(--panel-border)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.76rem", color: "var(--text-muted)" }}>
+                          🛡️ Verified: {selectedScheme.last_verified.slice(0, 10)}
+                        </span>
+                      )}
+                      {selectedScheme.last_checked && (
+                        <span style={{ background: "var(--bg-secondary)", border: "1px solid var(--panel-border)", padding: "4px 10px", borderRadius: "12px", fontSize: "0.76rem", color: "var(--text-muted)" }}>
+                          🔍 Checked: {selectedScheme.last_checked.slice(0, 10)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Dynamic Scheme Category Banner with Photos */}
+                  {(() => {
+                    const visual = getSchemeVisual(selectedScheme);
+                    return (
+                      <div className="scheme-banner-container">
+                        <img
+                          src={visual.photo}
+                          alt=""
+                          aria-hidden="true"
+                          className="scheme-banner-bg-blur"
+                        />
+                        <img
+                          src={visual.photo}
+                          alt={selectedScheme.scheme_name}
+                          className="scheme-detail-hero-banner"
+                          loading="eager"
+                          decoding="sync"
+                          onError={(e) => {
+                            if (e.target.dataset.fallbackTried === "primary") {
+                              e.target.dataset.fallbackTried = "secondary";
+                              e.target.src = "/assets/scheme_fallback.svg";
+                            } else if (!e.target.dataset.fallbackTried) {
+                              e.target.dataset.fallbackTried = "primary";
+                              e.target.src = visual.fallback || "/assets/scheme_fallback.svg";
+                            }
+                          }}
+                        />
+                        <div className="scheme-banner-badge-overlay">
+                          <span>{visual.icon}</span>
+                          <span>{selectedScheme.hindi_name} • {visual.label}</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
+
+                  {/* Dataset Section Callout Card */}
+                  {selectedScheme.dataset_section && (
+                    <div className="scheme-detail-dataset-callout">
+                      <div className="scheme-detail-dataset-callout-icon">📑</div>
+                      <div style={{ flex: 1 }}>
+                        <div className="scheme-detail-dataset-callout-title">
+                          {t.officialCompendium || "Official Dataset Compendium"}
+                        </div>
+                        <div className="scheme-detail-dataset-callout-section-name">
+                          {selectedScheme.dataset_section}
+                        </div>
+                        <div className="scheme-detail-dataset-callout-meta">
+                          {selectedScheme.authority && (
+                            <span>🏛️ <strong>प्राधिकरण / Authority:</strong> {selectedScheme.authority}</span>
+                          )}
+                          {selectedScheme.state_district && (
+                            <span>📍 <strong>क्षेत्र / Jurisdiction:</strong> {selectedScheme.state_district}</span>
+                          )}
+                          {selectedScheme.category && (
+                            <span>🏷️ <strong>वर्ग / Category:</strong> {selectedScheme.category}</span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Sub-tabs Navigation Bar */}
+                  <div className="scheme-tabs-nav-bar">
+                    {[
+                      { id: "overview", label: t.tabOverview || "परिचय" },
+                      { id: "eligibility", label: t.tabEligibility || "पात्रता" },
+                      { id: "benefits", label: t.tabBenefits || "लाभ" },
+                      { id: "documents", label: t.tabDocuments || "आवश्यक दस्तावेज़" },
+                      { id: "process", label: t.tabProcess || "आवेदन प्रक्रिया" },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        type="button"
+                        className={`scheme-tab-header-btn ${schemeSubTab === tab.id ? "active" : ""}`}
+                        onClick={() => setSchemeSubTab(tab.id)}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Tab Content Display - Clean Layout */}
+                  <div className="scheme-details-content-grid">
+                    {schemeSubTab === "overview" && (
+                      <>
+                        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div className="scheme-detail-info-card">
+                            <span className="scheme-detail-card-title">📖 {t.schemeDescTitle || "योजना का विवरण"}</span>
+                            <p className="scheme-detail-card-text" style={{ whiteSpace: "pre-line" }}>
+                              {selectedScheme.description || selectedScheme.guidelines_summary || selectedScheme.scheme_name}
+                            </p>
+                          </div>
+
+                          <div className="scheme-detail-info-card">
+                            <span className="scheme-detail-card-title">💰 {t.keyBenefitsTitle || "मुख्य लाभ"}</span>
+                            <div className="scheme-detail-card-text">
+                              <ul style={{ margin: "4px 0 0 16px", padding: 0 }}>
+                                {selectedScheme.benefits
+                                  ? selectedScheme.benefits.split("\n").filter(Boolean).map((b, i) => (
+                                      <li key={i} style={{ marginBottom: "6px" }}>{b.replace(/^[-\d.]+\s*/, "")}</li>
+                                    ))
+                                  : <li>अधिकृत शासकीय आर्थिक लाभ व अनुदान डीबीटी (DBT) द्वारे.</li>}
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                          <div className="scheme-detail-info-card">
+                            <span className="scheme-detail-card-title">📄 {t.reqDocsTitle || "आवश्यक दस्तावेज"}</span>
+                            <div className="scheme-detail-card-text">
+                              <ul style={{ listStyle: "none", margin: "4px 0 0 0", padding: 0 }}>
+                                {(selectedScheme.documents
+                                  ? selectedScheme.documents.split("\n").filter(Boolean)
+                                  : ["आधार कार्ड (Aadhaar Card)", "सक्रिय बँक खाते (Active Bank Account / Passbook)", "ओळख व रहिवासी पुरावा", "मोबाईल क्रमांक"]
+                                ).map((doc, i) => (
+                                  <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
+                                    <span style={{ color: "#10b981", fontWeight: 800 }}>✓</span>
+                                    <span>{doc.replace(/^[-\d.]+\s*/, "")}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="scheme-detail-info-card">
+                            <span className="scheme-detail-card-title">👥 {t.beneficiaryLabel || "पात्र लाभार्थी"}</span>
+                            <p className="scheme-detail-card-text">{selectedScheme.beneficiary}</p>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {schemeSubTab === "eligibility" && (
+                      <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                        <span className="scheme-detail-card-title">🎯 {t.eligibilityLabel || "पात्रता (Eligibility Criteria)"}</span>
+                        <p className="scheme-detail-card-text" style={{ whiteSpace: "pre-line" }}>
+                          {selectedScheme.eligibility || selectedScheme.eligibility_criteria || "सविस्तर पात्रता निकष अधिकृत पोर्टलवर उपलब्ध आहेत."}
                         </p>
                       </div>
+                    )}
 
-                      <div className="scheme-detail-info-card">
-                        <span className="scheme-detail-card-title">💰 {t.keyBenefitsTitle || "मुख्य लाभ"}</span>
-                        <div className="scheme-detail-card-text">
-                          <ul style={{ margin: "4px 0 0 16px", padding: 0 }}>
-                            {selectedScheme.benefits
-                              ? selectedScheme.benefits.split("\n").filter(Boolean).map((b, i) => (
-                                  <li key={i} style={{ marginBottom: "6px" }}>{b.replace(/^[-\d.]+\s*/, "")}</li>
-                                ))
-                              : <li>सरकारी वित्तीय सहायता एवं आर्थिक अनुदान डीबीटी (DBT) के माध्यम से।</li>}
-                          </ul>
-                        </div>
+                    {schemeSubTab === "benefits" && (
+                      <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                        <span className="scheme-detail-card-title">💰 {t.keyBenefitsTitle || "मुख्य लाभ (Benefits & Assistance)"}</span>
+                        <p className="scheme-detail-card-text" style={{ whiteSpace: "pre-line" }}>
+                          {selectedScheme.benefits || "शासकीय नियमांनुसार आर्थिक मदत आणि थेट लाभ हस्तांतरण (DBT)."}
+                        </p>
                       </div>
-                    </div>
+                    )}
 
-                    <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                      <div className="scheme-detail-info-card">
-                        <span className="scheme-detail-card-title">📄 {t.reqDocsTitle || "आवश्यक दस्तावेज"}</span>
-                        <div className="scheme-detail-card-text">
-                          <ul style={{ listStyle: "none", margin: "4px 0 0 0", padding: 0 }}>
-                            {(selectedScheme.documents
-                              ? selectedScheme.documents.split("\n").filter(Boolean)
-                              : ["आधार कार्ड", "बैंक खाता विवरण", "भूमि रिकॉर्ड (7/12 व खसरा)", "मोबाइल नंबर"]
-                            ).map((doc, i) => (
-                              <li key={i} style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "8px" }}>
-                                <span style={{ color: "#10b981", fontWeight: 800 }}>✓</span>
-                                <span>{doc.replace(/^[-\d.]+\s*/, "")}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
+                    {schemeSubTab === "documents" && (
+                      <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                        <span className="scheme-detail-card-title">📄 {t.reqDocsTitle || "आवश्यक दस्तावेज (Required Documents)"}</span>
+                        <p className="scheme-detail-card-text" style={{ whiteSpace: "pre-line" }}>
+                          {selectedScheme.documents || selectedScheme.required_documents || "आधार कार्ड, बँक पासबुक, पासपोर्ट फोटो व संबंधित प्रमाणपत्रे."}
+                        </p>
                       </div>
+                    )}
 
-                      <div className="scheme-detail-info-card">
-                        <span className="scheme-detail-card-title">👥 {t.beneficiaryLabel || "पात्र लाभार्थी"}</span>
-                        <p className="scheme-detail-card-text">{selectedScheme.beneficiary}</p>
+                    {schemeSubTab === "process" && (
+                      <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
+                        <span className="scheme-detail-card-title">📝 {t.tabProcess || "आवेदन प्रक्रिया (Application Process)"}</span>
+                        <p className="scheme-detail-card-text" style={{ whiteSpace: "pre-line" }}>
+                          {selectedScheme.application_process || (
+                            selectedScheme.official_source_url
+                              ? `1. अधिकृत पोर्टलवर भेट द्या: ${selectedScheme.official_source_url}\n2. नवीन अर्ज नोंदणी (New Registration) पर्यायावर क्लिक करा.\n3. आवश्यक वैयक्तिक माहिती, बँक खाते व आधार तपशील भरा.\n4. कागदपत्रे अपलोड करून अर्ज सबमिट करा व पोचपावती (Acknowledgment) जतन करा.`
+                              : "1. अधिकृत शासकीय पोर्टल किंवा नजीकच्या आपले सरकार / सीएससी सेवा केंद्रावर जा.\n2. विहित नमुन्यातील अर्ज भरून आवश्यक कागदपत्रे जोडा.\n3. बायोमेट्रिक किंवा ओटीपी द्वारे ई-केवायसी पूर्ण करा.\n4. अर्ज सादर करून पावती क्रमांक मिळवा."
+                          )}
+                        </p>
                       </div>
-                    </div>
-                  </>
-                )}
-
-                {schemeSubTab === "eligibility" && (
-                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
-                    <span className="scheme-detail-card-title">🎯 {t.eligibilityLabel || "पात्रता (Eligibility Criteria)"}</span>
-                    <p className="scheme-detail-card-text">{selectedScheme.eligibility}</p>
+                    )}
                   </div>
-                )}
 
-                {schemeSubTab === "benefits" && (
-                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
-                    <span className="scheme-detail-card-title">💰 {t.keyBenefitsTitle || "मुख्य लाभ (Benefits & Assistance)"}</span>
-                    <p className="scheme-detail-card-text">{selectedScheme.benefits}</p>
+                  {/* Bottom CTA Row */}
+                  <div className="scheme-detail-bottom-cta-row">
+                    <button
+                      type="button"
+                      className="btn-secondary"
+                      onClick={() => {
+                        const q = `${selectedScheme.hindi_name} (${selectedScheme.scheme_name}) ची पात्रता आणि लाभ काय आहेत?`;
+                        setQuestion(q);
+                        ask(null, q, selectedLang, selectedScheme.scheme_id || selectedScheme.id);
+                      }}
+                    >
+                      {t.askAiAboutThisSchemeBtn || "💬 इस योजना के बारे में AI से पूछें"}
+                    </button>
+
+                    {selectedScheme.application_url && (
+                      <a
+                        href={selectedScheme.application_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="scheme-official-portal-btn"
+                        style={{ background: "linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)", color: "#ffffff", boxShadow: "0 2px 8px rgba(37, 99, 235, 0.35)" }}
+                        title="Direct link to official online application portal"
+                      >
+                        <span>📝 Apply Online (अधिकृत अर्ज पोर्टल) ↗</span>
+                      </a>
+                    )}
+
+                    {selectedScheme.official_source_url && (
+                      <a
+                        href={selectedScheme.official_source_url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="scheme-official-portal-btn"
+                      >
+                        <span>{t.visitOfficialPortalBtn || "आधिकारिक वेबसाइट पर जाएँ ↗"}</span>
+                      </a>
+                    )}
                   </div>
-                )}
-
-                {schemeSubTab === "documents" && (
-                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
-                    <span className="scheme-detail-card-title">📄 {t.reqDocsTitle || "आवश्यक दस्तावेज (Required Documents)"}</span>
-                    <p className="scheme-detail-card-text">{selectedScheme.documents || "Aadhaar Card, Bank Passbook, Land Records"}</p>
-                  </div>
-                )}
-
-                {schemeSubTab === "process" && (
-                  <div className="scheme-detail-info-card" style={{ gridColumn: "1 / -1" }}>
-                    <span className="scheme-detail-card-title">📝 {t.tabProcess || "आवेदन प्रक्रिया (Application Process)"}</span>
-                    <p className="scheme-detail-card-text">
-                      1. आधिकारिक पोर्टल या नजदीकी सीएससी (CSC) केंद्र पर जाएं।{"\n"}
-                      2. आवश्यक दस्तावेज (आधार कार्ड, बैंक खाता, 7/12 खतौनी) संलग्न करें।{"\n"}
-                      3. बायोमेट्रिक या ओटीपी ई-केवाईसी (e-KYC) पूर्ण करें।{"\n"}
-                      4. पावती रसीद प्राप्त करें और स्थिति ट्रैक करें।
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Bottom CTA Row */}
-              <div className="scheme-detail-bottom-cta-row">
-                <button
-                  type="button"
-                  className="btn-secondary"
-                  onClick={() => {
-                    const q = `${selectedScheme.hindi_name} (${selectedScheme.scheme_name}) की पात्रता और आवेदन प्रक्रिया क्या है?`;
-                    setQuestion(q);
-                    ask(null, q);
-                  }}
-                >
-                  {t.askAiAboutThisSchemeBtn || "💬 इस योजना के बारे में AI से पूछें"}
-                </button>
-
-                {selectedScheme.official_source_url && (
-                  <a
-                    href={selectedScheme.official_source_url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="scheme-official-portal-btn"
-                  >
-                    <span>{t.visitOfficialPortalBtn || "आधिकारिक वेबसाइट पर जाएँ ↗"}</span>
-                  </a>
-                )}
-              </div>
+                </>
+              )}
             </div>
           )}
 
@@ -2499,6 +4036,158 @@ export default function App() {
               <div className="doc-content-viewer">
                 {selectedDoc.text}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 6. MODAL: SYNC PIPELINE EXECUTION LOGS & RETRY */}
+      {showSyncModal && (
+        <div className="sync-modal-backdrop" onClick={() => setShowSyncModal(false)}>
+          <div className="sync-modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="sync-modal-header">
+              <h3 className="sync-modal-title">
+                <span>📊</span>
+                <span>Automatic Scheme Update Pipeline Logs</span>
+              </h3>
+              <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                <button
+                  type="button"
+                  className="sync-btn-sync-now"
+                  onClick={handleRetrySync}
+                  disabled={retryingSync || isSyncing}
+                >
+                  <span>{retryingSync ? "⏳ Retrying..." : "🔄 Retry Failed Sources"}</span>
+                </button>
+                <button className="close-btn" onClick={() => setShowSyncModal(false)}>✕</button>
+              </div>
+            </div>
+            <div className="sync-modal-body">
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px", flexWrap: "wrap", gap: "8px" }}>
+                <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                  Verified Official Government Catalogs Synchronization History
+                </span>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  style={{ fontSize: "0.78rem", padding: "4px 10px" }}
+                  onClick={fetchSyncLogs}
+                  disabled={syncLogsLoading}
+                >
+                  {syncLogsLoading ? "Loading..." : "🔄 Refresh Logs"}
+                </button>
+              </div>
+
+              {syncLogs.length === 0 ? (
+                <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
+                  No execution logs recorded yet. Click "Sync Now" to trigger the first run.
+                </div>
+              ) : (
+                <table className="sync-logs-table">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Type</th>
+                      <th>Status</th>
+                      <th>Discovered</th>
+                      <th>Created</th>
+                      <th>Updated</th>
+                      <th>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {syncLogs.map((log) => (
+                      <tr key={log.id}>
+                        <td>
+                          <strong>{log.source_name}</strong>
+                          {log.error_message && (
+                            <div style={{ fontSize: "0.74rem", color: "#ef4444", marginTop: "2px" }}>
+                              ⚠️ {log.error_message}
+                            </div>
+                          )}
+                        </td>
+                        <td><span style={{ textTransform: "uppercase", fontSize: "0.72rem", background: "var(--bg-secondary)", padding: "2px 6px", borderRadius: "4px" }}>{log.source_type}</span></td>
+                        <td>
+                          <span className={`sync-status-badge ${log.status === "SUCCESS" ? "active" : log.status === "RUNNING" ? "running" : "failed"}`}>
+                            {log.status}
+                          </span>
+                        </td>
+                        <td>{log.schemes_discovered}</td>
+                        <td><span style={{ color: log.schemes_created > 0 ? "#10b981" : "inherit" }}>+{log.schemes_created}</span></td>
+                        <td><span style={{ color: log.schemes_updated > 0 ? "#0284c7" : "inherit" }}>{log.schemes_updated}</span></td>
+                        <td style={{ fontSize: "0.75rem", color: "var(--text-dim)" }}>
+                          {log.completed_at ? new Date(log.completed_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "Running"}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 7. MODAL: SCHEME REVISION HISTORY & AUDIT TRAIL */}
+      {showHistoryModal && (
+        <div className="sync-modal-backdrop" onClick={() => setShowHistoryModal(false)}>
+          <div className="sync-modal-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="sync-modal-header">
+              <h3 className="sync-modal-title">
+                <span>📜</span>
+                <span>Revision History: {historyTargetScheme?.hindi_name || historyTargetScheme?.scheme_name}</span>
+              </h3>
+              <button className="close-btn" onClick={() => setShowHistoryModal(false)}>✕</button>
+            </div>
+            <div className="sync-modal-body">
+              <div style={{ marginBottom: "14px", fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                Canonical ID: <code style={{ fontWeight: 700, color: "var(--accent)" }}>{historyTargetScheme?.scheme_id || historyTargetScheme?.id}</code> • Audit trail of verified government changes
+              </div>
+
+              {historyLoading ? (
+                <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
+                  ⏳ Loading historical revisions...
+                </div>
+              ) : schemeHistoryList.length === 0 ? (
+                <div style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
+                  Initial baseline record verified. No post-registration revisions detected yet.
+                </div>
+              ) : (
+                <div>
+                  {schemeHistoryList.map((entry) => (
+                    <div key={entry.id} className="sync-history-item">
+                      <div className="sync-history-header">
+                        <span className={`sync-history-type ${entry.change_type}`}>
+                          {entry.change_type}
+                        </span>
+                        <span style={{ fontSize: "0.76rem", color: "var(--text-dim)" }}>
+                          📅 {entry.recorded_at ? new Date(entry.recorded_at).toLocaleString() : ""}
+                        </span>
+                      </div>
+                      {entry.source_url && (
+                        <div style={{ fontSize: "0.76rem", color: "var(--text-muted)", marginBottom: "6px" }}>
+                          Source: <a href={entry.source_url} target="_blank" rel="noreferrer">{entry.source_url}</a>
+                        </div>
+                      )}
+                      {entry.changed_fields && entry.changed_fields.length > 0 && (
+                        <div>
+                          <span style={{ fontSize: "0.76rem", fontWeight: 700, color: "var(--text-main)" }}>Changed Fields:</span>
+                          {entry.changed_fields.map((diff, i) => (
+                            <div key={i} className="sync-diff-tag">
+                              <strong>{diff.field}:</strong> <span style={{ color: "#ef4444" }}>{String(diff.old).slice(0, 80)}</span> ➔ <span style={{ color: "#10b981" }}>{String(diff.new).slice(0, 80)}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      {entry.previous_hash && entry.new_hash && (
+                        <div style={{ fontSize: "0.72rem", color: "var(--text-dim)", marginTop: "6px", fontFamily: "monospace" }}>
+                          Hash: {entry.previous_hash.slice(0, 10)}... ➔ {entry.new_hash.slice(0, 10)}...
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

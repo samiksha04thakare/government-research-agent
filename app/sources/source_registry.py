@@ -11,15 +11,21 @@ Maintains metadata and configuration for all official sources:
 Strictly scopes to the initial verified categories:
 government_schemes, agriculture, crop_problems, pest_management, fertilizers, farmer_questions.
 """
+import os
 from dataclasses import asdict, dataclass, field
 from typing import Any
 
 from app.sources.config import (
+    DATA_GOV_API_KEY,
+    API_SETU_API_KEY,
     SOURCE_TYPE_API,
+    SOURCE_TYPE_DATASET,
     SOURCE_TYPE_PDF,
+    SOURCE_TYPE_PERMITTED,
     SOURCE_TYPE_WEBSITE,
     SUPPORTED_CATEGORIES,
     SUPPORTED_SOURCE_TYPES,
+    is_scraping_prohibited,
 )
 
 
@@ -37,6 +43,12 @@ class SourceConfig:
     publication_date: str = ""
     updated_date: str = ""
     version: str = "1.0"
+    auth_type: str = "none"             # "none", "api_key", "bearer_token", "permitted"
+    auth_env_var: str = ""              # e.g. "DATA_GOV_API_KEY", "API_SETU_API_KEY"
+    rate_limit_per_minute: int = 30
+    timeout_seconds: float = 20.0
+    max_retries: int = 2
+    requires_authorization: bool = False
 
     def __post_init__(self):
         if self.source_type not in SUPPORTED_SOURCE_TYPES:
@@ -49,13 +61,26 @@ class SourceConfig:
         if not self.title:
             self.title = self.source_name
 
+    @property
+    def is_authorized(self) -> bool:
+        """Verify whether automated access to this source is legally and technically authorized."""
+        if is_scraping_prohibited(self.source_url):
+            return False
+        if self.auth_env_var:
+            val = os.getenv(self.auth_env_var, "").strip()
+            if self.requires_authorization and (not val or any(d in val.lower() for d in ["your-key", "your_key", "placeholder"])):
+                return False
+        return True
+
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        d = asdict(self)
+        d["is_authorized"] = self.is_authorized
+        return d
 
 
 # Default verified official government sources
 DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
-    # 1. data.gov.in (API Source)
+    # 1. data.gov.in (Authorized API Source)
     SourceConfig(
         source_name="data.gov.in",
         source_url="https://data.gov.in/resource/9ef84268-d588-465a-a308-a864a43d0070",
@@ -64,9 +89,49 @@ DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
         category="agriculture",
         title="Open Government Data Platform - National Agriculture Directory",
         resource_id="9ef84268-d588-465a-a308-a864a43d0070",
+        auth_type="api_key",
+        auth_env_var="DATA_GOV_API_KEY",
         enabled=True,
     ),
-    # 2. PM-KISAN Portal (Official Website)
+    # 2. API Setu / Open Government Schemes Adapter (Authorized Government API)
+    SourceConfig(
+        source_name="API Setu Government Schemes Adapter",
+        source_url="https://apisetu.gov.in/api/schemes/catalog",
+        source_type=SOURCE_TYPE_API,
+        department="Ministry of Electronics and Information Technology (MeitY)",
+        category="government_schemes",
+        title="API Setu National Public Digital Infrastructure Catalog",
+        auth_type="api_key",
+        auth_env_var="API_SETU_API_KEY",
+        requires_authorization=False,  # Fallback to local catalog when API key is unconfigured
+        enabled=True,
+    ),
+    # 3. MahaPoCRA Official Downloadable Dataset (Official Dataset)
+    SourceConfig(
+        source_name="MahaPoCRA Agriculture DBT Catalog",
+        source_url="https://dbt.mahapocra.gov.in/",
+        source_type=SOURCE_TYPE_DATASET,
+        department="Department of Agriculture, Government of Maharashtra",
+        category="agriculture",
+        title="Nanaji Deshmukh Krishi Sanjivani Prakalp (PoCRA) Direct Benefit Transfer Schemes",
+        local_path="c:\\Users\\user\\Downloads\\dbt-mahapocra-gov-in-2026-10-22.csv",
+        publication_date="2026-10-22",
+        updated_date="2026-10-22",
+        auth_type="permitted",
+        enabled=True,
+    ),
+    # 4. MahaDBT Official State Schemes (Official Dataset)
+    SourceConfig(
+        source_name="MahaDBT State Welfare Schemes Catalog",
+        source_url="https://mahadbt.maharashtra.gov.in/",
+        source_type=SOURCE_TYPE_DATASET,
+        department="Government of Maharashtra",
+        category="government_schemes",
+        title="MahaDBT Direct Benefit Transfer Schemes Portal",
+        auth_type="permitted",
+        enabled=True,
+    ),
+    # 5. PM-KISAN Portal (Official Website)
     SourceConfig(
         source_name="PM-KISAN Portal",
         source_url="https://pmkisan.gov.in/",
@@ -74,9 +139,10 @@ DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
         department="Department of Agriculture and Farmers Welfare (DA&FW)",
         category="government_schemes",
         title="Pradhan Mantri Kisan Samman Nidhi (PM-KISAN) Official Portal",
+        auth_type="permitted",
         enabled=True,
     ),
-    # 3. services.india.gov.in (Official Website)
+    # 6. services.india.gov.in (Official Website)
     SourceConfig(
         source_name="services.india.gov.in",
         source_url="https://services.india.gov.in/service/search?category=agriculture",
@@ -84,9 +150,10 @@ DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
         department="National Informatics Centre (NIC) / MeitY",
         category="agriculture",
         title="National Government Services Portal - Agriculture Services",
+        auth_type="permitted",
         enabled=True,
     ),
-    # 4. agricoop.nic.in (Official Website)
+    # 7. agricoop.nic.in (Official Website)
     SourceConfig(
         source_name="agricoop.nic.in",
         source_url="https://agricoop.nic.in/en/divisiontype/agricultural-credit",
@@ -94,36 +161,7 @@ DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
         department="Ministry of Agriculture and Farmers Welfare, Govt of India",
         category="farmer_questions",
         title="Farmer Welfare, Land Records & Agricultural Credit Guidelines",
-        enabled=True,
-    ),
-    # 5. icar.org.in (Official Website)
-    SourceConfig(
-        source_name="icar.org.in",
-        source_url="https://icar.org.in/",
-        source_type=SOURCE_TYPE_WEBSITE,
-        department="Indian Council of Agricultural Research (ICAR)",
-        category="crop_problems",
-        title="ICAR Crop Production Practices, Stress Management & Advisory",
-        enabled=True,
-    ),
-    # 6. cibrc.gov.in (Official Website)
-    SourceConfig(
-        source_name="cibrc.gov.in",
-        source_url="https://cibrc.gov.in/",
-        source_type=SOURCE_TYPE_WEBSITE,
-        department="Central Insecticides Board & Registration Committee (CIBRC)",
-        category="pest_management",
-        title="CIBRC Integrated Pest Management & Approved Crop Protection Protocols",
-        enabled=True,
-    ),
-    # 7. soilhealth.dac.gov.in (Official Website)
-    SourceConfig(
-        source_name="soilhealth.dac.gov.in",
-        source_url="https://soilhealth.dac.gov.in/",
-        source_type=SOURCE_TYPE_WEBSITE,
-        department="Department of Agriculture & Farmers Welfare",
-        category="fertilizers",
-        title="Soil Health Card Parameters, Fertilizer Dosage & Subsidy Norms",
+        auth_type="permitted",
         enabled=True,
     ),
     # 8. PM-KISAN Operational Guidelines (Official PDF)
@@ -137,6 +175,7 @@ DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
         local_path="data/raw/1ed42b58950974e5.pdf",
         publication_date="2020-03-29",
         updated_date="2025-01-15",
+        auth_type="permitted",
         enabled=True,
     ),
     # 9. Kisan Post Scheme Guidelines (Official PDF)
@@ -150,6 +189,20 @@ DEFAULT_OFFICIAL_SOURCES: list[SourceConfig] = [
         local_path="data/raw/89a210b145755fa9.pdf",
         publication_date="2024-01-01",
         updated_date="2025-01-15",
+        auth_type="permitted",
+        enabled=True,
+    ),
+    # 10. Maharashtra Women & Child Compendium (Official PDF / GR Source)
+    SourceConfig(
+        source_name="Maharashtra Women & Child Schemes Compendium",
+        source_url="https://womenchild.maharashtra.gov.in/",
+        source_type=SOURCE_TYPE_PDF,
+        department="Department of Women and Child Development, Maharashtra",
+        category="women_child",
+        title="Comprehensive Compendium of Welfare Schemes for Women & Children (Sections 1-11)",
+        publication_date="2024-07-01",
+        updated_date="2026-10-21",
+        auth_type="permitted",
         enabled=True,
     ),
 ]
@@ -164,12 +217,15 @@ class SourceRegistry:
     def list_sources(
         self,
         enabled_only: bool = False,
+        authorized_only: bool = False,
         category: str | None = None,
         source_type: str | None = None,
     ) -> list[SourceConfig]:
         results = self._sources
         if enabled_only:
             results = [s for s in results if s.enabled]
+        if authorized_only:
+            results = [s for s in results if s.is_authorized]
         if category:
             results = [s for s in results if s.category == category]
         if source_type:
@@ -195,6 +251,13 @@ class SourceRegistry:
                 self._sources[idx] = source
                 return
         self._sources.append(source)
+
+    def set_enabled(self, name: str, enabled: bool) -> bool:
+        s = self.get_source_by_name(name)
+        if s:
+            s.enabled = enabled
+            return True
+        return False
 
 
 # Shared global registry instance

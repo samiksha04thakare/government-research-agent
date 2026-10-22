@@ -246,7 +246,7 @@ def test_category_filter_with_pagination():
         assert s["scheme_id"].startswith("MH-WOM") or any(
             k in cat_lower for k in [
                 "women", "child", "girl", "maternity", "shg", "shelter", "nutrition",
-                "empowerment", "trafficking", "livelihood", "grievance"
+                "empowerment", "trafficking", "livelihood", "grievance", "anganwadi", "poshan", "nari", "mahila"
             ]
         )
 
