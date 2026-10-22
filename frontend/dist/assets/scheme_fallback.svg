@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#1e293b" />
+      <stop offset="100%" stop-color="#0f172a" />
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fde047" />
+      <stop offset="50%" stop-color="#eab308" />
+      <stop offset="100%" stop-color="#ca8a04" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="50%" stop-color="#06b6d4" />
+      <stop offset="100%" stop-color="#3b82f6" />
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="450" fill="url(#bgGrad)" />
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.06" stroke="#94a3b8" stroke-width="1">
+    <line x1="0" y1="75" x2="800" y2="75" />
+    <line x1="0" y1="150" x2="800" y2="150" />
+    <line x1="0" y1="225" x2="800" y2="225" />
+    <line x1="0" y1="300" x2="800" y2="300" />
+    <line x1="0" y1="375" x2="800" y2="375" />
+    <line x1="160" y1="0" x2="160" y2="450" />
+    <line x1="320" y1="0" x2="320" y2="450" />
+    <line x1="480" y1="0" x2="480" y2="450" />
+    <line x1="640" y1="0" x2="640" y2="450" />
+  </g>
+
+  <!-- Central Seal Shield -->
+  <g transform="translate(400, 190)" text-anchor="middle">
+    <!-- Outer Glow Circle -->
+    <circle r="72" fill="#1e293b" stroke="url(#goldGrad)" stroke-width="2.5" opacity="0.9" filter="url(#softGlow)" />
+    <circle r="64" fill="#0f172a" stroke="url(#goldGrad)" stroke-width="1.2" stroke-dasharray="4 3" opacity="0.8" />
+
+    <!-- Government Pillar / Emblem Icon -->
+    <g transform="translate(0, -32)" fill="url(#goldGrad)">
+      <!-- Pediment -->
+      <path d="M-36 12 L0 -12 L36 12 Z" />
+      <rect x="-38" y="12" width="76" height="5" rx="1.5" />
+      <!-- Columns -->
+      <rect x="-30" y="20" width="7" height="28" rx="1" />
+      <rect x="-16" y="20" width="7" height="28" rx="1" />
+      <rect x="-3" y="20" width="7" height="28" rx="1" />
+      <rect x="10" y="20" width="7" height="28" rx="1" />
+      <rect x="23" y="20" width="7" height="28" rx="1" />
+      <!-- Base Plinth -->
+      <rect x="-38" y="50" width="76" height="6" rx="2" />
+      <rect x="-44" y="58" width="88" height="6" rx="2" />
+    </g>
+
+    <!-- Ashok Chakra Wheel Motif -->
+    <circle cx="0" cy="8" r="8" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" opacity="0.8" />
+
+    <!-- Heading: Hindi / Marathi -->
+    <text y="112" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="#f8fafc" letter-spacing="0.5">
+      शासकीय योजना व सेवा
+    </text>
+
+    <!-- Subtitle: English -->
+    <text y="138" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" fill="#94a3b8" letter-spacing="1.2">
+      OFFICIAL GOVERNMENT SCHEME REPOSITORY
+    </text>
+
+    <!-- Accent underline bar -->
+    <rect x="-100" y="152" width="200" height="3" rx="1.5" fill="url(#accentGrad)" />
+  </g>
+</svg>
