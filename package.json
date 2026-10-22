@@ -1,0 +1,10 @@
+{
+  "name": "ai-government-research-agent",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AI Government Research Agent - React Vite Frontend & FastAPI Backend",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "dev": "cd frontend && npm run dev"
+  }
+}
