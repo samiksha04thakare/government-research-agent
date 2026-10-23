@@ -3,7 +3,8 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { SUPPORTED_LANGUAGES, UI_TRANSLATIONS, DOMAIN_CATEGORIES_BY_LANG } from "./i18n";
 
-const API = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+const API = API_URL;
 
 // Auto-bypass ngrok free tier browser warning interstitial for API calls
 if (typeof window !== "undefined" && window.fetch) {
@@ -1183,7 +1184,7 @@ export default function App() {
       if (res.ok) {
         const data = await safeParseJson(res);
         if (data) {
-          const list = Array.isArray(data) ? data : data.items || [];
+          const list = Array.isArray(data) ? data : (data.items || data.schemes || []);
           const unique = [];
           const seen = new Set();
           for (const item of list) {

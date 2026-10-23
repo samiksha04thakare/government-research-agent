@@ -102,10 +102,19 @@ def health():
         indexed_count = db.query(Document).filter(Document.indexed.is_(True)).count()
         total_count = db.query(Document).count()
         schemes_count = db.query(Scheme).count()
+    
+    groq_key = os.getenv("GROQ_API_KEY", "").strip()
+    anthropic_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+    is_groq = bool(groq_key and not any(p in groq_key for p in ["your-groq", "your_groq", "your-key"]))
+    is_anthropic = bool(anthropic_key and not any(p in anthropic_key for p in ["your-key", "your_key"]))
+    provider = "groq" if is_groq else ("anthropic" if is_anthropic else "local_vector")
+
     return {
         "status": "ok",
         "has_api_key": has_llm_key(),
+        "llm_provider": provider,
         "llm_model": get_active_model_info(),
+        "groq_base_url": os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1"),
         "indexed_documents": indexed_count,
         "total_documents": total_count,
         "structured_schemes": schemes_count,
@@ -115,6 +124,8 @@ def health():
 class ApiKeyUpdateRequest(BaseModel):
     provider: str = Field(description="'groq' or 'anthropic'")
     api_key: str = Field(description="The API key value")
+    base_url: str | None = Field(default=None, description="Optional custom base URL")
+    model: str | None = Field(default=None, description="Optional custom model name")
 
 
 @app.post("/config/api-key")
@@ -133,6 +144,21 @@ def update_api_key(req: ApiKeyUpdateRequest):
             env_content = re.sub(r"^GROQ_API_KEY=.*$", f"GROQ_API_KEY={key}", env_content, flags=re.MULTILINE)
         else:
             env_content += f"\nGROQ_API_KEY={key}\n"
+
+        if req.base_url:
+            os.environ["GROQ_BASE_URL"] = req.base_url.strip()
+            if re.search(r"^GROQ_BASE_URL=.*$", env_content, flags=re.MULTILINE):
+                env_content = re.sub(r"^GROQ_BASE_URL=.*$", f"GROQ_BASE_URL={req.base_url.strip()}", env_content, flags=re.MULTILINE)
+            else:
+                env_content += f"\nGROQ_BASE_URL={req.base_url.strip()}\n"
+
+        if req.model:
+            os.environ["GROQ_MODEL"] = req.model.strip()
+            if re.search(r"^GROQ_MODEL=.*$", env_content, flags=re.MULTILINE):
+                env_content = re.sub(r"^GROQ_MODEL=.*$", f"GROQ_MODEL={req.model.strip()}", env_content, flags=re.MULTILINE)
+            else:
+                env_content += f"\nGROQ_MODEL={req.model.strip()}\n"
+
     elif req.provider.lower() == "anthropic":
         os.environ["ANTHROPIC_API_KEY"] = key
         if re.search(r"^ANTHROPIC_API_KEY=.*$", env_content, flags=re.MULTILINE):
@@ -153,6 +179,14 @@ def update_api_key(req: ApiKeyUpdateRequest):
         "llm_model": get_active_model_info(),
         "provider": req.provider,
     }
+
+
+@app.get("/config/test-llm")
+@app.post("/config/test-llm")
+def test_llm_connection():
+    """Diagnostic endpoint to safely test LLM connectivity without exposing secrets."""
+    from app.llm.model import test_groq_connection
+    return test_groq_connection()
 
 
 @app.get("/history")
@@ -702,11 +736,17 @@ def get_api_schemes(limit: int = 50, q: str = "", category: str = "all"):
             "schemes": [
                 {
                     "id": s.id,
+                    "scheme_id": s.scheme_id,
                     "name": s.scheme_name,
+                    "scheme_name": s.scheme_name,
                     "category": s.category,
                     "hindi_name": s.hindi_name,
                     "beneficiary": s.beneficiary,
                     "benefits": s.benefits,
+                    "eligibility": s.eligibility,
+                    "documents": s.documents,
+                    "status": s.status,
+                    "state_district": s.state_district,
                     "official_source_url": s.official_source_url,
                 }
                 for s in schemes

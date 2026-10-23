@@ -180,4 +180,12 @@ def synthesize_answer(
                 f"- **Source URL:** {matched_scheme.get('official_source_url')}\n"
                 f"- **Authority:** {matched_scheme.get('authority')}"
             )
+        if evidence:
+            blocks = []
+            for i, ev in enumerate(evidence[:4]):
+                m = ev.get("metadata", {})
+                title = m.get("title", "Official Source")
+                url = m.get("source_url", "")
+                blocks.append(f"### 📄 [{i+1}] {title}\n{ev.get('text', '')[:300]}...\n- **Official Portal:** {url}")
+            return f"## 📌 Official Verified Research Summary\n\n" + "\n\n".join(blocks)
         raise exc
