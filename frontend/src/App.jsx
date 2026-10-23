@@ -3,7 +3,36 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { SUPPORTED_LANGUAGES, UI_TRANSLATIONS, DOMAIN_CATEGORIES_BY_LANG } from "./i18n";
 
-const API = import.meta.env.VITE_API_URL || "";
+const API = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+
+// Auto-bypass ngrok free tier browser warning interstitial for API calls
+if (typeof window !== "undefined" && window.fetch) {
+  const _origFetch = window.fetch;
+  window.fetch = async function (resource, config) {
+    try {
+      const url = typeof resource === "string" ? resource : resource?.url || "";
+      const isNgrok = (API && API.includes("ngrok")) || url.includes("ngrok");
+      if (isNgrok) {
+        config = config ? { ...config } : {};
+        if (config.headers instanceof Headers) {
+          if (!config.headers.has("ngrok-skip-browser-warning")) {
+            config.headers.set("ngrok-skip-browser-warning", "true");
+          }
+        } else if (Array.isArray(config.headers)) {
+          config.headers = [...config.headers, ["ngrok-skip-browser-warning", "true"]];
+        } else {
+          config.headers = {
+            ...config.headers,
+            "ngrok-skip-browser-warning": "true",
+          };
+        }
+      }
+    } catch {
+      // Fallback gracefully without interrupting request
+    }
+    return _origFetch.call(this, resource, config);
+  };
+}
 
 async function safeParseJson(res) {
   const contentType = res.headers.get("content-type") || "";
